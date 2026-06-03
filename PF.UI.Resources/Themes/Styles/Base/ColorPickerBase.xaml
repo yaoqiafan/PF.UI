@@ -1,0 +1,264 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls">
+
+    <!-- 透明 RepeatButton（色调 Slider 轨道用） -->
+    <Style x:Key="ColorPickerRepeatButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Background="Transparent" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 色调 Slider Thumb：白色环形指针 -->
+    <ControlTemplate x:Key="ColorPickerSliderThumb" TargetType="{x:Type Thumb}">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- 外环（白色） -->
+            <Ellipse Width="20" Height="20" Fill="Transparent"
+                     Stroke="White" StrokeThickness="2.5" />
+            <!-- 光晕（悬浮时显示） -->
+            <Ellipse x:Name="shadow" Width="28" Height="28"
+                     Fill="White" Opacity="0" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="shadow"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To=".2" Duration="0:0:0.15" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="shadow"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To=".0" Duration="0:0:0.15" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- 水平色调 Slider 模板 -->
+    <ControlTemplate x:Key="ColorPickerSliderHorizontal" TargetType="{x:Type Slider}">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!-- 彩虹渐变轨道 -->
+                <Border Grid.Row="1" Height="12" CornerRadius="6">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Offset="0"     Color="#FF0000" />
+                            <GradientStop Offset="0.166" Color="#FFFF00" />
+                            <GradientStop Offset="0.333" Color="#00FF00" />
+                            <GradientStop Offset="0.5"   Color="#00FFFF" />
+                            <GradientStop Offset="0.666" Color="#0000FF" />
+                            <GradientStop Offset="0.833" Color="#FF00FF" />
+                            <GradientStop Offset="1.0"   Color="#FF0000" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Track x:Name="PART_Track" Grid.Row="1" OpacityMask="{x:Null}">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                      Style="{StaticResource ColorPickerRepeatButton}" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                      Style="{StaticResource ColorPickerRepeatButton}" />
+                    </Track.IncreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Width="20" Height="20" VerticalAlignment="Center"
+                               Focusable="False" OverridesDefaultStyle="True"
+                               Template="{StaticResource ColorPickerSliderThumb}" />
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+    <!-- 垂直色调 Slider 模板 -->
+    <ControlTemplate x:Key="ColorPickerSliderVertical" TargetType="{x:Type Slider}">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="1" Width="12" CornerRadius="6">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                            <GradientStop Offset="0"     Color="#FF0000" />
+                            <GradientStop Offset="0.166" Color="#FFFF00" />
+                            <GradientStop Offset="0.333" Color="#00FF00" />
+                            <GradientStop Offset="0.5"   Color="#00FFFF" />
+                            <GradientStop Offset="0.666" Color="#0000FF" />
+                            <GradientStop Offset="0.833" Color="#FF00FF" />
+                            <GradientStop Offset="1.0"   Color="#FF0000" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Track x:Name="PART_Track" Grid.Column="1">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                      Style="{StaticResource ColorPickerRepeatButton}" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                      Style="{StaticResource ColorPickerRepeatButton}" />
+                    </Track.IncreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Width="20" Height="20" VerticalAlignment="Top"
+                               Focusable="False" OverridesDefaultStyle="True"
+                               Template="{StaticResource ColorPickerSliderThumb}" />
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+    <!-- 色调 Slider 样式 -->
+    <Style x:Key="ColorPickerHueSlider" TargetType="{x:Type Slider}">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Maximum" Value="360" />
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False" />
+        <Setter Property="Template" Value="{StaticResource ColorPickerSliderHorizontal}" />
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Template" Value="{StaticResource ColorPickerSliderVertical}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ColorPicker 水平布局（色调 Slider 在上/下） -->
+    <ControlTemplate x:Key="ColorPickerHorizontalTemplate" TargetType="{x:Type pf:ColorPicker}">
+        <DockPanel>
+            <Slider x:Name="PART_HueSlider"
+                    Margin="4"
+                    DockPanel.Dock="{TemplateBinding HueSliderPosition}"
+                    IsMoveToPointEnabled="True"
+                    Orientation="Horizontal"
+                    Style="{StaticResource ColorPickerHueSlider}"
+                    Value="{Binding Hsb.Hue, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+            <Grid>
+                <!-- 色调渐变底层（白 → 当前色调满饱和度色） -->
+                <Rectangle Fill="{Binding Hsb.Hue,
+                    RelativeSource={RelativeSource TemplatedParent},
+                    Converter={StaticResource HsbLinearGradientConverter}}" />
+                <!-- 亮度遮罩（透明 → 黑，从上到下） -->
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0"   Color="Transparent" />
+                            <GradientStop Offset="1.0" Color="Black" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <!-- 2D 选取画布 -->
+                <Canvas x:Name="PART_SaturationBrightnessPicker"
+                        Background="Transparent"
+                        ClipToBounds="True"
+                        Focusable="True">
+                    <Thumb x:Name="PART_SaturationBrightnessPickerThumb"
+                           Canvas.Left="20" Canvas.Top="20">
+                        <Thumb.Template>
+                            <ControlTemplate>
+                                <Ellipse Width="20" Height="20"
+                                         Margin="-10,-10,0,0"
+                                         Fill="Transparent"
+                                         Stroke="White"
+                                         StrokeThickness="2" />
+                            </ControlTemplate>
+                        </Thumb.Template>
+                    </Thumb>
+                </Canvas>
+            </Grid>
+        </DockPanel>
+    </ControlTemplate>
+
+    <!-- ColorPicker 垂直布局（色调 Slider 在左/右） -->
+    <ControlTemplate x:Key="ColorPickerVerticalTemplate" TargetType="{x:Type pf:ColorPicker}">
+        <DockPanel>
+            <Slider x:Name="PART_HueSlider"
+                    Margin="4"
+                    DockPanel.Dock="{TemplateBinding HueSliderPosition}"
+                    IsMoveToPointEnabled="True"
+                    Orientation="Vertical"
+                    Style="{StaticResource ColorPickerHueSlider}"
+                    Value="{Binding Hsb.Hue, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+            <Grid>
+                <Rectangle Fill="{Binding Hsb.Hue,
+                    RelativeSource={RelativeSource TemplatedParent},
+                    Converter={StaticResource HsbLinearGradientConverter}}" />
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0"   Color="Transparent" />
+                            <GradientStop Offset="1.0" Color="Black" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Canvas x:Name="PART_SaturationBrightnessPicker"
+                        Background="Transparent"
+                        ClipToBounds="True"
+                        Focusable="True">
+                    <Thumb x:Name="PART_SaturationBrightnessPickerThumb"
+                           Canvas.Left="20" Canvas.Top="20">
+                        <Thumb.Template>
+                            <ControlTemplate>
+                                <Ellipse Width="20" Height="20"
+                                         Margin="-10,-10,0,0"
+                                         Fill="Transparent"
+                                         Stroke="White"
+                                         StrokeThickness="2" />
+                            </ControlTemplate>
+                        </Thumb.Template>
+                    </Thumb>
+                </Canvas>
+            </Grid>
+        </DockPanel>
+    </ControlTemplate>
+
+    <!-- ColorPicker 基础样式 -->
+    <Style x:Key="ColorPickerBaseStyle" TargetType="{x:Type pf:ColorPicker}">
+        <Setter Property="Template" Value="{StaticResource ColorPickerHorizontalTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="HueSliderPosition" Value="Top">
+                <Setter Property="Template" Value="{StaticResource ColorPickerHorizontalTemplate}" />
+            </Trigger>
+            <Trigger Property="HueSliderPosition" Value="Bottom">
+                <Setter Property="Template" Value="{StaticResource ColorPickerHorizontalTemplate}" />
+            </Trigger>
+            <Trigger Property="HueSliderPosition" Value="Left">
+                <Setter Property="Template" Value="{StaticResource ColorPickerVerticalTemplate}" />
+            </Trigger>
+            <Trigger Property="HueSliderPosition" Value="Right">
+                <Setter Property="Template" Value="{StaticResource ColorPickerVerticalTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

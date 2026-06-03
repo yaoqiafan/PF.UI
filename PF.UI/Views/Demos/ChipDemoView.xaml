@@ -1,0 +1,127 @@
+<UserControl x:Class="PF.UI.Views.Demos.ChipDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 页头 -->
+        <Border Grid.Row="0" Padding="24,20,24,16"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{DynamicResource RegionBrush}">
+            <StackPanel>
+                <TextBlock Text="Chip 标签控件"
+                           FontSize="20" FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="胶囊形标签 · 支持图标、删除按钮 · Filled / Outlined 两种风格"
+                           FontSize="12" Margin="0,4,0,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,20">
+            <StackPanel MaxWidth="700" HorizontalAlignment="Left">
+
+                <!-- Filled 基础 -->
+                <TextBlock Text="Filled — 基础变体" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                <WrapPanel Margin="0,0,0,24">
+                    <pf:Chip Content="默认" />
+                    <pf:Chip Content="主色" Style="{StaticResource ChipPrimary}" />
+                    <pf:Chip Content="成功" Style="{StaticResource ChipSuccess}" />
+                    <pf:Chip Content="危险" Style="{StaticResource ChipDanger}" />
+                    <pf:Chip Content="警告" Style="{StaticResource ChipWarning}" />
+                </WrapPanel>
+
+                <!-- Outlined -->
+                <TextBlock Text="Outlined — 描边变体" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                <WrapPanel Margin="0,0,0,24">
+                    <pf:Chip Content="描边默认" Style="{StaticResource ChipOutlined}" />
+                    <pf:Chip Content="描边主色" Style="{StaticResource ChipOutlinedPrimary}" />
+                </WrapPanel>
+
+                <!-- 带图标 -->
+                <TextBlock Text="带图标（Icon 属性）" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                <WrapPanel Margin="0,0,0,24">
+                    <pf:Chip Content="用户">
+                        <pf:Chip.Icon>
+                            <pf:PackIcon Kind="Account" Width="18" Height="18" Foreground="White" />
+                        </pf:Chip.Icon>
+                    </pf:Chip>
+                    <pf:Chip Content="收藏" Style="{StaticResource ChipPrimary}">
+                        <pf:Chip.Icon>
+                            <pf:PackIcon Kind="Star" Width="18" Height="18" Foreground="White" />
+                        </pf:Chip.Icon>
+                    </pf:Chip>
+                    <pf:Chip Content="定位" Style="{StaticResource ChipSuccess}">
+                        <pf:Chip.Icon>
+                            <pf:PackIcon Kind="MapMarker" Width="18" Height="18"
+                                         Foreground="{DynamicResource DarkSuccessBrush}" />
+                        </pf:Chip.Icon>
+                    </pf:Chip>
+                </WrapPanel>
+
+                <!-- 可删除 -->
+                <TextBlock Text="可删除（IsDeletable=True）" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                <WrapPanel Margin="0,0,0,24">
+                    <pf:Chip Content="可删除" IsDeletable="True" />
+                    <pf:Chip Content="主色可删除" IsDeletable="True"
+                             Style="{StaticResource ChipPrimary}" />
+                    <pf:Chip Content="带图标可删除" IsDeletable="True"
+                             DeleteToolTip="点击删除">
+                        <pf:Chip.Icon>
+                            <pf:PackIcon Kind="Tag" Width="18" Height="18" Foreground="White" />
+                        </pf:Chip.Icon>
+                    </pf:Chip>
+                </WrapPanel>
+
+                <!-- 标签云场景 -->
+                <TextBlock Text="标签云场景" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                <Border Padding="12" CornerRadius="8"
+                        Background="{DynamicResource RegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                        Margin="0,0,0,24">
+                    <WrapPanel>
+                        <pf:Chip Content="WPF" IsDeletable="True" />
+                        <pf:Chip Content=".NET 8" IsDeletable="True" Style="{StaticResource ChipPrimary}" />
+                        <pf:Chip Content="MVVM" IsDeletable="True" Style="{StaticResource ChipOutlinedPrimary}" />
+                        <pf:Chip Content="Material Design" IsDeletable="True" />
+                        <pf:Chip Content="Prism" IsDeletable="True" Style="{StaticResource ChipSuccess}" />
+                        <pf:Chip Content="DryIoc" IsDeletable="True" />
+                        <pf:Chip Content="EF Core" IsDeletable="True" Style="{StaticResource ChipOutlined}" />
+                        <pf:Chip Content="SQLite" IsDeletable="True" Style="{StaticResource ChipWarning}" />
+                    </WrapPanel>
+                </Border>
+
+                <!-- 用法 -->
+                <Border Background="{DynamicResource RegionBrush}" CornerRadius="8" Padding="16"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="XAML 用法" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                        <TextBlock FontFamily="Consolas" FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   TextWrapping="Wrap" LineHeight="20">
+&lt;pf:Chip Content="标签文字"
+         IsDeletable="True"
+         DeleteCommand="{Binding RemoveTagCommand}"
+         Style="{StaticResource ChipPrimary}" /&gt;
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -46,6 +46,46 @@ namespace PF.UI.ViewModels
                 Icon = PackIconKind.Waves
             });
 
+            NavItems.Add(new NavItem
+            {
+                Title = "ColorManipulation",
+                Description = "HSB 色彩空间工具",
+                ViewName = nameof(ColorManipulationDemoView),
+                Icon = PackIconKind.Palette
+            });
+
+            NavItems.Add(new NavItem
+            {
+                Title = "ColorPicker",
+                Description = "颜色选择器",
+                ViewName = nameof(ColorPickerDemoView),
+                Icon = PackIconKind.EyedropperVariant
+            });
+
+            NavItems.Add(new NavItem
+            {
+                Title = "Chip",
+                Description = "标签 / 胶囊控件",
+                ViewName = nameof(ChipDemoView),
+                Icon = PackIconKind.Label
+            });
+
+            NavItems.Add(new NavItem
+            {
+                Title = "Dialog",
+                Description = "页内模态对话框",
+                ViewName = nameof(DialogDemoView),
+                Icon = PackIconKind.WindowMaximize
+            });
+
+            NavItems.Add(new NavItem
+            {
+                Title = "Color Palette",
+                Description = "19种 Material Design 颜色",
+                ViewName = nameof(ColorPaletteDemoView),
+                Icon = PackIconKind.Palette
+            });
+
             // Region 在窗口 Loaded 后才可用，延迟到 Loaded 优先级再导航
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded,
                 () => SelectedItem = NavItems[0]);

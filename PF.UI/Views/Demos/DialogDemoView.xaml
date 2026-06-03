@@ -1,0 +1,161 @@
+<UserControl x:Class="PF.UI.Views.Demos.DialogDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <!--
+        DialogOverlay 包裹整个页面内容。
+        Token="DemoDialog" 与 ViewModel 中的 DialogOverlay.Show(..., "DemoDialog") 对应。
+        CloseOnClickAway="True" 允许点击遮罩关闭对话框。
+    -->
+    <pf:DialogOverlay Token="DemoDialog" CloseOnClickAway="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- 页头 -->
+            <Border Grid.Row="0" Padding="24,20,24,16"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                    Background="{DynamicResource RegionBrush}">
+                <StackPanel>
+                    <TextBlock Text="DialogOverlay 页内模态对话框"
+                               FontSize="20" FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock FontSize="12" Margin="0,4,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}">
+                        仿 MDIX DialogHost · 遮罩淡入淡出动画（SineEase 300ms）· 静态 Show() / Close() API
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- 内容区 -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,20">
+                <StackPanel MaxWidth="680" HorizontalAlignment="Left">
+
+                    <!-- 上次结果 -->
+                    <Border Background="{DynamicResource RegionBrush}" CornerRadius="8"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Padding="14,10" Margin="0,0,0,24">
+                        <StackPanel Orientation="Horizontal">
+                            <pf:PackIcon Kind="History" Width="16" Height="16"
+                                         VerticalAlignment="Center" Margin="0,0,8,0"
+                                         Foreground="{DynamicResource ThirdlyTextBrush}" />
+                            <TextBlock Text="上次操作结果：" FontSize="12"
+                                       Foreground="{DynamicResource ThirdlyTextBrush}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding LastResult}" FontSize="12"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       VerticalAlignment="Center" Margin="4,0,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 弹窗按钮组 -->
+                    <TextBlock Text="点击按钮弹出对话框" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,14" />
+
+                    <UniformGrid Columns="2" Margin="0,0,0,24">
+
+                        <!-- 信息 -->
+                        <Button Margin="0,0,8,8" Height="52"
+                                Command="{Binding ShowInfoDialogCommand}"
+                                Style="{StaticResource ButtonDefault}">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon Kind="InformationOutline" Width="18" Height="18"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"
+                                             Foreground="{DynamicResource InfoBrush}" />
+                                <TextBlock Text="信息对话框" VerticalAlignment="Center" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 确认 -->
+                        <Button Margin="8,0,0,8" Height="52"
+                                Command="{Binding ShowConfirmDialogCommand}"
+                                Style="{StaticResource ButtonDefault}">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon Kind="AlertOutline" Width="18" Height="18"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"
+                                             Foreground="{DynamicResource WarningBrush}" />
+                                <TextBlock Text="确认对话框" VerticalAlignment="Center" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 成功 -->
+                        <Button Margin="0,0,8,8" Height="52"
+                                Command="{Binding ShowSuccessDialogCommand}"
+                                Style="{StaticResource ButtonDefault}">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon Kind="CheckCircleOutline" Width="18" Height="18"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"
+                                             Foreground="{DynamicResource SuccessBrush}" />
+                                <TextBlock Text="成功对话框" VerticalAlignment="Center" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 错误 -->
+                        <Button Margin="8,0,0,8" Height="52"
+                                Command="{Binding ShowErrorDialogCommand}"
+                                Style="{StaticResource ButtonDefault}">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon Kind="AlertCircleOutline" Width="18" Height="18"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"
+                                             Foreground="{DynamicResource DangerBrush}" />
+                                <TextBlock Text="错误对话框" VerticalAlignment="Center" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 等待 -->
+                        <Button Margin="0,0,8,8" Height="52"
+                                Command="{Binding ShowWaitDialogCommand}"
+                                Style="{StaticResource ButtonDefault}">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon Kind="TimerSandEmpty" Width="18" Height="18"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"
+                                             Foreground="{DynamicResource PrimaryBrush}" />
+                                <TextBlock Text="等待对话框（3秒自动关闭）" VerticalAlignment="Center" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 点击遮罩关闭 -->
+                        <Button Margin="8,0,0,8" Height="52"
+                                Command="{Binding ShowClickAwayDialogCommand}"
+                                Style="{StaticResource ButtonDefault}">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon Kind="CursorDefaultClickOutline" Width="18" Height="18"
+                                             VerticalAlignment="Center" Margin="0,0,8,0"
+                                             Foreground="{DynamicResource AccentBrush}" />
+                                <TextBlock Text="点击遮罩关闭" VerticalAlignment="Center" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+
+                    </UniformGrid>
+
+                    <!-- 用法说明 -->
+                    <Border Background="{DynamicResource RegionBrush}" CornerRadius="8"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="遮罩实现原理（仿 MDIX DialogHost）"
+                                       FontSize="13" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,10" />
+                            <TextBlock FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap" LineHeight="20">
+· DialogOverlay 模板：Grid { ContentPresenter（主内容）| Border 遮罩层 | ContentControl 对话框层 }
+· VisualStateManager 驱动 Closed/Open 两个状态，Transition 定义动画
+· 打开：遮罩 Opacity 0→0.56（300ms SineEase）+ 卡片缩放 0.6→1 同步
+· 关闭：卡片先收缩（180ms）→ 遮罩再淡出（250ms）
+· 静态 API：DialogOverlay.Show(content, "token")  /  DialogOverlay.Close(result, "token")
+· Token 属性用于多个 DialogOverlay 共存时的作用域定位
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </pf:DialogOverlay>
+</UserControl>

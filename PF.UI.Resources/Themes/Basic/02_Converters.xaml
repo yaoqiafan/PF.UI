@@ -35,4 +35,10 @@
     <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
     <converter:HsbToColorConverter x:Key="HsbToColorConverter" />
     <converter:HsbLinearGradientConverter x:Key="HsbLinearGradientConverter" />
+    <!-- null→Collapsed，非null→Visible -->
+    <converter:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+    <!-- null→Visible，非null→Collapsed -->
+    <converter:NullableToVisibilityConverter x:Key="NullableToVisibilityReConverter"
+                                             NullValue="Visible" NotNullValue="Collapsed" />
+    <converter:BrushRoundConverter x:Key="BrushRoundConverter" />
 </ResourceDictionary>

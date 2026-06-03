@@ -1,0 +1,60 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls">
+
+    <!-- 默认样式 -->
+    <Style TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,16" />
+    </Style>
+
+    <!-- 信息样式（蓝色图标） -->
+    <Style x:Key="DialogFrameInfo" TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="IconKind" Value="InformationOutline" />
+        <Setter Property="IconBackground" Value="{DynamicResource InfoBrush}" />
+    </Style>
+
+    <!-- 成功样式（绿色图标） -->
+    <Style x:Key="DialogFrameSuccess" TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="IconKind" Value="CheckCircleOutline" />
+        <Setter Property="IconBackground" Value="{DynamicResource SuccessBrush}" />
+    </Style>
+
+    <!-- 警告样式（橙色图标） -->
+    <Style x:Key="DialogFrameWarning" TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="IconKind" Value="AlertOutline" />
+        <Setter Property="IconBackground" Value="{DynamicResource WarningBrush}" />
+    </Style>
+
+    <!-- 危险/错误样式（红色图标） -->
+    <Style x:Key="DialogFrameDanger" TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="IconKind" Value="AlertCircleOutline" />
+        <Setter Property="IconBackground" Value="{DynamicResource DangerBrush}" />
+    </Style>
+
+    <!-- 输入样式（无图标，紧凑） -->
+    <Style x:Key="DialogFrameInput" TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="ShowIcon" Value="False" />
+        <Setter Property="IconKind" Value="PencilOutline" />
+    </Style>
+
+    <!-- 等待样式（无脚部） -->
+    <Style x:Key="DialogFrameWait" TargetType="{x:Type pf:DialogFrame}"
+           BasedOn="{StaticResource DialogFrameBaseStyle}">
+        <Setter Property="Padding" Value="20,24" />
+        <Setter Property="ShowFooter" Value="False" />
+        <Setter Property="IconKind" Value="TimerSandEmpty" />
+        <Setter Property="IconBackground" Value="{DynamicResource PrimaryBrush}" />
+    </Style>
+
+</ResourceDictionary>

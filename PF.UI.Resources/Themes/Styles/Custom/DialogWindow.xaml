@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls">
+
+    <!--
+        DialogWindowStyle — 专为 Prism IDialogWindow 设计的 Window 样式。
+        用法：在 PFDialogBaseWindow.xaml 中 Style="{StaticResource DialogWindowStyle}"
+        特点：
+          · 隐藏最大化/最小化按钮（ResizeMode=NoResize 自动处理）
+          · 紧凑标题栏高度
+          · 无内边框，背景与 DialogFrame 融合
+          · 自动居中，SizeToContent=WidthAndHeight
+    -->
+    <Style x:Key="DialogWindowStyle"
+           BasedOn="{StaticResource WindowWin10}"
+           TargetType="{x:Type pf:Window}">
+        <!-- 无边框感：与 DialogFrame 背景融合 -->
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <!-- 紧凑标题栏 -->
+        <Setter Property="NonClientAreaHeight" Value="0" />
+        <Setter Property="ShowNonClientArea" Value="False" />
+        <!-- 投影效果通过窗口边框模拟 -->
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+</ResourceDictionary>

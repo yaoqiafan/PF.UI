@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls">
+
+    <Style TargetType="{x:Type pf:ColorPicker}" BasedOn="{StaticResource ColorPickerBaseStyle}" />
+
+</ResourceDictionary>

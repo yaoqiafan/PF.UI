@@ -372,6 +372,18 @@ public class ResourceToken
 
     #endregion
 
+    #region Dialog
+
+    public const string DialogWindowStyle = nameof(DialogWindowStyle);
+    public const string DialogFrameInfo = nameof(DialogFrameInfo);
+    public const string DialogFrameSuccess = nameof(DialogFrameSuccess);
+    public const string DialogFrameWarning = nameof(DialogFrameWarning);
+    public const string DialogFrameDanger = nameof(DialogFrameDanger);
+    public const string DialogFrameInput = nameof(DialogFrameInput);
+    public const string DialogFrameWait = nameof(DialogFrameWait);
+
+    #endregion
+
     #region PackIcon
 
     public const string PackIconStyle = nameof(PackIconStyle);

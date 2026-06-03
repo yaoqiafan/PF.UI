@@ -16,6 +16,11 @@ namespace PF.UI
         {
             containerRegistry.RegisterForNavigation<PackIconDemoView>();
             containerRegistry.RegisterForNavigation<RippleDemoView>();
+            containerRegistry.RegisterForNavigation<ColorManipulationDemoView>();
+            containerRegistry.RegisterForNavigation<ColorPickerDemoView>();
+            containerRegistry.RegisterForNavigation<ChipDemoView>();
+            containerRegistry.RegisterForNavigation<DialogDemoView>();
+            containerRegistry.RegisterForNavigation<ColorPaletteDemoView>();
         }
     }
 }
