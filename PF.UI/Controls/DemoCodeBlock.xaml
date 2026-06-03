@@ -1,0 +1,62 @@
+<UserControl x:Class="PF.UI.Controls.DemoCodeBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             x:Name="Root">
+
+    <Border CornerRadius="8" Padding="0"
+            Background="#1E1E1E"
+            BorderBrush="#333333" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- 标题栏 -->
+            <Border Grid.Row="0" Padding="12,8"
+                    BorderBrush="#333333" BorderThickness="0,0,0,1">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border CornerRadius="3" Padding="6,2"
+                                Background="#2D2D2D">
+                            <TextBlock x:Name="LanguageLabel" Text="XAML"
+                                       FontSize="11" Foreground="#808080"
+                                       FontFamily="Consolas" />
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 复制按钮 -->
+                    <Button x:Name="CopyButton"
+                            HorizontalAlignment="Right"
+                            Background="Transparent" BorderThickness="0"
+                            Cursor="Hand"
+                            Click="CopyButton_Click"
+                            ToolTip="复制代码">
+                        <StackPanel Orientation="Horizontal">
+                            <pf:PackIcon Kind="ContentCopy" Width="14" Height="14"
+                                         Foreground="#808080" VerticalAlignment="Center" />
+                            <TextBlock x:Name="CopyLabel" Text="复制"
+                                       FontSize="11" Foreground="#808080"
+                                       Margin="4,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- 代码区域 -->
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          MaxHeight="300">
+                <TextBlock x:Name="CodeText"
+                           Padding="14,12"
+                           FontFamily="Consolas"
+                           FontSize="12.5"
+                           LineHeight="20"
+                           Foreground="#D4D4D4"
+                           TextWrapping="NoWrap"
+                           Background="#1E1E1E" />
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

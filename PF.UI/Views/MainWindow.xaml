@@ -3,146 +3,117 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:prism="http://prismlibrary.com/"
            xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
-           xmlns:models="clr-namespace:PF.UI.Models"
+           xmlns:controls="clr-namespace:PF.UI.Controls"
            prism:ViewModelLocator.AutoWireViewModel="True"
-           Title="PF.UI Demo"
+           Title="PF.UI 控件演示"
            Height="720" Width="1100"
            MinHeight="500" MinWidth="800"
            WindowStartupLocation="CenterScreen"
            ShowNonClientArea="True"
            Background="{DynamicResource BackgroundBrush}">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <!-- 侧边栏 -->
-            <ColumnDefinition Width="220" />
-            <!-- 内容区 -->
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <pf:DrawerContainer>
+        <Grid>
+            <!-- ===== 抽屉侧边栏 ===== -->
+            <pf:Drawer x:Name="NavDrawer"
+                       Dock="Left"
+                       ShowMode="Push"
+                       IsOpen="True"
+                       ShowMask="True"
+                       MaskCanClose="True"
+                       MaskBrush="#40000000"
+                       Opened="NavDrawer_Opened"
+                       Closed="NavDrawer_Closed">
+                <Grid Width="240"
+                      Background="{DynamicResource RegionBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-        <!-- ===== 侧边栏 ===== -->
-        <Grid Grid.Column="0"
-              Background="{DynamicResource RegionBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <!-- Logo 区 -->
-            <Border Grid.Row="0"
-                    Padding="20,20,20,16"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="0,0,0,1">
-                <StackPanel Orientation="Horizontal">
-                    <Border Width="36" Height="36" CornerRadius="8"
-                            Background="{DynamicResource PrimaryBrush}">
-                        <pf:PackIcon Kind="CubeOutline" Width="22" Height="22"
-                                     Foreground="White" HorizontalAlignment="Center"
-                                     VerticalAlignment="Center" />
+                    <!-- Logo 区 -->
+                    <Border Grid.Row="0"
+                            Padding="16,18,16,14"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="0,0,0,1">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="34" Height="34" CornerRadius="8"
+                                    Background="{DynamicResource PrimaryBrush}">
+                                <pf:PackIcon Kind="CubeOutline" Width="20" Height="20"
+                                             Foreground="White"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center" />
+                            </Border>
+                            <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="PF.UI" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                <TextBlock Text="控件演示库" FontSize="10"
+                                           Foreground="{DynamicResource ThirdlyTextBrush}" />
+                            </StackPanel>
+                        </StackPanel>
                     </Border>
-                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="PF.UI" FontSize="15" FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}" />
-                        <TextBlock Text="控件演示" FontSize="11"
+
+                    <!-- 导航树 -->
+                    <controls:SidebarNavView Grid.Row="1"
+                                             x:Name="SidebarNav"
+                                             Groups="{Binding NavGroups}"
+                                             SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+
+                    <!-- 底部版本 -->
+                    <Border Grid.Row="2" Padding="14,8"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="0,1,0,0">
+                        <TextBlock Text="v1.0.0 — net8.0-windows"
+                                   FontSize="9.5"
                                    Foreground="{DynamicResource ThirdlyTextBrush}" />
-                    </StackPanel>
-                </StackPanel>
-            </Border>
+                    </Border>
+                </Grid>
+            </pf:Drawer>
 
-            <!-- 导航列表 -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"
-                          Padding="10,10,10,0">
-                <ListBox ItemsSource="{Binding NavItems}"
-                         SelectedItem="{Binding SelectedItem}"
-                         Background="Transparent"
-                         BorderThickness="0">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="Margin" Value="0,2" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <Border x:Name="Bd" CornerRadius="6" Padding="10,8"
-                                                Background="{TemplateBinding Background}"
-                                                ClipToBounds="True">
-                                            <ContentPresenter />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Bd" Property="Background"
-                                                        Value="{DynamicResource LightPrimaryBrush}" />
-                                            </Trigger>
-                                            <MultiTrigger>
-                                                <MultiTrigger.Conditions>
-                                                    <Condition Property="IsMouseOver" Value="True" />
-                                                    <Condition Property="IsSelected" Value="False" />
-                                                </MultiTrigger.Conditions>
-                                                <Setter TargetName="Bd" Property="Background"
-                                                        Value="{DynamicResource SecondaryRegionBrush}" />
-                                            </MultiTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type models:NavItem}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+            <!-- ===== 主内容区 ===== -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                                <!-- 图标 -->
-                                <Border Grid.Column="0" Width="32" Height="32" CornerRadius="6"
-                                        Background="{DynamicResource SecondaryRegionBrush}"
-                                        Margin="0,0,10,0">
-                                    <pf:PackIcon Kind="{Binding Icon}"
-                                                 Width="18" Height="18"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="{DynamicResource PrimaryBrush}" />
-                                </Border>
+                <!-- 顶栏：汉堡按钮 + 标题 -->
+                <Border Grid.Row="0" Height="48"
+                        Background="{DynamicResource RegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,0,0,1">
+                    <Grid>
+                        <!-- 汉堡按钮 -->
+                        <Button x:Name="HamburgerBtn"
+                                Width="40" Height="40"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="8,0,0,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="HamburgerBtn_Click"
+                                ToolTip="展开/折叠侧边栏">
+                            <pf:PackIcon x:Name="HamburgerIcon"
+                                         Kind="Menu"
+                                         Width="20" Height="20"
+                                         Foreground="{DynamicResource PrimaryTextBrush}" />
+                        </Button>
 
-                                <!-- 标题 + 描述 -->
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Title}"
-                                               FontSize="13"
-                                               Foreground="{DynamicResource PrimaryTextBrush}" />
-                                    <TextBlock Text="{Binding Description}"
-                                               FontSize="10"
-                                               Foreground="{DynamicResource ThirdlyTextBrush}"
-                                               Margin="0,1,0,0" />
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
+                        <!-- 标题 -->
+                        <TextBlock Text="PF.UI 控件演示"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
 
-            <!-- 底部版本信息 -->
-            <Border Grid.Row="2" Padding="16,10"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="0,1,0,0">
-                <TextBlock Text="v1.0.0 — net8.0-windows"
-                           FontSize="10"
-                           Foreground="{DynamicResource ThirdlyTextBrush}" />
-            </Border>
+                <!-- Prism Region -->
+                <ContentControl Grid.Row="1"
+                                prism:RegionManager.RegionName="DemoRegion" />
+            </Grid>
         </Grid>
-
-        <!-- 侧边栏右侧分隔线 -->
-        <Border Grid.Column="0" HorizontalAlignment="Right" Width="1"
-                Background="{DynamicResource BorderBrush}" />
-
-        <!-- ===== 内容区（Prism Region） ===== -->
-        <ContentControl Grid.Column="1"
-                        prism:RegionManager.RegionName="DemoRegion" />
-    </Grid>
+    </pf:DrawerContainer>
 </pf:Window>
