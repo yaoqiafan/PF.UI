@@ -1,10 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+<Import Project="..\Common.Desktop.props" Condition="Exists('..\Common.Desktop.props')" />	
+	
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<ApplicationIcon>-pfico.ico</ApplicationIcon>
+
+	</PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="Prism.DryIoc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PF.UI.Resources\PF.UI.Resources.csproj" />
   </ItemGroup>
 </Project>
