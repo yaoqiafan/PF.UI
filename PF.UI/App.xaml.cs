@@ -1,12 +1,10 @@
-﻿using System.Windows;
+using System.Windows;
 using PF.UI.Views;
+using PF.UI.Views.Demos;
 using Prism.Ioc;
 
 namespace PF.UI
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App
     {
         protected override Window CreateShell()
@@ -16,7 +14,8 @@ namespace PF.UI
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterForNavigation<PackIconDemoView>();
+            containerRegistry.RegisterForNavigation<RippleDemoView>();
         }
     }
 }

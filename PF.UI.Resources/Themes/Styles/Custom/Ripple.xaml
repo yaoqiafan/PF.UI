@@ -1,0 +1,20 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls">
+
+    <!-- 默认样式：Feedback 使用主色画刷 -->
+    <Style TargetType="{x:Type pf:Ripple}" BasedOn="{StaticResource RippleBaseStyle}">
+        <Setter Property="pf:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
+    </Style>
+
+    <!-- 白色涟漪（用于深色按钮上） -->
+    <Style x:Key="RippleWhite" TargetType="{x:Type pf:Ripple}" BasedOn="{StaticResource RippleBaseStyle}">
+        <Setter Property="pf:RippleAssist.Feedback" Value="White" />
+    </Style>
+
+    <!-- 无涟漪（禁用动画） -->
+    <Style x:Key="RippleDisabled" TargetType="{x:Type pf:Ripple}" BasedOn="{StaticResource RippleBaseStyle}">
+        <Setter Property="pf:RippleAssist.IsDisabled" Value="True" />
+    </Style>
+
+</ResourceDictionary>

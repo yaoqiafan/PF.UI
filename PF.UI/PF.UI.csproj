@@ -10,6 +10,7 @@
     <PackageReference Include="Prism.DryIoc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PF.UI.Controls\PF.UI.Controls.csproj" />
     <ProjectReference Include="..\PF.UI.Resources\PF.UI.Resources.csproj" />
   </ItemGroup>
 </Project>

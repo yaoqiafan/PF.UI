@@ -60,6 +60,7 @@ Themes\Styles\Base\PropertyGridBaseStyle.xaml
 Themes\Styles\Base\RadioButtonBaseStyle.xaml
 Themes\Styles\Base\RateBaseStyle.xaml
 Themes\Styles\Base\RepeatButtonBaseStyle.xaml
+Themes\Styles\Base\RippleBaseStyle.xaml
 Themes\Styles\Base\RunningBlockBaseStyle.xaml
 Themes\Styles\Base\ScrollViewerBaseStyle.xaml
 Themes\Styles\Base\SearchBarBaseStyle.xaml
@@ -128,6 +129,7 @@ Themes\Styles\Custom\Menu.xaml
 Themes\Styles\Custom\NavigationWindow.xaml
 Themes\Styles\Custom\Notification.xaml
 Themes\Styles\Custom\NumericUpDown.xaml
+Themes\Styles\Custom\PackIcon.xaml
 Themes\Styles\Custom\Pagination.xaml
 Themes\Styles\Custom\PasswordBox.xaml
 Themes\Styles\Custom\PinBox.xaml
@@ -142,6 +144,7 @@ Themes\Styles\Custom\Rectangle.xaml
 Themes\Styles\Custom\RepeatButton.xaml
 Themes\Styles\Custom\Ribbon.xaml
 Themes\Styles\Custom\RichTextBox.xaml
+Themes\Styles\Custom\Ripple.xaml
 Themes\Styles\Custom\RunningBlock.xaml
 Themes\Styles\Custom\Screenshot.xaml
 Themes\Styles\Custom\ScrollViewer.xaml
@@ -1329,6 +1332,146 @@ Themes\Styles\Custom\Window.xaml
     <GradientStop Offset="0.75" Color="#BBC5D7" />
     <GradientStop Offset="1" Color="#6D83A9" />
   </LinearGradientBrush>
+  <Style x:Key="RippleBaseStyle" TargetType="{x:Type pf:Ripple}">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="ClipToBounds" Value="{Binding RelativeSource={RelativeSource Self}, Path=(pf:RippleAssist.ClipToBounds)}" />
+    <Setter Property="Feedback" Value="{Binding RelativeSource={RelativeSource Self}, Path=(pf:RippleAssist.Feedback)}" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="VerticalAlignment" Value="Stretch" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="RecognizesAccessKey" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type pf:Ripple}">
+          <Grid Background="Transparent">
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup x:Name="CommonStates">
+                <VisualStateGroup.Transitions>
+                  <!-- Normal → MousePressed：涟漪扩散 -->
+                  <VisualTransition From="Normal" To="MousePressed">
+                    <Storyboard>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX">
+                        <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="1">
+                          <EasingDoubleKeyFrame.EasingFunction>
+                            <SineEase EasingMode="EaseIn" />
+                          </EasingDoubleKeyFrame.EasingFunction>
+                        </EasingDoubleKeyFrame>
+                      </DoubleAnimationUsingKeyFrames>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY">
+                        <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="1">
+                          <EasingDoubleKeyFrame.EasingFunction>
+                            <SineEase EasingMode="EaseIn" />
+                          </EasingDoubleKeyFrame.EasingFunction>
+                        </EasingDoubleKeyFrame>
+                      </DoubleAnimationUsingKeyFrames>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ClickEllipse" Storyboard.TargetProperty="Opacity">
+                        <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value=".26" />
+                      </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualTransition>
+                  <!-- MousePressed → MouseOut：快速收缩 -->
+                  <VisualTransition From="MousePressed" To="MouseOut">
+                    <Storyboard>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX">
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.12" Value="0">
+                          <EasingDoubleKeyFrame.EasingFunction>
+                            <SineEase EasingMode="EaseIn" />
+                          </EasingDoubleKeyFrame.EasingFunction>
+                        </EasingDoubleKeyFrame>
+                      </DoubleAnimationUsingKeyFrames>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY">
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.12" Value="0">
+                          <EasingDoubleKeyFrame.EasingFunction>
+                            <SineEase EasingMode="EaseIn" />
+                          </EasingDoubleKeyFrame.EasingFunction>
+                        </EasingDoubleKeyFrame>
+                      </DoubleAnimationUsingKeyFrames>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ClickEllipse" Storyboard.TargetProperty="Opacity">
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.12" Value="0" />
+                      </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualTransition>
+                  <!-- MousePressed → Normal：保持后淡出 -->
+                  <VisualTransition From="MousePressed" To="Normal">
+                    <Storyboard>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX">
+                        <EasingDoubleKeyFrame x:Name="MousePressedToNormalScaleXKeyFrame" KeyTime="0:0:0.30" Value="1" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.50" Value="1" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.50" Value="0" />
+                      </DoubleAnimationUsingKeyFrames>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY">
+                        <EasingDoubleKeyFrame x:Name="MousePressedToNormalScaleYKeyFrame" KeyTime="0:0:0.30" Value="1" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.50" Value="1" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.50" Value="0" />
+                      </DoubleAnimationUsingKeyFrames>
+                      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ClickEllipse" Storyboard.TargetProperty="Opacity">
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value=".26" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.30" Value=".26" />
+                        <EasingDoubleKeyFrame KeyTime="0:0:0.50" Value="0">
+                          <EasingDoubleKeyFrame.EasingFunction>
+                            <SineEase EasingMode="EaseOut" />
+                          </EasingDoubleKeyFrame.EasingFunction>
+                        </EasingDoubleKeyFrame>
+                      </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualTransition>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="Normal">
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX" To="0" />
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY" To="0" />
+                    <DoubleAnimation Storyboard.TargetName="ClickEllipse" Storyboard.TargetProperty="Opacity" To="0" />
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="MousePressed">
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX" To="1" />
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY" To="1" />
+                    <DoubleAnimation Storyboard.TargetName="ClickEllipse" Storyboard.TargetProperty="Opacity" To="0.26" />
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="MouseOut">
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX" To="0" />
+                    <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY" To="0" />
+                    <DoubleAnimation Storyboard.TargetName="ClickEllipse" Storyboard.TargetProperty="Opacity" To="0" />
+                  </Storyboard>
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <!-- 涟漪层 -->
+            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="False">
+              <Ellipse x:Name="ClickEllipse" Canvas.Left="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleX}" Canvas.Top="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleY}" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleSize}" Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleSize}" Fill="{TemplateBinding Feedback}" Opacity="0" RenderTransformOrigin=".5,.5">
+                <Ellipse.RenderTransform>
+                  <TransformGroup>
+                    <ScaleTransform x:Name="ScaleTransform" ScaleX="0" ScaleY="0" />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                  </TransformGroup>
+                </Ellipse.RenderTransform>
+              </Ellipse>
+              <Canvas.Style>
+                <Style TargetType="Canvas">
+                  <Setter Property="Panel.ZIndex" Value="0" />
+                  <Style.Triggers>
+                    <Trigger Property="pf:RippleAssist.RippleOnTop" Value="True">
+                      <Setter Property="Panel.ZIndex" Value="2" />
+                    </Trigger>
+                  </Style.Triggers>
+                </Style>
+              </Canvas.Style>
+            </Canvas>
+            <!-- 内容层 -->
+            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Panel.ZIndex="1" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" RecognizesAccessKey="{TemplateBinding RecognizesAccessKey}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
   <SolidColorBrush x:Key="LightPrimaryBrush" o:Freeze="True" Color="{DynamicResource LightPrimaryColor}" />
   <SolidColorBrush x:Key="DeepDarkPrimaryBrush" o:Freeze="True" Color="{DynamicResource DeepDarkPrimaryColor}" />
   <LinearGradientBrush x:Key="PrimaryBrush" o:Freeze="True" StartPoint="0,0" EndPoint="1,0">
@@ -7019,6 +7162,37 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="pfcontrol:TitleElement.MarginOnTheTop" Value="6,0,0,1" />
     <Setter Property="Padding" Value="6,0" />
     <Setter Property="MinHeight" Value="20" />
+  </Style>
+  <Style TargetType="{x:Type pf:PackIcon}">
+    <Setter Property="FlowDirection" Value="LeftToRight" />
+    <Setter Property="Height" Value="16" />
+    <Setter Property="Width" Value="16" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type pf:PackIcon}">
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <Viewbox FlowDirection="{TemplateBinding FlowDirection}">
+              <Canvas Width="24" Height="24">
+                <Path Data="{Binding Data, RelativeSource={RelativeSource TemplatedParent}}" Fill="{TemplateBinding Foreground}" />
+              </Canvas>
+            </Viewbox>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type pf:Ripple}" BasedOn="{StaticResource RippleBaseStyle}">
+    <Setter Property="pf:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
+  </Style>
+  <Style x:Key="RippleWhite" TargetType="{x:Type pf:Ripple}" BasedOn="{StaticResource RippleBaseStyle}">
+    <Setter Property="pf:RippleAssist.Feedback" Value="White" />
+  </Style>
+  <Style x:Key="RippleDisabled" TargetType="{x:Type pf:Ripple}" BasedOn="{StaticResource RippleBaseStyle}">
+    <Setter Property="pf:RippleAssist.IsDisabled" Value="True" />
   </Style>
   <Style x:Key="FocusVisual">
     <Setter Property="Control.Template">

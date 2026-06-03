@@ -371,4 +371,10 @@ public class ResourceToken
     public const string ComboBoxItemCapsuleVerticalLast = nameof(ComboBoxItemCapsuleVerticalLast);
 
     #endregion
+
+    #region PackIcon
+
+    public const string PackIconStyle = nameof(PackIconStyle);
+
+    #endregion
 }
