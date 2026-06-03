@@ -33,4 +33,6 @@
     <converter:Object2StringConverter x:Key="Object2StringConverter" />
     <converter:DataGridSelectAllButtonVisibilityConverter x:Key="DataGridSelectAllButtonVisibilityConverter" />
     <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+    <converter:HsbToColorConverter x:Key="HsbToColorConverter" />
+    <converter:HsbLinearGradientConverter x:Key="HsbLinearGradientConverter" />
 </ResourceDictionary>

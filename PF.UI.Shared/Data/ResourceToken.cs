@@ -377,4 +377,11 @@ public class ResourceToken
     public const string PackIconStyle = nameof(PackIconStyle);
 
     #endregion
+
+    #region ColorManipulation Converters
+
+    public const string HsbToColorConverter = nameof(HsbToColorConverter);
+    public const string HsbLinearGradientConverter = nameof(HsbLinearGradientConverter);
+
+    #endregion
 }
