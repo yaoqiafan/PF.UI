@@ -1,5 +1,4 @@
 <Solution>
-  <Project Path="PF.Core/PF.Core.csproj" />
   <Project Path="PF.UI.Controls/PF.UI.Controls.csproj" />
   <Project Path="PF.UI.Resources/PF.UI.Resources.csproj" />
   <Project Path="PF.UI.Shared/PF.UI.Shared.csproj" />
