@@ -1,27 +1,397 @@
 <UserControl x:Class="PF.UI.Views.Demos.SelectorsDemoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="2400" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:SelectorsDemoViewModel, IsDesignTimeCreatable=False}"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource BackgroundBrush}">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Padding="24,20,24,16"
+
+        <!-- 页头 -->
+        <Border Grid.Row="0" Padding="24,14,24,12"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Background="{DynamicResource RegionBrush}">
-            <StackPanel>
-                <TextBlock Text="选择器" FontSize="20" FontWeight="Bold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" />
-                <TextBlock Text="ComboBox / CheckComboBox / SearchComboBox / AutoComplete / NumericUpDown"
-                           FontSize="12" Margin="0,4,0,0"
-                           Foreground="{DynamicResource SecondaryTextBrush}" />
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="选择器 Selectors" FontSize="20" FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock Text="ComboBox · CheckComboBox · SearchComboBox · AutoCompleteTextBox · NumericUpDown"
+                               FontSize="12" Margin="0,4,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                </StackPanel>
+                <Border Grid.Column="1" MinWidth="220" MaxWidth="340"
+                        CornerRadius="8" Padding="12,8"
+                        Background="{DynamicResource SecondaryRegionBrush}"
+                        VerticalAlignment="Center" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <pf:PackIcon Kind="Console" Width="14" Height="14"
+                                     Foreground="{DynamicResource ThirdlyTextBrush}"
+                                     VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="{Binding LastInputResult}"
+                                   FontSize="11.5"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontFamily="Consolas"
+                                   TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Border>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,20">
-            <TextBlock Text="即将推出..." FontSize="14" Foreground="{DynamicResource ThirdlyTextBrush}" />
-        </ScrollViewer>
+
+        <!-- 主体：内容 + 右侧目录 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
+
+                    <!-- ═══════════ 1. ComboBox 基础 ═══════════ -->
+                    <Border x:Name="Section_ComboBox基础" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. ComboBox" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="原生 WPF ComboBox，PF.UI 主题自动应用样式"
+                                               FontSize="13" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                    <TextBlock Text="支持 pf:InfoElement.Placeholder 占位文字"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+
+                                    <TextBlock Text="普通下拉" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <ComboBox ItemsSource="{Binding FruitList}"
+                                              pf:InfoElement.Placeholder="请选择水果..."
+                                              SelectionChanged="ComboBox_SelectionChanged"
+                                              Margin="0,0,0,10" />
+
+                                    <TextBlock Text="可编辑 (IsEditable=True)" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <ComboBox ItemsSource="{Binding CityList}"
+                                              IsEditable="True"
+                                              pf:InfoElement.Placeholder="可输入或选择城市..."
+                                              SelectionChanged="ComboBox_SelectionChanged"
+                                              Margin="0,0,0,10" />
+
+                                    <TextBlock Text="小号 (ComboBox.Small)" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <ComboBox Style="{StaticResource ComboBox.Small}"
+                                              ItemsSource="{Binding FruitList}"
+                                              pf:InfoElement.Placeholder="小号下拉..."
+                                              HorizontalAlignment="Left" Width="200"
+                                              Margin="0,0,0,4" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:SelectorsDemoViewModel.XamlComboBox}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. ComboBox 扩展 ═══════════ -->
+                    <Border x:Name="Section_ComboBox扩展" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. ComboBox 扩展" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="ComboBoxExtend — 带浮动标题标签；ComboBoxCapsule — 胶囊分段样式"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+
+                                    <TextBlock Text="Top 布局" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <ComboBox Style="{StaticResource ComboBoxExtend}"
+                                              pf:TitleElement.Title="城市"
+                                              pf:TitleElement.TitlePlacement="Top"
+                                              ItemsSource="{Binding CityList}"
+                                              pf:InfoElement.Placeholder="请选择城市"
+                                              SelectionChanged="ComboBox_SelectionChanged"
+                                              Margin="0,0,0,12" />
+
+                                    <TextBlock Text="Left 布局（默认）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <ComboBox Style="{StaticResource ComboBoxExtend}"
+                                              pf:TitleElement.Title="水果"
+                                              ItemsSource="{Binding FruitList}"
+                                              pf:InfoElement.Placeholder="请选择水果"
+                                              SelectionChanged="ComboBox_SelectionChanged"
+                                              Margin="0,0,0,12" />
+
+                                    <TextBlock Text="胶囊分段样式 (ComboBoxCapsule)" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <TextBlock Text="所有选项横向平铺显示（非下拉），适合 3-5 个固定选项的分段控件"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,8" />
+                                    <ComboBox Style="{StaticResource ComboBoxCapsule}"
+                                              HorizontalAlignment="Left"
+                                              Margin="0,0,0,6">
+                                        <ComboBoxItem Content="日" IsSelected="True" />
+                                        <ComboBoxItem Content="周" />
+                                        <ComboBoxItem Content="月" />
+                                        <ComboBoxItem Content="年" />
+                                    </ComboBox>
+                                    <ComboBox Style="{StaticResource ComboBoxCapsule}"
+                                              HorizontalAlignment="Left"
+                                              Margin="0,0,0,4">
+                                        <ComboBoxItem Content="小" />
+                                        <ComboBoxItem Content="中" IsSelected="True" />
+                                        <ComboBoxItem Content="大" />
+                                    </ComboBox>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:SelectorsDemoViewModel.XamlComboBoxExtend}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. CheckComboBox ═══════════ -->
+                    <Border x:Name="Section_CheckComboBox" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. CheckComboBox" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="多选下拉，已选项显示为 Tag 标签；ShowSelectAllButton 支持全选/反选"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+
+                                    <TextBlock Text="基础多选" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:CheckComboBox pf:InfoElement.Placeholder="请选择水果（多选）"
+                                                      Margin="0,0,0,10">
+                                        <pf:CheckComboBoxItem Content="苹果" />
+                                        <pf:CheckComboBoxItem Content="香蕉" />
+                                        <pf:CheckComboBoxItem Content="橙子" />
+                                        <pf:CheckComboBoxItem Content="葡萄" />
+                                        <pf:CheckComboBoxItem Content="西瓜" />
+                                    </pf:CheckComboBox>
+
+                                    <TextBlock Text="带全选按钮 (ShowSelectAllButton=True)" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:CheckComboBox ShowSelectAllButton="True"
+                                                      pf:InfoElement.Placeholder="支持全选/反选..."
+                                                      Margin="0,0,0,10">
+                                        <pf:CheckComboBoxItem Content="北京" />
+                                        <pf:CheckComboBoxItem Content="上海" />
+                                        <pf:CheckComboBoxItem Content="广州" />
+                                        <pf:CheckComboBoxItem Content="深圳" />
+                                        <pf:CheckComboBoxItem Content="杭州" />
+                                    </pf:CheckComboBox>
+
+                                    <TextBlock Text="扩展样式（带标题）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:CheckComboBox Style="{StaticResource CheckComboBoxExtend}"
+                                                      pf:TitleElement.Title="城市"
+                                                      pf:TitleElement.TitlePlacement="Top"
+                                                      pf:InfoElement.Placeholder="多选城市..."
+                                                      Margin="0,0,0,4">
+                                        <pf:CheckComboBoxItem Content="成都" />
+                                        <pf:CheckComboBoxItem Content="武汉" />
+                                        <pf:CheckComboBoxItem Content="西安" />
+                                    </pf:CheckComboBox>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:SelectorsDemoViewModel.XamlCheckComboBox}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 4. SearchComboBox ═══════════ -->
+                    <Border x:Name="Section_SearchComboBox" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="4. SearchComboBox" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="带搜索过滤的多选下拉，输入关键字即时过滤选项"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+                                    <pf:SearchComboBox pf:InfoElement.Placeholder="输入关键字过滤..."
+                                                       Margin="0,0,0,4">
+                                        <pf:SearchComboBoxItem Content="北京" />
+                                        <pf:SearchComboBoxItem Content="上海" />
+                                        <pf:SearchComboBoxItem Content="广州" />
+                                        <pf:SearchComboBoxItem Content="深圳" />
+                                        <pf:SearchComboBoxItem Content="杭州" />
+                                        <pf:SearchComboBoxItem Content="成都" />
+                                        <pf:SearchComboBoxItem Content="武汉" />
+                                        <pf:SearchComboBoxItem Content="西安" />
+                                    </pf:SearchComboBox>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:SelectorsDemoViewModel.XamlSearchComboBox}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 5. AutoCompleteTextBox ═══════════ -->
+                    <Border x:Name="Section_AutoComplete" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="5. AutoCompleteTextBox" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="ComboBox 子类，输入时实时匹配候选项并显示建议列表"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+                                    <pf:AutoCompleteTextBox pf:InfoElement.Placeholder="输入以显示建议..."
+                                                            Margin="0,0,0,4">
+                                        <pf:AutoCompleteTextBoxItem Content="苹果" />
+                                        <pf:AutoCompleteTextBoxItem Content="香蕉" />
+                                        <pf:AutoCompleteTextBoxItem Content="橙子" />
+                                        <pf:AutoCompleteTextBoxItem Content="葡萄" />
+                                        <pf:AutoCompleteTextBoxItem Content="西瓜" />
+                                        <pf:AutoCompleteTextBoxItem Content="草莓" />
+                                        <pf:AutoCompleteTextBoxItem Content="蓝莓" />
+                                        <pf:AutoCompleteTextBoxItem Content="芒果" />
+                                    </pf:AutoCompleteTextBox>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:SelectorsDemoViewModel.XamlAutoComplete}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 6. NumericUpDown ═══════════ -->
+                    <Border x:Name="Section_NumericUpDown" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="6. NumericUpDown" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="数值步进输入：Value / Minimum / Maximum / Increment / DecimalPlaces / ValueFormat"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+
+                                    <TextBlock Text="基础整数步进" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:NumericUpDown Value="{Binding NumericValue, Mode=TwoWay}"
+                                                      Minimum="0" Maximum="100" Increment="1"
+                                                      Margin="0,0,0,12" />
+
+                                    <TextBlock Text="小数 + 格式字符串" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:NumericUpDown Value="3.14"
+                                                      Minimum="0" Maximum="10"
+                                                      Increment="0.01" DecimalPlaces="2"
+                                                      ValueFormat="{}{0:F2}"
+                                                      Margin="0,0,0,12" />
+
+                                    <TextBlock Text="带标题扩展样式 (NumericUpDownExtend)" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:NumericUpDown Style="{StaticResource NumericUpDownExtend}"
+                                                      pf:TitleElement.Title="数量"
+                                                      pf:TitleElement.TitlePlacement="Top"
+                                                      Value="1" Minimum="1" Maximum="99"
+                                                      Margin="0,0,0,12" />
+
+                                    <TextBlock Text="隐藏步进按钮 (ShowUpDownButton=False)" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:NumericUpDown ShowUpDownButton="False"
+                                                      Value="0" Minimum="-100" Maximum="100"
+                                                      Margin="0,0,0,4" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:SelectorsDemoViewModel.XamlNumericUpDown}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent"
+                                            MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
