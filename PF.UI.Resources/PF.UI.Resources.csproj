@@ -63,7 +63,7 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<XAMLCombineItems Include="Themes/**/**/*.xaml">
+		<XAMLCombineItems Include="Themes/**/**/*.xaml" Exclude="Themes/Default.xaml">
 			<TargetFile>Themes/Default.xaml</TargetFile>
 			<Visible>True</Visible>
 		</XAMLCombineItems>

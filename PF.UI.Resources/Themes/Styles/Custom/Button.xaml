@@ -136,20 +136,29 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-                        <ContentControl
-                            Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                            <Path
-                                Width="{TemplateBinding pfcontrol:IconElement.Width}"
-                                Height="{TemplateBinding pfcontrol:IconElement.Height}"
-                                Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
-                                Fill="{TemplateBinding Foreground}"
-                                SnapsToDevicePixels="True"
-                                Stretch="Uniform" />
-                        </ContentControl>
+                        <Grid Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Path x:Name="PathIcon"
+                                  Width="{TemplateBinding pfcontrol:IconElement.Width}"
+                                  Height="{TemplateBinding pfcontrol:IconElement.Height}"
+                                  Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
+                                  Fill="{TemplateBinding Foreground}"
+                                  SnapsToDevicePixels="True"
+                                  Stretch="Uniform" />
+                            <ContentPresenter x:Name="ContentHost"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="pfcontrol:IconElement.Geometry" Value="{x:Null}">
+                            <Setter TargetName="PathIcon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="ContentHost" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -193,20 +202,29 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Style="{StaticResource BorderCircular}">
-                        <ContentControl
-                            Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                            <Path
-                                Width="{TemplateBinding pfcontrol:IconElement.Width}"
-                                Height="{TemplateBinding pfcontrol:IconElement.Height}"
-                                Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
-                                Fill="{TemplateBinding Foreground}"
-                                SnapsToDevicePixels="True"
-                                Stretch="Uniform" />
-                        </ContentControl>
+                        <Grid Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Path x:Name="PathIcon"
+                                  Width="{TemplateBinding pfcontrol:IconElement.Width}"
+                                  Height="{TemplateBinding pfcontrol:IconElement.Height}"
+                                  Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
+                                  Fill="{TemplateBinding Foreground}"
+                                  SnapsToDevicePixels="True"
+                                  Stretch="Uniform" />
+                            <ContentPresenter x:Name="ContentHost"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="pfcontrol:IconElement.Geometry" Value="{x:Null}">
+                            <Setter TargetName="PathIcon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="ContentHost" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

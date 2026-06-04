@@ -50,7 +50,7 @@
 
                         <TextBlock Text="1. 安装 NuGet 包" FontSize="13" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
-                        <controls:DemoCodeBlock Language="Shell" Margin="0,0,0,12">
+                        <controls:DemoCodeBlock CodeLanguage="Shell" Margin="0,0,0,12">
                             <controls:DemoCodeBlock.Code>
 dotnet add package PF.UI.Controls
 dotnet add package PF.UI.Resources
@@ -60,7 +60,7 @@ dotnet add package PF.UI.Shared
 
                         <TextBlock Text="2. 在 App.xaml 中引入主题" FontSize="13" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
-                        <controls:DemoCodeBlock Language="XAML" Margin="0,0,0,12">
+                        <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,12">
                             <controls:DemoCodeBlock.Code>&lt;Application.Resources&gt;
     &lt;ResourceDictionary&gt;
         &lt;ResourceDictionary.MergedDictionaries&gt;
@@ -73,7 +73,7 @@ dotnet add package PF.UI.Shared
 
                         <TextBlock Text="3. 使用控件" FontSize="13" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
-                        <controls:DemoCodeBlock Language="XAML" Margin="0,0,0,12">
+                        <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,12">
                             <controls:DemoCodeBlock.Code>&lt;Window xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"&gt;
     &lt;StackPanel&gt;
         &lt;pf:PackIcon Kind="Heart" Width="32" Height="32"

@@ -26,13 +26,13 @@
                         </Border>
                     </StackPanel>
 
-                    <!-- 复制按钮 -->
+                    <!-- 复制全部按钮 -->
                     <Button x:Name="CopyButton"
                             HorizontalAlignment="Right"
                             Background="Transparent" BorderThickness="0"
                             Cursor="Hand"
                             Click="CopyButton_Click"
-                            ToolTip="复制代码">
+                            ToolTip="复制全部代码">
                         <StackPanel Orientation="Horizontal">
                             <pf:PackIcon Kind="ContentCopy" Width="14" Height="14"
                                          Foreground="#808080" VerticalAlignment="Center" />
@@ -44,18 +44,66 @@
                 </Grid>
             </Border>
 
-            <!-- 代码区域 -->
+            <!-- 代码区域 — 逐行渲染，支持单行复制 -->
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto"
                           MaxHeight="300">
-                <TextBlock x:Name="CodeText"
-                           Padding="14,12"
-                           FontFamily="Consolas"
-                           FontSize="12.5"
-                           LineHeight="20"
-                           Foreground="#D4D4D4"
-                           TextWrapping="NoWrap"
-                           Background="#1E1E1E" />
+                <ItemsControl x:Name="LinesItemsControl"
+                              Padding="8,8,8,8">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="LineRow" Padding="6,2,6,2"
+                                    CornerRadius="2"
+                                    Background="Transparent"
+                                    MouseEnter="LineRow_MouseEnter"
+                                    MouseLeave="LineRow_MouseLeave">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- 行号 -->
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding LineNumber, StringFormat='{}{0:D2}'}"
+                                               FontFamily="Consolas" FontSize="12"
+                                               Foreground="#555555"
+                                               Width="24" Margin="0,0,8,0"
+                                               TextAlignment="Right"
+                                               VerticalAlignment="Center" />
+
+                                    <!-- 代码文本 -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Text}"
+                                               FontFamily="Consolas" FontSize="12.5"
+                                               Foreground="#D4D4D4"
+                                               TextWrapping="NoWrap"
+                                               VerticalAlignment="Center" />
+
+                                    <!-- 单行复制按钮（hover 时可见） -->
+                                    <Button Grid.Column="2"
+                                            x:Name="LineCopyBtn"
+                                            Width="22" Height="22"
+                                            Background="Transparent" BorderThickness="0"
+                                            Cursor="Hand" Padding="0"
+                                            Visibility="Collapsed"
+                                            ToolTip="复制此行"
+                                            Click="LineCopy_Click"
+                                            Tag="{Binding Text}">
+                                        <pf:PackIcon Kind="ContentCopy" Width="11" Height="11"
+                                                     Foreground="#808080" />
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                    <Setter TargetName="LineCopyBtn" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </ScrollViewer>
         </Grid>
     </Border>

@@ -27,6 +27,10 @@ namespace PF.UI.Views.Demos
                 ["基础按钮"] = Section_基础按钮,
                 ["图标按钮"] = Section_图标按钮,
                 ["切换按钮"] = Section_切换按钮,
+                ["单选按钮"] = Section_单选按钮,
+                ["长按重复"] = Section_长按重复,
+                ["进度按钮"] = Section_进度按钮,
+                ["分割按钮"] = Section_分割按钮,
                 ["复合按钮"] = Section_复合按钮,
             };
 
