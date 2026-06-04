@@ -42,8 +42,10 @@ namespace PF.UI
             // 导航
             containerRegistry.RegisterForNavigation<NavigationDemoView>();
 
-            // 反馈
-            containerRegistry.RegisterForNavigation<FeedbackDemoView>();
+            // 反馈（拆分为3页）
+            containerRegistry.RegisterForNavigation<GrowlNotificationView>();
+            containerRegistry.RegisterForNavigation<StatusIndicatorView>();
+            containerRegistry.RegisterForNavigation<ProgressLoadingView>();
 
             // 动画
             containerRegistry.RegisterForNavigation<AnimationDemoView>();

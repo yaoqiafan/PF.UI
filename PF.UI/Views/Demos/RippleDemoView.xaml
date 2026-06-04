@@ -1,8 +1,15 @@
 <UserControl x:Class="PF.UI.Views.Demos.RippleDemoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:RippleDemoViewModel, IsDesignTimeCreatable=False}"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource BackgroundBrush}">
 
@@ -13,180 +20,381 @@
         </Grid.RowDefinitions>
 
         <!-- 页头 -->
-        <Border Grid.Row="0" Padding="24,20,24,16"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="0,0,0,1"
+        <Border Grid.Row="0" Padding="24,14,24,12"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Background="{DynamicResource RegionBrush}">
-            <StackPanel>
-                <TextBlock Text="Ripple 涟漪效果"
-                           FontSize="20" FontWeight="Bold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" />
-                <TextBlock Text="为任意控件添加 Material Design 涟漪点击反馈"
-                           FontSize="12" Margin="0,4,0,0"
-                           Foreground="{DynamicResource SecondaryTextBrush}" />
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="Ripple 涟漪效果" FontSize="20" FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock Text="Ripple · RippleAssist"
+                               FontSize="12" Margin="0,4,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                </StackPanel>
+                <Border Grid.Column="1" MinWidth="200" MaxWidth="340"
+                        CornerRadius="8" Padding="12,8"
+                        Background="{DynamicResource SecondaryRegionBrush}"
+                        VerticalAlignment="Center" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <pf:PackIcon Kind="Console" Width="14" Height="14"
+                                     Foreground="{DynamicResource ThirdlyTextBrush}"
+                                     VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="{Binding LastResult}" FontSize="11.5"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontFamily="Consolas" TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Border>
 
-        <!-- 演示内容 -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,20">
-            <StackPanel MaxWidth="680" HorizontalAlignment="Left">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                <!-- 用法说明 -->
-                <Border Background="{DynamicResource RegionBrush}"
-                        CornerRadius="8" Padding="16" Margin="0,0,0,24"
-                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
-                    <StackPanel>
-                        <TextBlock Text="使用方式" FontSize="13" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
-                        <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"
-                                   TextWrapping="Wrap" LineHeight="20">
-                            用 &lt;pf:Ripple&gt; 包裹任意内容，外层 Border 设置 ClipToBounds="True" 即可获得涟漪效果。
-                            通过 RippleAssist 附加属性控制颜色、位置和是否禁用。
-                        </TextBlock>
-                    </StackPanel>
-                </Border>
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
 
-                <!-- 示例 1：圆形图标按钮 -->
-                <TextBlock Text="圆形图标按钮" FontSize="14" FontWeight="SemiBold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                    <Border CornerRadius="24" Width="48" Height="48" Margin="0,0,12,0"
-                            Background="{DynamicResource PrimaryBrush}" ClipToBounds="True">
-                        <pf:Ripple pf:RippleAssist.IsCentered="True"
-                                   pf:RippleAssist.Feedback="White">
-                            <pf:PackIcon Kind="Heart" Width="24" Height="24"
-                                         Foreground="White" HorizontalAlignment="Center" />
-                        </pf:Ripple>
-                    </Border>
-                    <Border CornerRadius="24" Width="48" Height="48" Margin="0,0,12,0"
-                            Background="{DynamicResource DarkSuccessBrush}" ClipToBounds="True">
-                        <pf:Ripple pf:RippleAssist.IsCentered="True"
-                                   pf:RippleAssist.Feedback="White">
-                            <pf:PackIcon Kind="Check" Width="24" Height="24"
-                                         Foreground="White" HorizontalAlignment="Center" />
-                        </pf:Ripple>
-                    </Border>
-                    <Border CornerRadius="24" Width="48" Height="48"
-                            Background="{DynamicResource DangerBrush}" ClipToBounds="True">
-                        <pf:Ripple pf:RippleAssist.IsCentered="True"
-                                   pf:RippleAssist.Feedback="White">
-                            <pf:PackIcon Kind="Delete" Width="24" Height="24"
-                                         Foreground="White" HorizontalAlignment="Center" />
-                        </pf:Ripple>
-                    </Border>
-                </StackPanel>
-
-                <!-- 示例 2：矩形按钮（点击处扩散） -->
-                <TextBlock Text="矩形按钮 — 点击处扩散" FontSize="14" FontWeight="SemiBold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                    <Border CornerRadius="6" Height="40" Margin="0,0,12,0"
-                            Background="{DynamicResource PrimaryBrush}" ClipToBounds="True">
-                        <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center"
-                                   pf:RippleAssist.Feedback="White">
-                            <StackPanel Orientation="Horizontal">
-                                <pf:PackIcon Kind="Send" Width="16" Height="16"
-                                             Foreground="White" VerticalAlignment="Center"
-                                             Margin="0,0,6,0" />
-                                <TextBlock Text="提交" Foreground="White" FontSize="13" />
-                            </StackPanel>
-                        </pf:Ripple>
-                    </Border>
-                    <Border CornerRadius="6" Height="40" Margin="0,0,12,0"
-                            Background="{DynamicResource DarkSuccessBrush}" ClipToBounds="True">
-                        <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center"
-                                   pf:RippleAssist.Feedback="White">
-                            <TextBlock Text="保存" Foreground="White" FontSize="13" />
-                        </pf:Ripple>
-                    </Border>
-                </StackPanel>
-
-                <!-- 示例 3：轮廓按钮（主色涟漪） -->
-                <TextBlock Text="轮廓按钮 — 主色涟漪" FontSize="14" FontWeight="SemiBold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                    <Border CornerRadius="6" Height="40" Margin="0,0,12,0"
-                            BorderBrush="{DynamicResource PrimaryBrush}"
-                            BorderThickness="1.5" ClipToBounds="True">
-                        <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center">
-                            <TextBlock Text="详情" Foreground="{DynamicResource PrimaryBrush}"
-                                       FontSize="13" />
-                        </pf:Ripple>
-                    </Border>
-                    <Border CornerRadius="6" Height="40"
-                            BorderBrush="{DynamicResource BorderBrush}"
-                            BorderThickness="1.5" ClipToBounds="True">
-                        <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center">
-                            <TextBlock Text="取消" Foreground="{DynamicResource SecondaryTextBrush}"
-                                       FontSize="13" />
-                        </pf:Ripple>
-                    </Border>
-                </StackPanel>
-
-                <!-- 示例 4：列表项 -->
-                <TextBlock Text="列表项涟漪" FontSize="14" FontWeight="SemiBold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
-                <Border CornerRadius="8" ClipToBounds="True"
-                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                        Margin="0,0,0,24">
-                    <StackPanel>
-                        <Border ClipToBounds="True"
-                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
-                            <pf:Ripple Padding="16,12">
-                                <StackPanel Orientation="Horizontal">
-                                    <pf:PackIcon Kind="AccountOutline" Width="20" Height="20"
-                                                 VerticalAlignment="Center" Margin="0,0,12,0"
-                                                 Foreground="{DynamicResource SecondaryTextBrush}" />
-                                    <TextBlock Text="用户管理" VerticalAlignment="Center"
-                                               Foreground="{DynamicResource PrimaryTextBrush}" FontSize="13" />
+                    <!-- ═══════════ 1. 基本用法 ═══════════ -->
+                    <Border x:Name="Section_Basic" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. 基本用法" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="外层 Border 设 ClipToBounds=&quot;True&quot;，内容包裹在 pf:Ripple 内即获得涟漪效果"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12" />
+                                    <WrapPanel>
+                                        <!-- 实心按钮 Primary -->
+                                        <Border CornerRadius="6" Height="40" Margin="0,0,12,8"
+                                                Background="{DynamicResource PrimaryBrush}" ClipToBounds="True">
+                                            <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment="Center"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <TextBlock Text="主色按钮" Foreground="White" FontSize="13" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <!-- 实心按钮 Success -->
+                                        <Border CornerRadius="6" Height="40" Margin="0,0,12,8"
+                                                Background="{DynamicResource DarkSuccessBrush}" ClipToBounds="True">
+                                            <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment="Center"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <TextBlock Text="成功按钮" Foreground="White" FontSize="13" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <!-- 实心按钮 Danger -->
+                                        <Border CornerRadius="6" Height="40" Margin="0,0,12,8"
+                                                Background="{DynamicResource DangerBrush}" ClipToBounds="True">
+                                            <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment="Center"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <TextBlock Text="危险按钮" Foreground="White" FontSize="13" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <!-- 轮廓按钮 Primary -->
+                                        <Border CornerRadius="6" Height="40" Margin="0,0,12,8"
+                                                BorderBrush="{DynamicResource PrimaryBrush}"
+                                                BorderThickness="1.5" ClipToBounds="True">
+                                            <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment="Center">
+                                                <TextBlock Text="轮廓按钮" Foreground="{DynamicResource PrimaryBrush}"
+                                                           FontSize="13" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <!-- 轮廓按钮 Default -->
+                                        <Border CornerRadius="6" Height="40" Margin="0,0,0,8"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1.5" ClipToBounds="True">
+                                            <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment="Center">
+                                                <TextBlock Text="默认按钮" Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           FontSize="13" />
+                                            </pf:Ripple>
+                                        </Border>
+                                    </WrapPanel>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,8,0,0"
+                                        Code="{x:Static vm:RippleDemoViewModel.XamlBasic}" />
                                 </StackPanel>
-                            </pf:Ripple>
-                        </Border>
-                        <Border ClipToBounds="True"
-                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
-                            <pf:Ripple Padding="16,12">
-                                <StackPanel Orientation="Horizontal">
-                                    <pf:PackIcon Kind="CogOutline" Width="20" Height="20"
-                                                 VerticalAlignment="Center" Margin="0,0,12,0"
-                                                 Foreground="{DynamicResource SecondaryTextBrush}" />
-                                    <TextBlock Text="系统设置" VerticalAlignment="Center"
-                                               Foreground="{DynamicResource PrimaryTextBrush}" FontSize="13" />
-                                </StackPanel>
-                            </pf:Ripple>
-                        </Border>
-                        <Border ClipToBounds="True">
-                            <pf:Ripple Padding="16,12">
-                                <StackPanel Orientation="Horizontal">
-                                    <pf:PackIcon Kind="InformationOutline" Width="20" Height="20"
-                                                 VerticalAlignment="Center" Margin="0,0,12,0"
-                                                 Foreground="{DynamicResource SecondaryTextBrush}" />
-                                    <TextBlock Text="关于" VerticalAlignment="Center"
-                                               Foreground="{DynamicResource PrimaryTextBrush}" FontSize="13" />
-                                </StackPanel>
-                            </pf:Ripple>
-                        </Border>
-                    </StackPanel>
-                </Border>
+                            </Border>
+                        </StackPanel>
+                    </Border>
 
-                <!-- 示例 5：禁用涟漪 -->
-                <TextBlock Text="禁用涟漪（pf:RippleAssist.IsDisabled=&quot;True&quot;）"
-                           FontSize="14" FontWeight="SemiBold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
-                <Border CornerRadius="6" Height="40" HorizontalAlignment="Left"
-                        Background="{DynamicResource SecondaryRegionBrush}" ClipToBounds="True">
-                    <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center"
-                               pf:RippleAssist.IsDisabled="True">
-                        <TextBlock Text="此按钮无涟漪效果"
-                                   Foreground="{DynamicResource ThirdlyTextBrush}" FontSize="13" />
-                    </pf:Ripple>
-                </Border>
+                    <!-- ═══════════ 2. 居中涟漪 ═══════════ -->
+                    <Border x:Name="Section_Centered" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. 居中涟漪" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="pf:RippleAssist.IsCentered=&quot;True&quot; — 涟漪始终从控件中心扩散，适合圆形图标按钮"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,14" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="IsCentered=True  →" FontSize="11"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                   VerticalAlignment="Center" Width="120" />
+                                        <Border CornerRadius="24" Width="48" Height="48" Margin="0,0,12,0"
+                                                Background="{DynamicResource PrimaryBrush}" ClipToBounds="True">
+                                            <pf:Ripple pf:RippleAssist.IsCentered="True"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <pf:PackIcon Kind="Heart" Width="24" Height="24"
+                                                             Foreground="White" HorizontalAlignment="Center" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <Border CornerRadius="24" Width="48" Height="48" Margin="0,0,12,0"
+                                                Background="{DynamicResource DarkSuccessBrush}" ClipToBounds="True">
+                                            <pf:Ripple pf:RippleAssist.IsCentered="True"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <pf:PackIcon Kind="Check" Width="24" Height="24"
+                                                             Foreground="White" HorizontalAlignment="Center" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <Border CornerRadius="24" Width="48" Height="48"
+                                                Background="{DynamicResource DangerBrush}" ClipToBounds="True">
+                                            <pf:Ripple pf:RippleAssist.IsCentered="True"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <pf:PackIcon Kind="Delete" Width="24" Height="24"
+                                                             Foreground="White" HorizontalAlignment="Center" />
+                                            </pf:Ripple>
+                                        </Border>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="IsCentered=False →" FontSize="11"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                   VerticalAlignment="Center" Width="120" />
+                                        <Border CornerRadius="24" Width="48" Height="48" Margin="0,0,12,0"
+                                                Background="{DynamicResource PrimaryBrush}" ClipToBounds="True">
+                                            <pf:Ripple pf:RippleAssist.IsCentered="False"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <pf:PackIcon Kind="Heart" Width="24" Height="24"
+                                                             Foreground="White" HorizontalAlignment="Center" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <Border CornerRadius="24" Width="48" Height="48" Margin="0,0,12,0"
+                                                Background="{DynamicResource DarkSuccessBrush}" ClipToBounds="True">
+                                            <pf:Ripple pf:RippleAssist.IsCentered="False"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <pf:PackIcon Kind="Check" Width="24" Height="24"
+                                                             Foreground="White" HorizontalAlignment="Center" />
+                                            </pf:Ripple>
+                                        </Border>
+                                        <Border CornerRadius="24" Width="48" Height="48"
+                                                Background="{DynamicResource DangerBrush}" ClipToBounds="True">
+                                            <pf:Ripple pf:RippleAssist.IsCentered="False"
+                                                       pf:RippleAssist.Feedback="White">
+                                                <pf:PackIcon Kind="Delete" Width="24" Height="24"
+                                                             Foreground="White" HorizontalAlignment="Center" />
+                                            </pf:Ripple>
+                                        </Border>
+                                    </StackPanel>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:RippleDemoViewModel.XamlCentered}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
 
-            </StackPanel>
-        </ScrollViewer>
+                    <!-- ═══════════ 3. 列表项 ═══════════ -->
+                    <Border x:Name="Section_ListItem" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. 列表项" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="每个列表行的外层 Border 单独设 ClipToBounds=&quot;True&quot;"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12" />
+                                    <Border CornerRadius="8" ClipToBounds="True"
+                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                            Margin="0,0,0,12">
+                                        <StackPanel>
+                                            <Border ClipToBounds="True"
+                                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                                                <pf:Ripple Padding="16,12">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <pf:PackIcon Kind="AccountOutline" Width="20" Height="20"
+                                                                     VerticalAlignment="Center" Margin="0,0,12,0"
+                                                                     Foreground="{DynamicResource SecondaryTextBrush}" />
+                                                        <TextBlock Text="用户管理" VerticalAlignment="Center"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}" FontSize="13" />
+                                                    </StackPanel>
+                                                </pf:Ripple>
+                                            </Border>
+                                            <Border ClipToBounds="True"
+                                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                                                <pf:Ripple Padding="16,12">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <pf:PackIcon Kind="CogOutline" Width="20" Height="20"
+                                                                     VerticalAlignment="Center" Margin="0,0,12,0"
+                                                                     Foreground="{DynamicResource SecondaryTextBrush}" />
+                                                        <TextBlock Text="系统设置" VerticalAlignment="Center"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}" FontSize="13" />
+                                                    </StackPanel>
+                                                </pf:Ripple>
+                                            </Border>
+                                            <Border ClipToBounds="True">
+                                                <pf:Ripple Padding="16,12">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <pf:PackIcon Kind="InformationOutline" Width="20" Height="20"
+                                                                     VerticalAlignment="Center" Margin="0,0,12,0"
+                                                                     Foreground="{DynamicResource SecondaryTextBrush}" />
+                                                        <TextBlock Text="关于" VerticalAlignment="Center"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}" FontSize="13" />
+                                                    </StackPanel>
+                                                </pf:Ripple>
+                                            </Border>
+                                        </StackPanel>
+                                    </Border>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,0"
+                                        Code="{x:Static vm:RippleDemoViewModel.XamlListItem}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 4. 附加属性 ═══════════ -->
+                    <Border x:Name="Section_Options" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="4. 附加属性" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="RippleAssist 附加属性：IsDisabled / RippleSizeMultiplier / RippleOnTop / Feedback 颜色"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12" />
+                                    <WrapPanel>
+                                        <!-- IsDisabled -->
+                                        <StackPanel Margin="0,0,16,12">
+                                            <TextBlock Text="IsDisabled=True" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,6" />
+                                            <Border CornerRadius="6" Height="40" ClipToBounds="True"
+                                                    Background="{DynamicResource SecondaryRegionBrush}">
+                                                <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                           VerticalContentAlignment="Center"
+                                                           pf:RippleAssist.IsDisabled="True">
+                                                    <TextBlock Text="无涟漪效果"
+                                                               Foreground="{DynamicResource ThirdlyTextBrush}" FontSize="12" />
+                                                </pf:Ripple>
+                                            </Border>
+                                        </StackPanel>
+                                        <!-- RippleSizeMultiplier -->
+                                        <StackPanel Margin="0,0,16,12">
+                                            <TextBlock Text="SizeMultiplier=2" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,6" />
+                                            <Border CornerRadius="6" Height="40" ClipToBounds="True"
+                                                    Background="{DynamicResource PrimaryBrush}">
+                                                <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                           VerticalContentAlignment="Center"
+                                                           pf:RippleAssist.Feedback="White"
+                                                           pf:RippleAssist.RippleSizeMultiplier="2">
+                                                    <TextBlock Text="超大涟漪" Foreground="White" FontSize="12" />
+                                                </pf:Ripple>
+                                            </Border>
+                                        </StackPanel>
+                                        <!-- RippleOnTop -->
+                                        <StackPanel Margin="0,0,16,12">
+                                            <TextBlock Text="RippleOnTop=True" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,6" />
+                                            <Border CornerRadius="6" Height="40" ClipToBounds="True"
+                                                    Background="{DynamicResource DarkSuccessBrush}">
+                                                <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                           VerticalContentAlignment="Center"
+                                                           pf:RippleAssist.Feedback="White"
+                                                           pf:RippleAssist.RippleOnTop="True">
+                                                    <TextBlock Text="涟漪置顶" Foreground="White" FontSize="12" />
+                                                </pf:Ripple>
+                                            </Border>
+                                        </StackPanel>
+                                        <!-- Custom Feedback color -->
+                                        <StackPanel Margin="0,0,0,12">
+                                            <TextBlock Text="Feedback=&quot;#FF4081&quot;" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,6" />
+                                            <Border CornerRadius="6" Height="40" ClipToBounds="True"
+                                                    BorderBrush="#FF4081" BorderThickness="1.5">
+                                                <pf:Ripple Padding="20,0" HorizontalContentAlignment="Center"
+                                                           VerticalContentAlignment="Center"
+                                                           pf:RippleAssist.Feedback="#FF4081">
+                                                    <TextBlock Text="自定义颜色" Foreground="#FF4081" FontSize="12" />
+                                                </pf:Ripple>
+                                            </Border>
+                                        </StackPanel>
+                                    </WrapPanel>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,4,0,0"
+                                        Code="{x:Static vm:RippleDemoViewModel.XamlOptions}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent"
+                                            MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

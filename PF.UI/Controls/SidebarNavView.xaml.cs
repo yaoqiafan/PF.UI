@@ -37,6 +37,16 @@ namespace PF.UI.Controls
             set => SetValue(SelectedItemProperty, value);
         }
 
+        public static readonly DependencyProperty FilterTextProperty =
+            DependencyProperty.Register(nameof(FilterText), typeof(string),
+                typeof(SidebarNavView), new PropertyMetadata(string.Empty, OnFilterTextChanged));
+
+        public string FilterText
+        {
+            get => (string)GetValue(FilterTextProperty);
+            set => SetValue(FilterTextProperty, value);
+        }
+
         public SidebarNavView()
         {
             InitializeComponent();
@@ -46,7 +56,6 @@ namespace PF.UI.Controls
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Loaded -= OnLoaded;
-            // 延迟到布局完成后收集 ListBox 实例
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
                 CollectListBoxes(this);
@@ -60,9 +69,7 @@ namespace PF.UI.Controls
             {
                 var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
                 if (child is ListBox lb)
-                {
                     _childListBoxes.Add(lb);
-                }
                 CollectListBoxes(child);
             }
         }
@@ -71,6 +78,48 @@ namespace PF.UI.Controls
         {
             var self = (SidebarNavView)d;
             self.SyncListBoxSelections(e.NewValue as NavItem);
+        }
+
+        private static void OnFilterTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = (SidebarNavView)d;
+            self.ApplyFilter((e.NewValue as string) ?? string.Empty);
+        }
+
+        private void ApplyFilter(string filter)
+        {
+            if (Groups == null) return;
+
+            filter = filter.Trim();
+
+            if (string.IsNullOrEmpty(filter))
+            {
+                // 无搜索词：全部恢复
+                foreach (var g in Groups)
+                {
+                    g.IsVisible = true;
+                    g.IsExpanded = g.Title == "概览"; // 回到初始状态
+                    foreach (var item in g.Children)
+                        item.IsVisible = true;
+                }
+                return;
+            }
+
+            foreach (var g in Groups)
+            {
+                bool hasVisibleChild = false;
+                foreach (var item in g.Children)
+                {
+                    var match = item.Title.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0
+                             || item.Description.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+                    item.IsVisible = match;
+                    if (match) hasVisibleChild = true;
+                }
+                g.IsExpanded = hasVisibleChild;
+                g.IsVisible = hasVisibleChild;
+            }
+
+            // 如果只有一个结果，不需要滚动到它
         }
 
         private void SyncListBoxSelections(NavItem? item)
@@ -107,9 +156,7 @@ namespace PF.UI.Controls
                 _syncing = true;
                 try
                 {
-                    // 同步到外部（触发 TwoWay→ViewModel→导航）
                     SelectedItem = item;
-                    // 清除其他 ListBox 的选中
                     foreach (var other in _childListBoxes.Where(x => x != lb))
                         other.SelectedItem = null;
                 }
@@ -123,9 +170,7 @@ namespace PF.UI.Controls
         private void GroupHeader_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement fe && fe.DataContext is NavGroup group)
-            {
                 group.IsExpanded = !group.IsExpanded;
-            }
         }
     }
 }

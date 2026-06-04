@@ -37,6 +37,12 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsVisible}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
@@ -46,7 +52,10 @@
                       ItemsSource="{Binding ElementName=Root, Path=Groups}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:NavGroup}">
-                    <StackPanel Margin="0,0,0,2">
+                    <StackPanel Margin="0,0,0,2"
+                                Visibility="{Binding IsVisible,
+                                    Converter={StaticResource Boolean2VisibilityConverter}}">
+
                         <!-- 分组头 -->
                         <Border Padding="8,6" CornerRadius="6"
                                 Cursor="Hand"
@@ -111,7 +120,8 @@
                             </ListBox.Style>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type models:NavItem}">
-                                    <Grid>
+                                    <Grid Visibility="{Binding IsVisible,
+                                          Converter={StaticResource Boolean2VisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />

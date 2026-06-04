@@ -5,7 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PF.UI.Resources;component/Colors/Default.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PF.UI.Resources;component/Colors/Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/PF.UI.Resources;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

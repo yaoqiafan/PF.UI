@@ -24,7 +24,7 @@
                        MaskBrush="#40000000"
                        Opened="NavDrawer_Opened"
                        Closed="NavDrawer_Closed">
-                <Grid Width="240"
+                <Grid Width="auto"
                       Background="{DynamicResource RegionBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -32,26 +32,39 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Logo 区 -->
+                    <!-- Logo + 搜索区 -->
                     <Border Grid.Row="0"
-                            Padding="16,18,16,14"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="0,0,0,1">
-                        <StackPanel Orientation="Horizontal">
-                            <Border Width="34" Height="34" CornerRadius="8"
-                                    Background="{DynamicResource PrimaryBrush}">
-                                <pf:PackIcon Kind="CubeOutline" Width="20" Height="20"
-                                             Foreground="White"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center" />
-                            </Border>
-                            <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="PF.UI" FontSize="14" FontWeight="Bold"
-                                           Foreground="{DynamicResource PrimaryTextBrush}" />
-                                <TextBlock Text="控件演示库" FontSize="10"
-                                           Foreground="{DynamicResource ThirdlyTextBrush}" />
+                        <Grid Margin="16,14,16,12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <!-- Logo 行 -->
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="34" Height="34" CornerRadius="8"
+                                        Background="{DynamicResource PrimaryBrush}">
+                                    <pf:PackIcon Kind="CubeOutline" Width="20" Height="20"
+                                                 Foreground="White"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center" />
+                                </Border>
+                                <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="PF.UI" FontSize="14" FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    <TextBlock Text="控件演示库" FontSize="10"
+                                               Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
+                            <!-- 搜索栏 -->
+                            <pf:SearchBar x:Name="NavSearchBar"
+                                          Grid.Row="1"
+                                          Margin="0,10,0,0"
+                                          pf:InfoElement.Placeholder="搜索导航..."
+                                          IsRealTime="True"
+                                          TextChanged="NavSearchBar_TextChanged" />
+                        </Grid>
                     </Border>
 
                     <!-- 导航树 -->

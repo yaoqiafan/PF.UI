@@ -157,7 +157,7 @@ namespace PF.UI.ViewModels
                 }
             });
 
-            // ===== 7. 反馈 =====
+            // ===== 7. 反馈（拆分为3页）=====
             NavGroups.Add(new NavGroup
             {
                 Title = "反馈",
@@ -166,10 +166,24 @@ namespace PF.UI.ViewModels
                 {
                     new NavItem
                     {
-                        Title = "通知与提示",
-                        Description = "Badge / Card / Growl / Notification / Poptip / Loading ...",
-                        ViewName = nameof(FeedbackDemoView),
-                        Icon = PackIconKind.MessageAlertOutline
+                        Title = "消息通知",
+                        Description = "Growl / Notification / Poptip",
+                        ViewName = nameof(GrowlNotificationView),
+                        Icon = PackIconKind.MessageTextOutline
+                    },
+                    new NavItem
+                    {
+                        Title = "状态标记",
+                        Description = "Badge / Card / Divider / Empty",
+                        ViewName = nameof(StatusIndicatorView),
+                        Icon = PackIconKind.LabelOutline
+                    },
+                    new NavItem
+                    {
+                        Title = "加载与进度",
+                        Description = "Loading / ProgressBar / ConfettiCannon",
+                        ViewName = nameof(ProgressLoadingView),
+                        Icon = PackIconKind.ProgressCheck
                     }
                 }
             });

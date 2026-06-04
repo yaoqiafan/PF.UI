@@ -6,13 +6,13 @@ using PF.UI.ViewModels.Demos;
 
 namespace PF.UI.Views.Demos
 {
-    public partial class TagsRateDemoView : UserControl
+    public partial class StatusIndicatorView : UserControl
     {
         private Dictionary<string, FrameworkElement>? _anchors;
         private Dictionary<string, DemoTocItem>? _tocMap;
         private bool _navigating;
 
-        public TagsRateDemoView()
+        public StatusIndicatorView()
         {
             InitializeComponent();
             Loaded += OnLoaded;
@@ -23,17 +23,16 @@ namespace PF.UI.Views.Demos
             Loaded -= OnLoaded;
             _anchors = new Dictionary<string, FrameworkElement>
             {
-                ["Tag"]          = Section_Tag,
-                ["TagContainer"] = Section_TagContainer,
-                ["Rate"]         = Section_Rate,
+                ["Badge"]   = Section_Badge,
+                ["Card"]    = Section_Card,
+                ["Divider"] = Section_Divider,
+                ["Empty"]   = Section_Empty,
             };
             _tocMap = new Dictionary<string, DemoTocItem>();
-            if (DataContext is TagsRateDemoViewModel vm)
+            if (DataContext is StatusIndicatorViewModel vm)
             {
-                foreach (var item in vm.TocItems)
-                    _tocMap[item.Anchor] = item;
-                if (vm.TocItems.Count > 0)
-                    vm.TocItems[0].IsActive = true;
+                foreach (var item in vm.TocItems) _tocMap[item.Anchor] = item;
+                if (vm.TocItems.Count > 0) vm.TocItems[0].IsActive = true;
             }
             UpdateActiveToc();
         }
@@ -54,20 +53,19 @@ namespace PF.UI.Views.Demos
 
         private void ContentScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (_navigating || _anchors == null || DataContext is not TagsRateDemoViewModel) return;
+            if (_navigating || _anchors == null || DataContext is not StatusIndicatorViewModel) return;
             UpdateActiveToc();
         }
 
         private void UpdateActiveToc()
         {
-            if (_anchors == null || DataContext is not TagsRateDemoViewModel) return;
+            if (_anchors == null || DataContext is not StatusIndicatorViewModel vm) return;
             var scrollCenter = ContentScroll.VerticalOffset + ContentScroll.ViewportHeight * 0.3;
             string? bestAnchor = null;
             foreach (var kv in _anchors)
             {
                 var t = kv.Value.TransformToVisual(ContentScroll.Content as UIElement);
-                if (t.Transform(new Point(0, 0)).Y <= scrollCenter)
-                    bestAnchor = kv.Key;
+                if (t.Transform(new Point(0, 0)).Y <= scrollCenter) bestAnchor = kv.Key;
             }
             if (bestAnchor != null) SetActiveToc(bestAnchor);
         }
@@ -75,10 +73,8 @@ namespace PF.UI.Views.Demos
         private void SetActiveToc(string anchor)
         {
             if (_tocMap == null) return;
-            foreach (var kv in _tocMap)
-                kv.Value.IsActive = false;
-            if (_tocMap.TryGetValue(anchor, out var a))
-                a.IsActive = true;
+            foreach (var kv in _tocMap) kv.Value.IsActive = false;
+            if (_tocMap.TryGetValue(anchor, out var a)) a.IsActive = true;
         }
     }
 }
