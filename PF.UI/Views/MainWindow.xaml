@@ -17,7 +17,7 @@
             <!-- ===== 抽屉侧边栏 ===== -->
             <pf:Drawer x:Name="NavDrawer"
                        Dock="Left"
-                       ShowMode="Push"
+                       ShowMode="Cover"
                        IsOpen="True"
                        ShowMask="True"
                        MaskCanClose="True"

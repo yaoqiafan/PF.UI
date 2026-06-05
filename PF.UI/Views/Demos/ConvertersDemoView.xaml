@@ -1,27 +1,567 @@
 <UserControl x:Class="PF.UI.Views.Demos.ConvertersDemoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:ConvertersDemoViewModel, IsDesignTimeCreatable=False}"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource BackgroundBrush}">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <!-- 页头（纯参考页） -->
         <Border Grid.Row="0" Padding="24,20,24,16"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Background="{DynamicResource RegionBrush}">
             <StackPanel>
-                <TextBlock Text="转换器一览" FontSize="20" FontWeight="Bold"
+                <TextBlock Text="值转换器" FontSize="20" FontWeight="Bold"
                            Foreground="{DynamicResource PrimaryTextBrush}" />
-                <TextBlock Text="33 个 IValueConverter / IMultiValueConverter"
+                <TextBlock Text="Boolean · Object/String · 数值/时间 · 颜色/画刷 · 内部模板辅助 — 33 个转换器完整参考"
                            FontSize="12" Margin="0,4,0,0"
                            Foreground="{DynamicResource SecondaryTextBrush}" />
             </StackPanel>
         </Border>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,20">
-            <TextBlock Text="即将推出..." FontSize="14" Foreground="{DynamicResource ThirdlyTextBrush}" />
-        </ScrollViewer>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
+
+                    <!-- 公共说明 -->
+                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8"
+                            Padding="14,12" Margin="0,0,0,20"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+                            <pf:PackIcon Kind="InformationOutline" Width="16" Height="16"
+                                         VerticalAlignment="Top" Margin="0,1,10,0"
+                                         Foreground="{DynamicResource PrimaryBrush}" />
+                            <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap" LineHeight="20">
+                                所有转换器位于 <Run FontFamily="Consolas" Foreground="{DynamicResource PrimaryBrush}">PF.UI.Shared.Tools.Converter</Run> 命名空间。
+                                引入 <Run FontFamily="Consolas" Foreground="{DynamicResource PrimaryBrush}">PF.UI.Resources/Themes/Default.xaml</Run> 主题后，
+                                全部转换器已以 <Run FontFamily="Consolas">StaticResource</Run> 形式预注册，无需在页面中重复声明。
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 1. Boolean 系列 ═══════════ -->
+                    <Border x:Name="Section_Boolean" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. Boolean 系列（6 个）" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                            CornerRadius="6" Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="类名" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="接口" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="输入 → 输出 / 说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Boolean2BooleanReConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="bool → !bool（取反）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Boolean2StringConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text='bool → string，参数格式 "是|否"' Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Boolean2VisibilityReConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="true → Collapsed（与内置 BoolToVis 相反）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="BooleanArr2BooleanConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text='bool[] → bool，参数 "And"（全真）/ "Or"（任一）' Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="5" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="BooleanArr2VisibilityConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text='bool[] → Visibility，参数 "And" / "Or"' Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="6" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="NullableToVisibilityConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="Nullable&lt;T&gt;.HasValue → Visible / Collapsed" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,8"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlBoolDecl}" />
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlBoolUsage}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. Object / String 系列 ═══════════ -->
+                    <Border x:Name="Section_Object" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. Object / String 系列（7 个）" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                            CornerRadius="6" Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="类名" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="接口" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="输入 → 输出 / 说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Object2BooleanConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="obj != null → true" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Object2BooleanReConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="obj == null → true（反）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Object2VisibilityConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="obj != null → Visible" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Object2VisibilityReConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="obj != null → Collapsed（空态占位符专用）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="5" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Object2StringConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="obj?.ToString()，适合枚举/自定义类型" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="6" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="String2VisibilityConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="!IsNullOrEmpty → Visible" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="7" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="String2VisibilityReConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="7" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="7" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="IsNullOrEmpty → Visible（占位反向）" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,8"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlObjectDecl}" />
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlObjectUsage}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. 数值 / 时间 ═══════════ -->
+                    <Border x:Name="Section_Number" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. 数值 / 时间格式化（6 个）" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                            CornerRadius="6" Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="类名" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="接口" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="输入 → 输出 / 说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Int2StringConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text='int → string，参数作 format（"D3" → "007"）' Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Long2FileSizeConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="long 字节 → 人类可读大小（1572864 → 1.5 MB）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Number2PercentageConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="[value, max] → &quot;75%&quot; 百分比字符串" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="DoubleMinConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="double → Min(value, parameter)，动态宽度上限限制" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="5" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Double2GridLengthConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="double → GridLength(n, Pixel)，绑定动态 RowDefinition" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="6" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="DateTimeToStringConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text='DateTime → string，参数作 format（"yyyy-MM-dd HH:mm"）' Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,8"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlNumberDecl}" />
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlNumberUsage}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 4. 颜色 / 画刷 ═══════════ -->
+                    <Border x:Name="Section_Color" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="4. 颜色 / 画刷（5 个）" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                            CornerRadius="6" Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="类名" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="接口" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="输入 → 输出 / 说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Color2HexStringConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text='Color → "#AARRGGBB" 十六进制字符串' Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Color2ChannelAConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="Color → byte，提取 Alpha 通道值（0–255）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="HsbToColorConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue+IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="Hue → Color（单值）/ [H,S,B] → Color（多值）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="HsbLinearGradientConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="Hue double → 色相渐变 LinearGradientBrush" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="5" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="BrushRoundConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="Brush → Brush，像素对齐修正消除亚像素模糊" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,8"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlColorDecl}" />
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:ConvertersDemoViewModel.XamlColorUsage}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 5. 内部模板辅助 ═══════════ -->
+                    <Border x:Name="Section_Internal" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="5. 内部模板辅助（9 个）" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,14"
+                                               Text="以下转换器供 PF.UI.Resources 控件模板内部使用，通常不需要在业务代码中直接引用" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                            CornerRadius="6" Padding="12,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="类名" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="接口" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="用途" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="BorderCircularConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="[W, H] → CornerRadius，BorderElement.Circular 内部使用" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="BorderCircularClipConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="生成正圆 Border 的裁剪 EllipseGeometry" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="BorderClipConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="[W, H, CornerRadius] → RectangleGeometry 圆角裁剪" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="CornerRadiusSplitConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="参数指定方向，只保留该方向圆角（TopLeft 等）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="5" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="ThicknessSplitConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="参数指定方向，只保留该方向 Thickness（Left 等）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="6" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="TreeViewItemMarginConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IValue" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="6" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="TreeViewItem 层级深度 → 左边距缩进量" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="7" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="DataGridSelectAllVis..." Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="7" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="7" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="DataGrid 全选按钮 Visibility 逻辑" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="8" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="RectangleCircularConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="8" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="IMulti" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="8" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="[W, H] → RadiusX/Y，Rectangle 正圆辅助" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="9" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="ColLayoutConverter" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="9" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="TypeConverter" Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <TextBlock Grid.Row="9" Grid.Column="2" FontSize="10.5" Margin="0,3"
+                                                       Text="Col/Row 面板 XAML 布局字符串解析器" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent"
+                                            MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

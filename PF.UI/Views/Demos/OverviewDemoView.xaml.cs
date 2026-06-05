@@ -1,9 +1,86 @@
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using PF.UI.ViewModels.Demos;
 
 namespace PF.UI.Views.Demos
 {
     public partial class OverviewDemoView : UserControl
     {
-        public OverviewDemoView() => InitializeComponent();
+        private Dictionary<string, FrameworkElement>? _anchors;
+        private Dictionary<string, DemoTocItem>? _tocMap;
+        private bool _navigating;
+
+        public OverviewDemoView()
+        {
+            InitializeComponent();
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= OnLoaded;
+            _anchors = new Dictionary<string, FrameworkElement>
+            {
+                ["About"]        = Section_About,
+                ["QuickStart"]   = Section_QuickStart,
+                ["Architecture"] = Section_Architecture,
+                ["Stats"]        = Section_Stats,
+                ["Usage"]        = Section_Usage,
+            };
+            _tocMap = new Dictionary<string, DemoTocItem>();
+            if (DataContext is OverviewDemoViewModel vm)
+            {
+                foreach (var item in vm.TocItems)
+                    _tocMap[item.Anchor] = item;
+                if (vm.TocItems.Count > 0)
+                    vm.TocItems[0].IsActive = true;
+            }
+            UpdateActiveToc();
+        }
+
+        private void TocItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is DemoTocItem toc
+                && _anchors != null && _anchors.TryGetValue(toc.Anchor, out var target))
+            {
+                _navigating = true;
+                target.BringIntoView();
+                SetActiveToc(toc.Anchor);
+                Dispatcher.BeginInvoke(new System.Action(() =>
+                { ContentScroll.ScrollToVerticalOffset(ContentScroll.VerticalOffset - 8); _navigating = false; }),
+                    System.Windows.Threading.DispatcherPriority.Loaded);
+            }
+        }
+
+        private void ContentScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_navigating || _anchors == null || DataContext is not OverviewDemoViewModel) return;
+            UpdateActiveToc();
+        }
+
+        private void UpdateActiveToc()
+        {
+            if (_anchors == null || DataContext is not OverviewDemoViewModel) return;
+            var scrollCenter = ContentScroll.VerticalOffset + ContentScroll.ViewportHeight * 0.3;
+            string? bestAnchor = null;
+            foreach (var kv in _anchors)
+            {
+                var t = kv.Value.TransformToVisual(ContentScroll.Content as UIElement);
+                if (t.Transform(new Point(0, 0)).Y <= scrollCenter)
+                    bestAnchor = kv.Key;
+            }
+            if (bestAnchor != null) SetActiveToc(bestAnchor);
+        }
+
+        private void SetActiveToc(string anchor)
+        {
+            if (_tocMap == null) return;
+            foreach (var kv in _tocMap)
+                kv.Value.IsActive = false;
+            if (_tocMap.TryGetValue(anchor, out var a))
+                a.IsActive = true;
+        }
     }
 }

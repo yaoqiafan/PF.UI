@@ -1,0 +1,38 @@
+<UserControl x:Class="PF.UI.Views.Dialogs.ConfirmDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Dialogs"
+             mc:Ignorable="d"
+             d:DesignHeight="220" d:DesignWidth="380"
+             d:DataContext="{d:DesignInstance vm:ConfirmDialogViewModel, IsDesignTimeCreatable=False}">
+
+    <pf:DialogFrame Header="{Binding DialogTitle}"
+                    IconKind="{Binding IconKind}"
+                    IconBackground="{Binding IconBackground}"
+                    MinWidth="360" MaxWidth="480">
+        <pf:DialogFrame.Content>
+            <TextBlock Text="{Binding Message}"
+                       FontSize="13"
+                       TextWrapping="Wrap"
+                       LineHeight="22"
+                       MaxWidth="400"
+                       Foreground="{DynamicResource PrimaryTextBrush}" />
+        </pf:DialogFrame.Content>
+        <pf:DialogFrame.FooterContent>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="取  消"
+                        Width="88" Height="34"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource ButtonDefault}"
+                        Margin="0,0,10,0" />
+                <Button Content="确  定"
+                        Width="88" Height="34"
+                        Command="{Binding OkCommand}"
+                        Style="{StaticResource ButtonPrimary}" />
+            </StackPanel>
+        </pf:DialogFrame.FooterContent>
+    </pf:DialogFrame>
+</UserControl>

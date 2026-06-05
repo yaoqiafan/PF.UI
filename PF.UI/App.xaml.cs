@@ -1,6 +1,8 @@
 using System.Windows;
 using PF.UI.Views;
 using PF.UI.Views.Demos;
+using PF.UI.Views.Dialogs;
+using PF.UI.ViewModels.Dialogs;
 using Prism.Ioc;
 
 namespace PF.UI
@@ -14,6 +16,10 @@ namespace PF.UI
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            // Prism 对话框：IDialogWindow 实现 + 具体对话框
+            containerRegistry.RegisterDialogWindow<PFDialogWindow>();
+            containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
+
             // 已有演示
             containerRegistry.RegisterForNavigation<PackIconDemoView>();
             containerRegistry.RegisterForNavigation<RippleDemoView>();

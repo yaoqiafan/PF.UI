@@ -1,27 +1,485 @@
 <UserControl x:Class="PF.UI.Views.Demos.WindowsDemoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:WindowsDemoViewModel, IsDesignTimeCreatable=False}"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource BackgroundBrush}">
+
+    <UserControl.Resources>
+        <!-- 系统托盘图标 DrawingImage -->
+        <DrawingImage x:Key="TrayDrawingImage">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="#2196F3">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="8,8" RadiusX="8" RadiusY="8" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M5,8 L7,10 L11,6" />
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="White" Thickness="1.5" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Padding="24,20,24,16"
+
+        <!-- 页头 -->
+        <Border Grid.Row="0" Padding="24,14,24,12"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Background="{DynamicResource RegionBrush}">
-            <StackPanel>
-                <TextBlock Text="窗口演示" FontSize="20" FontWeight="Bold"
-                           Foreground="{DynamicResource PrimaryTextBrush}" />
-                <TextBlock Text="BlurWindow / GlowWindow / PopupWindow / NotifyIcon / Screenshot"
-                           FontSize="12" Margin="0,4,0,0"
-                           Foreground="{DynamicResource SecondaryTextBrush}" />
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="窗口演示" FontSize="20" FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock Text="pf:Window · BlurWindow · GlowWindow · PopupWindow · NotifyIcon · Screenshot"
+                               FontSize="12" Margin="0,4,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                </StackPanel>
+                <Border Grid.Column="1" MinWidth="200" MaxWidth="360"
+                        CornerRadius="8" Padding="12,8"
+                        Background="{DynamicResource SecondaryRegionBrush}"
+                        VerticalAlignment="Center" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <pf:PackIcon Kind="Console" Width="14" Height="14"
+                                     Foreground="{DynamicResource ThirdlyTextBrush}"
+                                     VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="{Binding LastResult}" FontSize="11.5"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontFamily="Consolas" TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Border>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,20">
-            <TextBlock Text="即将推出..." FontSize="14" Foreground="{DynamicResource ThirdlyTextBrush}" />
-        </ScrollViewer>
+
+        <!-- NotifyIcon 放在视觉树中，自动注册系统托盘 -->
+        <pf:NotifyIcon Grid.Row="0" Token="DemoTray"
+                       Text="PF.UI 控件演示（右键查看菜单）"
+                       Icon="{StaticResource TrayDrawingImage}"
+                       IsBlink="{Binding IsBlinking}">
+            <pf:NotifyIcon.ContextContent>
+                <StackPanel Margin="6,4">
+                    <Button Content="前置主窗口" Height="32" Margin="0,0,0,4"
+                            Command="{x:Static pf:ControlCommands.PushMainWindow2Top}"
+                            Style="{StaticResource ButtonDefault}" />
+                    <Button Content="退出程序" Height="32"
+                            Command="{x:Static pf:ControlCommands.ShutdownApp}"
+                            Style="{StaticResource ButtonDanger}" />
+                </StackPanel>
+            </pf:NotifyIcon.ContextContent>
+        </pf:NotifyIcon>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
+
+                    <!-- ═══════════ 1. pf:Window ═══════════ -->
+                    <Border x:Name="Section_PfWindow" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. pf:Window — 自定义标题栏基础窗口" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,16"
+                                               Text="PF.UI 所有自定义窗口的基类。完全自定义非客户区（标题栏），内置 CubicEase 弹出动画，支持向标题栏注入任意内容" />
+
+                                    <!-- 属性速查表 -->
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6"
+                                            Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="190" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="属性" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="NonClientAreaContent" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="向标题栏右侧注入任意 UIElement（如时钟、用户信息）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="NonClientAreaHeight" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="标题栏高度（默认 32）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="ShowNonClientArea" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="False = 隐藏标题栏（纯内容窗口，配合 WindowAttach.IsDragElement）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="IsFullScreen" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="全屏切换，保存/还原 WindowState / WindowStyle" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="5" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="ShowTitle / ShowIcon" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="5" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="标题文字 / 窗口图标是否显示" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+
+                                    <Button Content="打开 pf:Window 演示" Height="36" HorizontalAlignment="Left"
+                                            Command="{Binding OpenPfWindowCommand}"
+                                            Style="{StaticResource ButtonPrimary}" Margin="0,0,0,14" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:WindowsDemoViewModel.XamlPfWindow}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. BlurWindow / GlowWindow ═══════════ -->
+                    <Border x:Name="Section_Effects" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. BlurWindow · GlowWindow — 特效窗口" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,16"
+                                               Text="BlurWindow 调用 Windows Composition API 实现亚克力磨玻璃；GlowWindow 用 4 个辅助窗口渲染彩色外发光，均继承自 pf:Window" />
+
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- BlurWindow -->
+                                        <Border Grid.Column="0" Background="{DynamicResource SecondaryRegionBrush}"
+                                                CornerRadius="8" Padding="14,12">
+                                            <StackPanel>
+                                                <TextBlock Text="BlurWindow" FontSize="12" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,6" />
+                                                <TextBlock FontSize="10.5" Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,10"
+                                                           Text="Background 必须设为半透明才能透出磨玻璃效果。Win10 1809+ 为亚克力，拖动时自动降级" />
+                                                <Button Content="打开 BlurWindow" Height="32"
+                                                        Command="{Binding OpenBlurWindowCommand}"
+                                                        Style="{StaticResource ButtonDefault}" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- GlowWindow -->
+                                        <Border Grid.Column="2" Background="{DynamicResource SecondaryRegionBrush}"
+                                                CornerRadius="8" Padding="14,12">
+                                            <StackPanel>
+                                                <TextBlock Text="GlowWindow" FontSize="12" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,6" />
+                                                <TextBlock FontSize="10.5" Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,10"
+                                                           Text="ActiveGlowColor（聚焦）/ InactiveGlowColor（失焦）。发光由 4 个 GlowEdge 子窗口渲染" />
+                                                <Button Content="打开 GlowWindow" Height="32"
+                                                        Command="{Binding OpenGlowWindowCommand}"
+                                                        Style="{StaticResource ButtonDefault}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:WindowsDemoViewModel.XamlBlurGlow}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. PopupWindow ═══════════ -->
+                    <Border x:Name="Section_Popup" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. PopupWindow — 静态弹窗 API" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,16"
+                                               Text="轻量级弹出窗口，提供静态 Show/ShowDialog API，也支持锚定到 UI 元素旁边（无背景模式）" />
+
+                                    <!-- 演示按钮 -->
+                                    <TextBlock Text="静态 API 演示" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,10" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                        <Button Content="Show(msg)  非模态消息" Height="36" Margin="0,0,8,0"
+                                                Command="{Binding ShowPopupMsgCommand}"
+                                                Style="{StaticResource ButtonDefault}" />
+                                        <Button Content="ShowDialog(msg)  模态确认" Height="36"
+                                                Command="{Binding ShowPopupDialogCommand}"
+                                                Style="{StaticResource ButtonDefault}" />
+                                    </StackPanel>
+
+                                    <!-- 属性说明 -->
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6"
+                                            Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="160" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="属性 / API" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Show(string)" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="纯消息弹窗，非模态，居中屏幕" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="ShowDialog(msg, title, cancel)" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="模态对话框，返回 bool?（true/false/null）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Show(element, showBg)" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="锚定到 UI 元素旁，showBackground=False 无标题栏" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="PopupElement" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="自定义 FrameworkElement 内容（代替 ContentStr）" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+
+                                    <controls:DemoCodeBlock CodeLanguage="C#"
+                                        Code="{x:Static vm:WindowsDemoViewModel.XamlPopup}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 4. NotifyIcon + Screenshot ═══════════ -->
+                    <Border x:Name="Section_Tray" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="4. NotifyIcon · Screenshot" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,16"
+                                               Text="NotifyIcon 是 FrameworkElement，放入视觉树即自动向系统托盘注册。Screenshot 打开全屏透明窗口，框选后触发 Snapped 事件" />
+
+                                    <!-- NotifyIcon 演示区 -->
+                                    <TextBlock Text="NotifyIcon — 系统托盘（已激活，查看任务栏通知区）" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,10" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8"
+                                            Padding="14,12" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextWrapping="Wrap" LineHeight="18">
+                                                    <Run Text="当前页面的 NotifyIcon 已注册到系统托盘（Token = &quot;DemoTray&quot;）" />
+                                                    <LineBreak />
+                                                    <Run Text="右键点击任务栏通知区图标可查看 ContextContent 菜单" />
+                                                </TextBlock>
+                                                <CheckBox Content="启用图标闪烁（IsBlink）"
+                                                          IsChecked="{Binding IsBlinking}"
+                                                          Margin="0,10,0,0" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                                                <Border Width="40" Height="40" CornerRadius="8"
+                                                        Background="{DynamicResource PrimaryBrush}"
+                                                        HorizontalAlignment="Center" Margin="0,0,0,4">
+                                                    <pf:PackIcon Kind="TrayFull" Width="20" Height="20"
+                                                                 Foreground="White" HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center" />
+                                                </Border>
+                                                <TextBlock Text="托盘图标" FontSize="10"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- NotifyIcon 属性说明 -->
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6"
+                                            Padding="12,10" Margin="0,0,0,14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="160" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="属性" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="说明" FontSize="11" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Token" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="注册 Key（同 DialogOverlay），用于静态 API 定位实例" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="Icon" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="ImageSource（推荐 DrawingImage 矢量图标）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="ContextContent" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="右键弹出内容（任意 UIElement）" Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Consolas" FontSize="10.5" Margin="0,3"
+                                                       Text="IsBlink / BlinkInterval" Foreground="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10.5" Margin="0,3"
+                                                       Text="图标闪烁开关 / 闪烁间隔（报警提示场景）" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Grid>
+                                    </Border>
+
+                                    <Separator Margin="0,0,0,14" />
+
+                                    <!-- Screenshot -->
+                                    <TextBlock Text="Screenshot — 框选截图" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,10" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                        <Button Content="启动截图" Height="36" Margin="0,0,10,0"
+                                                Command="{Binding StartScreenshotCommand}"
+                                                Style="{StaticResource ButtonDefault}">
+                                            <Button.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <pf:PackIcon Kind="Scissors" Width="15" Height="15"
+                                                                     VerticalAlignment="Center" Margin="0,0,6,0" />
+                                                        <TextBlock Text="启动截图" VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </Button.ContentTemplate>
+                                        </Button>
+                                        <TextBlock Text="框选区域后释放鼠标，Snapped 事件回调至 LastResult"
+                                                   FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:WindowsDemoViewModel.XamlTray}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent"
+                                            MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
