@@ -23,11 +23,11 @@ namespace PF.UI
             // 已有演示
             containerRegistry.RegisterForNavigation<PackIconDemoView>();
             containerRegistry.RegisterForNavigation<RippleDemoView>();
-            containerRegistry.RegisterForNavigation<ColorManipulationDemoView>();
-            containerRegistry.RegisterForNavigation<ColorPickerDemoView>();
             containerRegistry.RegisterForNavigation<ChipDemoView>();
             containerRegistry.RegisterForNavigation<DialogDemoView>();
-            containerRegistry.RegisterForNavigation<ColorPaletteDemoView>();
+
+            // 颜色系统（合并页）
+            containerRegistry.RegisterForNavigation<ColorDemoView>();
 
             // 概览
             containerRegistry.RegisterForNavigation<OverviewDemoView>();

@@ -303,24 +303,10 @@ namespace PF.UI.ViewModels
                 {
                     new NavItem
                     {
-                        Title = "ColorPicker",
-                        Description = "HSB 颜色选择器",
-                        ViewName = nameof(ColorPickerDemoView),
-                        Icon = PackIconKind.EyedropperVariant
-                    },
-                    new NavItem
-                    {
-                        Title = "HSB 工具",
-                        Description = "色彩空间转换",
-                        ViewName = nameof(ColorManipulationDemoView),
-                        Icon = PackIconKind.InvertColors
-                    },
-                    new NavItem
-                    {
-                        Title = "Material 调色板",
-                        Description = "19种颜色 × 14个色调 = 266色值",
-                        ViewName = nameof(ColorPaletteDemoView),
-                        Icon = PackIconKind.Palette
+                        Title = "颜色系统",
+                        Description = "主题色系 · ColorPicker · HSB 工具 · Material 调色板",
+                        ViewName = nameof(ColorDemoView),
+                        Icon = PackIconKind.PaletteOutline
                     }
                 }
             });

@@ -1,0 +1,589 @@
+<UserControl x:Class="PF.UI.Views.Demos.ColorDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:ColorDemoViewModel, IsDesignTimeCreatable=False}"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 页头 -->
+        <Border Grid.Row="0" Padding="24,20,24,16"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{DynamicResource RegionBrush}">
+            <StackPanel>
+                <TextBlock Text="颜色系统" FontSize="20" FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="主题色系 · ColorPicker · HSB 色彩工具 · Material Design 调色板"
+                           FontSize="12" Margin="0,4,0,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
+
+                    <!-- ═══════════ 1. 主题色系 ═══════════ -->
+                    <Border x:Name="Section_ThemeBrushes" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. 主题色系 — Color · Brush Key" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,16"
+                                               TextWrapping="Wrap"
+                                               Text="PF.UI 通过 ColorDefault.xaml（浅色）/ ColorDark.xaml（深色）定义 Color Key，01_Brushes.xaml 将其包装为 SolidColorBrush / LinearGradientBrush。使用 DynamicResource 可随主题切换自动更新。" />
+
+                                    <!-- 品牌主色 -->
+                                    <TextBlock Text="品牌主色" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <WrapPanel Margin="0,0,0,16">
+                                        <StackPanel Margin="0,0,10,8" Width="80">
+                                            <Border Height="44" CornerRadius="6" Background="{DynamicResource LightPrimaryBrush}" />
+                                            <TextBlock Text="LightPrimary" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,4,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,8" Width="80">
+                                            <Border Height="44" CornerRadius="6" Background="{DynamicResource PrimaryBrush}" />
+                                            <TextBlock Text="Primary" FontSize="9" FontFamily="Consolas"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,4,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,8" Width="80">
+                                            <Border Height="44" CornerRadius="6" Background="{DynamicResource DarkPrimaryBrush}" />
+                                            <TextBlock Text="DarkPrimary" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,4,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,8" Width="80">
+                                            <Border Height="44" CornerRadius="6" Background="{DynamicResource AccentBrush}" />
+                                            <TextBlock Text="Accent" FontSize="9" FontFamily="Consolas"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,4,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,8" Width="80">
+                                            <Border Height="44" CornerRadius="6" Background="{DynamicResource DeepDarkPrimaryBrush}" />
+                                            <TextBlock Text="DeepDark" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,4,0,0" />
+                                        </StackPanel>
+                                    </WrapPanel>
+
+                                    <!-- 状态色 -->
+                                    <TextBlock Text="状态色" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="56" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Danger -->
+                                        <Border Grid.Row="0" Grid.Column="0" Height="40" CornerRadius="6,0,0,6" Background="{DynamicResource LightDangerBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="0" Grid.Column="1" Height="40" Background="{DynamicResource DangerBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="0" Grid.Column="2" Height="40" CornerRadius="0,6,6,0" Background="{DynamicResource DarkDangerBrush}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Light" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,6" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Danger" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,6" />
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Dark" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,6" />
+
+                                        <!-- Warning -->
+                                        <Border Grid.Row="0" Grid.Column="4" Height="40" CornerRadius="6,0,0,6" Background="{DynamicResource LightWarningBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="0" Grid.Column="5" Height="40" Background="{DynamicResource WarningBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="0" Grid.Column="6" Height="40" CornerRadius="0,6,6,0" Background="{DynamicResource DarkWarningBrush}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="4" Text="Light" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,6" />
+                                        <TextBlock Grid.Row="1" Grid.Column="5" Text="Warning" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,6" />
+                                        <TextBlock Grid.Row="1" Grid.Column="6" Text="Dark" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,6" />
+
+                                        <!-- Info -->
+                                        <Border Grid.Row="2" Grid.Column="0" Height="40" CornerRadius="6,0,0,6" Background="{DynamicResource LightInfoBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="2" Grid.Column="1" Height="40" Background="{DynamicResource InfoBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="2" Grid.Column="2" Height="40" CornerRadius="0,6,6,0" Background="{DynamicResource DarkInfoBrush}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Light" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,0" />
+                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="Info" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,0" />
+                                        <TextBlock Grid.Row="3" Grid.Column="2" Text="Dark" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,0" />
+
+                                        <!-- Success -->
+                                        <Border Grid.Row="2" Grid.Column="4" Height="40" CornerRadius="6,0,0,6" Background="{DynamicResource LightSuccessBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="2" Grid.Column="5" Height="40" Background="{DynamicResource SuccessBrush}" Margin="0,0,1,0" />
+                                        <Border Grid.Row="2" Grid.Column="6" Height="40" CornerRadius="0,6,6,0" Background="{DynamicResource DarkSuccessBrush}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="4" Text="Light" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,0" />
+                                        <TextBlock Grid.Row="3" Grid.Column="5" Text="Success" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,0" />
+                                        <TextBlock Grid.Row="3" Grid.Column="6" Text="Dark" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" HorizontalAlignment="Center" Margin="0,3,0,0" />
+                                    </Grid>
+
+                                    <!-- 文字色 + 背景层级 -->
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="20" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <!-- 文字色 -->
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="文字色" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <StackPanel Margin="0,0,8,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource PrimaryTextBrush}" />
+                                                    <TextBlock Text="Primary" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,8,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource SecondaryTextBrush}" />
+                                                    <TextBlock Text="Secondary" FontSize="8" FontFamily="Consolas" TextWrapping="Wrap" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,8,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource ThirdlyTextBrush}" />
+                                                    <TextBlock Text="Thirdly" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,0,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource ReverseTextBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" />
+                                                    <TextBlock Text="Reverse" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                        <!-- 背景层级 -->
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="背景层级" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                            <WrapPanel>
+                                                <StackPanel Margin="0,0,8,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource BackgroundBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" />
+                                                    <TextBlock Text="Background" FontSize="8" FontFamily="Consolas" TextWrapping="Wrap" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,8,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource RegionBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" />
+                                                    <TextBlock Text="Region" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,8,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource SecondaryRegionBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" />
+                                                    <TextBlock Text="Secondary" FontSize="8" FontFamily="Consolas" TextWrapping="Wrap" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,0,6" Width="72">
+                                                    <Border Height="36" CornerRadius="6" Background="{DynamicResource ThirdlyRegionBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" />
+                                                    <TextBlock Text="Thirdly" FontSize="8" FontFamily="Consolas" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,3,0,0" />
+                                                </StackPanel>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- 阴影效果 -->
+                                    <TextBlock Text="阴影效果（EffectShadow1 ~ 5）" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,10" />
+                                    <WrapPanel Margin="0,0,0,14">
+                                        <Border Width="72" Height="48" Margin="0,0,12,12" CornerRadius="8"
+                                                Background="{DynamicResource RegionBrush}"
+                                                Effect="{StaticResource EffectShadow1}">
+                                            <TextBlock Text="Shadow1" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                        </Border>
+                                        <Border Width="72" Height="48" Margin="0,0,12,12" CornerRadius="8"
+                                                Background="{DynamicResource RegionBrush}"
+                                                Effect="{StaticResource EffectShadow2}">
+                                            <TextBlock Text="Shadow2" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                        </Border>
+                                        <Border Width="72" Height="48" Margin="0,0,12,12" CornerRadius="8"
+                                                Background="{DynamicResource RegionBrush}"
+                                                Effect="{StaticResource EffectShadow3}">
+                                            <TextBlock Text="Shadow3" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                        </Border>
+                                        <Border Width="72" Height="48" Margin="0,0,12,12" CornerRadius="8"
+                                                Background="{DynamicResource RegionBrush}"
+                                                Effect="{StaticResource EffectShadow4}">
+                                            <TextBlock Text="Shadow4" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                        </Border>
+                                        <Border Width="72" Height="48" Margin="0,0,0,12" CornerRadius="8"
+                                                Background="{DynamicResource RegionBrush}"
+                                                Effect="{StaticResource EffectShadow5}">
+                                            <TextBlock Text="Shadow5" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                        </Border>
+                                    </WrapPanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:ColorDemoViewModel.XamlThemeBrushes}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. ColorPicker ═══════════ -->
+                    <Border x:Name="Section_ColorPicker" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. ColorPicker — HSB 颜色选择器" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="320" />
+                                            <ColumnDefinition Width="20" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0" CornerRadius="10"
+                                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                Background="{DynamicResource RegionBrush}"
+                                                ClipToBounds="True">
+                                            <pf:ColorPicker Color="{Binding SelectedColor, Mode=TwoWay}"
+                                                            HueSliderPosition="{Binding HueSliderPosition}"
+                                                            Height="280" />
+                                        </Border>
+
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                                            <TextBlock Text="当前颜色" FontSize="13" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,10" />
+                                            <Border Height="80" CornerRadius="8"
+                                                    Background="{Binding SelectedBrush}" Margin="0,0,0,12">
+                                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10">
+                                                    <TextBlock Text="{Binding PickerHexCode}" FontSize="16" FontWeight="Bold" Foreground="White"
+                                                               HorizontalAlignment="Center">
+                                                        <TextBlock.Effect>
+                                                            <DropShadowEffect BlurRadius="4" Opacity="0.5" ShadowDepth="1" />
+                                                        </TextBlock.Effect>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding PickerRgbText}" FontSize="10" Foreground="White"
+                                                               Opacity="0.85" HorizontalAlignment="Center" Margin="0,2,0,0">
+                                                        <TextBlock.Effect>
+                                                            <DropShadowEffect BlurRadius="4" Opacity="0.5" ShadowDepth="1" />
+                                                        </TextBlock.Effect>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <TextBlock Text="色调 Slider 位置" FontSize="13" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,10" />
+                                            <UniformGrid Columns="2" Margin="0,0,0,14">
+                                                <RadioButton Content="Bottom（默认）" IsChecked="True" Margin="0,0,4,4"
+                                                             Checked="BottomChecked" />
+                                                <RadioButton Content="Top" Margin="4,0,0,4" Checked="TopChecked" />
+                                                <RadioButton Content="Left" Margin="0,0,4,0" Checked="LeftChecked" />
+                                                <RadioButton Content="Right" Margin="4,0,0,0" Checked="RightChecked" />
+                                            </UniformGrid>
+
+                                            <TextBlock Text="应用示例" FontSize="13" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,10" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <Border Width="32" Height="32" CornerRadius="16" Background="{Binding SelectedBrush}" Margin="0,0,8,0" />
+                                                <Border Width="32" Height="32" CornerRadius="4" Background="{Binding SelectedBrush}" Margin="0,0,8,0" />
+                                                <Border Height="32" CornerRadius="4" Padding="12,0" Background="{Binding SelectedBrush}">
+                                                    <TextBlock Text="按钮" Foreground="White" VerticalAlignment="Center" FontSize="13" />
+                                                </Border>
+                                            </StackPanel>
+                                            <Border Height="4" CornerRadius="2" Background="{Binding SelectedBrush}" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:ColorDemoViewModel.XamlColorPicker}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. HSB 工具 ═══════════ -->
+                    <Border x:Name="Section_HSB" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. HSB 色彩工具" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="24" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0" Height="200" CornerRadius="12"
+                                                Background="{Binding PreviewBrush}">
+                                            <StackPanel VerticalAlignment="Bottom" Margin="16,0,16,16">
+                                                <TextBlock Text="{Binding HsbHexCode}" FontSize="18" FontWeight="Bold"
+                                                           Foreground="White" HorizontalAlignment="Center">
+                                                    <TextBlock.Effect>
+                                                        <DropShadowEffect BlurRadius="4" Opacity="0.6" ShadowDepth="1" />
+                                                    </TextBlock.Effect>
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding HsbText}" FontSize="10" Foreground="White"
+                                                           Opacity="0.85" HorizontalAlignment="Center" Margin="0,4,0,0">
+                                                    <TextBlock.Effect>
+                                                        <DropShadowEffect BlurRadius="4" Opacity="0.6" ShadowDepth="1" />
+                                                    </TextBlock.Effect>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <TextBlock Text="H — 色调（Hue）" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                            <Border Height="12" CornerRadius="3" Margin="0,0,0,4">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                        <GradientStop Color="#FF0000" Offset="0" />
+                                                        <GradientStop Color="#FFFF00" Offset="0.167" />
+                                                        <GradientStop Color="#00FF00" Offset="0.333" />
+                                                        <GradientStop Color="#00FFFF" Offset="0.5" />
+                                                        <GradientStop Color="#0000FF" Offset="0.667" />
+                                                        <GradientStop Color="#FF00FF" Offset="0.833" />
+                                                        <GradientStop Color="#FF0000" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+                                            <Slider Value="{Binding Hue}" Minimum="0" Maximum="360" Margin="0,0,0,14" />
+
+                                            <TextBlock Text="S — 饱和度（Saturation）" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                            <Border Height="12" CornerRadius="3" Margin="0,0,0,4">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                        <GradientStop Color="White" Offset="0" />
+                                                        <GradientStop Color="{Binding PreviewColor}" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+                                            <Slider Value="{Binding Saturation}" Minimum="0" Maximum="1" Margin="0,0,0,14" />
+
+                                            <TextBlock Text="B — 亮度（Brightness）" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                            <Border Height="12" CornerRadius="3" Margin="0,0,0,4">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                        <GradientStop Color="Black" Offset="0" />
+                                                        <GradientStop Color="{Binding PreviewColor}" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+                                            <Slider Value="{Binding Brightness}" Minimum="0" Maximum="1" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="HsbLinearGradientConverter — 色调渐变" FontSize="13" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                    <Border Height="40" CornerRadius="8" Margin="0,0,0,4"
+                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                        <Border.Background>
+                                            <Binding Path="HueGradient" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock Text="白色 → 当前色调满饱和度色（S=1, B=1）"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12" />
+
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8"
+                                            Padding="14,10" Margin="0,0,0,14">
+                                        <StackPanel>
+                                            <TextBlock Text="Color → Hsb 反向转换验证（ConvertBack）"
+                                                       FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Width="32" Height="32" CornerRadius="4"
+                                                        Background="{Binding PreviewBrush}" Margin="0,0,10,0" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding HsbHexCode, StringFormat='Color: {0}'}"
+                                                               FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}" />
+                                                    <TextBlock Text="{Binding RoundTripText}"
+                                                               FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Margin="0,3,0,0" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <controls:DemoCodeBlock CodeLanguage="C#"
+                                        Code="{x:Static vm:ColorDemoViewModel.XamlHsb}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 4. Material Design 调色板 ═══════════ -->
+                    <Border x:Name="Section_Palette" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="4. Material Design 调色板" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,14"
+                                               Text="19 种颜色 × 14 个色调层级（50/100/200/.../900 + A100/A200/A400/A700）= 266 个色值，通过 SwatchHelper 访问。" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="C#" Margin="0,0,0,14"
+                                        Code="{x:Static vm:ColorDemoViewModel.XamlPalette}" />
+
+                                    <ItemsControl ItemsSource="{Binding Swatches}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:SwatchItem}">
+                                                <Border Margin="0,0,0,12" CornerRadius="10"
+                                                        Background="{DynamicResource SecondaryRegionBrush}"
+                                                        Padding="12,10">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition Height="*" />
+                                                        </Grid.RowDefinitions>
+                                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                                                            <Border Width="36" Height="36" CornerRadius="6"
+                                                                    Background="{Binding SampleBrush}" VerticalAlignment="Center" />
+                                                            <StackPanel Margin="8,0,0,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                                                <TextBlock Text="{Binding SampleHex, StringFormat='500 · {0}'}"
+                                                                           FontSize="10" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                                           Margin="0,2,0,0" />
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                        <ItemsControl Grid.Row="1" ItemsSource="{Binding Hues}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate DataType="{x:Type vm:HueItem}">
+                                                                    <Border Width="48" Height="40" Margin="2" CornerRadius="4"
+                                                                            Background="{Binding Brush}" ToolTip="{Binding Hex}">
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                            <TextBlock Text="{Binding Label}" FontSize="7" TextAlignment="Center">
+                                                                                <TextBlock.Style>
+                                                                                    <Style TargetType="TextBlock">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding IsDarkText}" Value="True">
+                                                                                                <Setter Property="Foreground" Value="White" />
+                                                                                            </DataTrigger>
+                                                                                            <DataTrigger Binding="{Binding IsDarkText}" Value="False">
+                                                                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBlock.Style>
+                                                                            </TextBlock>
+                                                                            <TextBlock Text="{Binding Hex}" FontSize="6" TextAlignment="Center">
+                                                                                <TextBlock.Style>
+                                                                                    <Style TargetType="TextBlock">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding IsDarkText}" Value="True">
+                                                                                                <Setter Property="Foreground" Value="#D0FFFFFF" />
+                                                                                            </DataTrigger>
+                                                                                            <DataTrigger Binding="{Binding IsDarkText}" Value="False">
+                                                                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBlock.Style>
+                                                                            </TextBlock>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent" MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
