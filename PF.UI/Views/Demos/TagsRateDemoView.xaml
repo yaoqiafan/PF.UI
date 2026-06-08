@@ -223,7 +223,7 @@
                                         <pf:Rate Grid.Column="1" Count="10" AllowClear="False" />
                                     </Grid>
 
-                                    <Grid Margin="0,0,0,6">
+                                    <Grid Margin="0,0,0,14">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="160" />
                                             <ColumnDefinition Width="*" />
@@ -232,6 +232,33 @@
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                    VerticalAlignment="Center" />
                                         <pf:Rate Grid.Column="1" Count="5" ItemWidth="32" ItemHeight="32" />
+                                    </Grid>
+
+                                    <!-- Icon 自定义 + ShowText -->
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="爱心图标（LoveGeometry）" FontSize="12"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   VerticalAlignment="Center" TextWrapping="Wrap" />
+                                        <pf:Rate Grid.Column="1" Count="5" AllowHalf="True"
+                                                 Icon="{StaticResource LoveGeometry}"
+                                                 Foreground="{DynamicResource DangerBrush}"
+                                                 Value="3.5" />
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="ShowText=True（显示分数）" FontSize="12"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   VerticalAlignment="Center" TextWrapping="Wrap" />
+                                        <pf:Rate Grid.Column="1" Count="5" AllowHalf="True" ShowText="True"
+                                                 Value="{Binding RateValueHalf, Mode=TwoWay}" />
                                     </Grid>
 
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"

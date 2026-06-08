@@ -1,0 +1,270 @@
+<UserControl x:Class="PF.UI.Views.Demos.MediaDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="1200" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:MediaDemoViewModel, IsDesignTimeCreatable=False}"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Padding="24,20,24,16"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{DynamicResource RegionBrush}">
+            <StackPanel>
+                <TextBlock Text="封面展示控件" FontSize="20" FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="CoverView · CoverFlow · 图片滚动视图"
+                           FontSize="12" Margin="0,4,0,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="860">
+
+                    <!-- ═══════════ 1. CoverView ═══════════ -->
+                    <Border x:Name="Section_CoverView" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. CoverView — 封面分组视图" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="RegularItemsControl 子类。Groups=列数，ItemHeaderTemplate=封面图区，ItemTemplate=底部内容区，ItemContentHeight=内容区高度。" />
+
+                                    <pf:CoverView Groups="4" ItemWidth="150" ItemHeight="180"
+                                                  ItemContentHeight="70" ItemContentHeightFixed="True"
+                                                  ItemsSource="{Binding CoverItems}"
+                                                  BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                        <pf:CoverView.ItemHeaderTemplate>
+                                            <DataTemplate DataType="{x:Type vm:CoverItem}">
+                                                <!-- 封面图：彩色背景 + 大图标水印 + 标题叠加 -->
+                                                <Border Margin="2" CornerRadius="6,6,0,0"
+                                                        Background="{Binding Color}" ClipToBounds="True">
+                                                    <Grid>
+                                                        <pf:PackIcon Kind="{Binding Icon}"
+                                                                     Width="52" Height="52"
+                                                                     Foreground="White" Opacity="0.18"
+                                                                     HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Bottom"
+                                                                     Margin="0,0,6,4" />
+                                                        <TextBlock Text="{Binding Title}"
+                                                                   FontSize="12" FontWeight="Bold"
+                                                                   Foreground="White"
+                                                                   Margin="10,0,8,8"
+                                                                   VerticalAlignment="Bottom" />
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </pf:CoverView.ItemHeaderTemplate>
+                                        <pf:CoverView.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:CoverItem}">
+                                                <Border Padding="8,6" Margin="2,0,2,2"
+                                                        Background="{DynamicResource RegionBrush}"
+                                                        CornerRadius="0,0,6,6">
+                                                    <TextBlock Text="{Binding Subtitle}" FontSize="11"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               TextWrapping="Wrap" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </pf:CoverView.ItemTemplate>
+                                    </pf:CoverView>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:MediaDemoViewModel.XamlCoverView}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. CoverFlow ═══════════ -->
+                    <Border x:Name="Section_CoverFlow" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. CoverFlow — 3D 翻转流" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="Control 子类，3D 翻转展示效果。通过代码 Add(Uri)/AddRange() 添加内容，PageIndex 控制当前选中项，支持鼠标滚轮切换。" />
+
+                                    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                            CornerRadius="8" HorizontalAlignment="Left" Padding="4">
+                                        <pf:CoverFlow x:Name="DemoCoverFlow" Width="480" Height="260"
+                                                      BorderBrush="{DynamicResource BorderBrush}"
+                                                      BorderThickness="1" />
+                                    </Border>
+
+                                    <!-- 翻页控制 -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,4" VerticalAlignment="Center">
+                                        <Button x:Name="BtnPrevCover" Content="◀  上一项"
+                                                Style="{StaticResource ButtonDefault}"
+                                                Height="32" Padding="12,0"
+                                                Click="BtnPrevCover_Click" />
+                                        <TextBlock x:Name="TxtCoverIndex"
+                                                   Text="0 / 0"
+                                                   FontSize="12" FontFamily="Consolas"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   VerticalAlignment="Center" Margin="14,0" />
+                                        <Button x:Name="BtnNextCover" Content="下一项  ▶"
+                                                Style="{StaticResource ButtonDefault}"
+                                                Height="32" Padding="12,0"
+                                                Click="BtnNextCover_Click" />
+                                    </StackPanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:MediaDemoViewModel.XamlCoverFlow}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. 图片滚动视图 ═══════════ -->
+                    <Border x:Name="Section_ImageGallery" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. 图片滚动视图 — 横向画廊" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="横向 ScrollViewer + ItemsControl（Horizontal StackPanel），每张卡片有彩色封面 + 图标 + 文字叠加，可鼠标水平拖动/滚动浏览。" />
+
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                                  VerticalScrollBarVisibility="Disabled"
+                                                  PanningMode="HorizontalFirst"
+                                                  Margin="0,0,0,4">
+                                        <ItemsControl ItemsSource="{Binding GalleryItems}" Padding="2,6,2,10">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type vm:CoverItem}">
+                                                    <Border Width="130" Height="170" Margin="0,0,10,0"
+                                                            CornerRadius="10" ClipToBounds="True"
+                                                            Background="{Binding Color}">
+                                                        <Border.Effect>
+                                                            <DropShadowEffect BlurRadius="10" ShadowDepth="3"
+                                                                              Opacity="0.25" Color="#000000" />
+                                                        </Border.Effect>
+                                                        <Grid>
+                                                            <!-- 大图标水印 -->
+                                                            <pf:PackIcon Kind="{Binding Icon}"
+                                                                         Width="64" Height="64"
+                                                                         Foreground="White" Opacity="0.15"
+                                                                         HorizontalAlignment="Center"
+                                                                         VerticalAlignment="Center" />
+                                                            <!-- 底部渐变遮罩 -->
+                                                            <Border VerticalAlignment="Bottom" Height="60"
+                                                                    CornerRadius="0,0,10,10">
+                                                                <Border.Background>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                                        <GradientStop Color="#00000000" Offset="0" />
+                                                                        <GradientStop Color="#88000000" Offset="1" />
+                                                                    </LinearGradientBrush>
+                                                                </Border.Background>
+                                                            </Border>
+                                                            <!-- 标题 -->
+                                                            <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">
+                                                                <TextBlock Text="{Binding Title}"
+                                                                           FontWeight="Bold" FontSize="12"
+                                                                           Foreground="White" />
+                                                                <TextBlock Text="{Binding Subtitle}"
+                                                                           FontSize="10" Foreground="White"
+                                                                           Opacity="0.8" Margin="0,2,0,0" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,6,0,0"
+                                        Code="{x:Static vm:MediaDemoViewModel.XamlGallery}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent" MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

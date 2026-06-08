@@ -6,13 +6,13 @@ using PF.UI.ViewModels.Demos;
 
 namespace PF.UI.Views.Demos
 {
-    public partial class PanelsDemoView : UserControl
+    public partial class ImageViewerDemoView : UserControl
     {
         private Dictionary<string, FrameworkElement>? _anchors;
         private Dictionary<string, DemoTocItem>? _tocMap;
         private bool _navigating;
 
-        public PanelsDemoView()
+        public ImageViewerDemoView()
         {
             InitializeComponent();
             Loaded += OnLoaded;
@@ -21,30 +21,21 @@ namespace PF.UI.Views.Demos
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Loaded -= OnLoaded;
-
             _anchors = new Dictionary<string, FrameworkElement>
             {
-                ["FlexPanel"]           = Section_FlexPanel,
-                ["UniformSpacingPanel"] = Section_UniformSpacingPanel,
-                ["WaterfallPanel"]      = Section_WaterfallPanel,
-                ["CirclePanel"]         = Section_CirclePanel,
-                ["HoneycombPanel"]      = Section_HoneycombPanel,
-                ["SimpleStackPanel"]    = Section_SimpleStackPanel,
-                ["ElementGroup"]        = Section_ElementGroup,
-                ["RowCol"]              = Section_RowCol,
-                ["RelativePanel"]       = Section_RelativePanel,
-                ["AxleCanvas"]          = Section_AxleCanvas,
+                ["Basic"]     = Section_Basic,
+                ["NoToolBar"] = Section_NoToolBar,
+                ["MiniMap"]   = Section_MiniMap,
+                ["Tip"]       = Section_Tip,
             };
-
             _tocMap = new Dictionary<string, DemoTocItem>();
-            if (DataContext is PanelsDemoViewModel vm)
+            if (DataContext is ImageViewerDemoViewModel vm)
             {
                 foreach (var item in vm.TocItems)
                     _tocMap[item.Anchor] = item;
                 if (vm.TocItems.Count > 0)
                     vm.TocItems[0].IsActive = true;
             }
-
             UpdateActiveToc();
         }
 
@@ -56,40 +47,30 @@ namespace PF.UI.Views.Demos
                 _navigating = true;
                 target.BringIntoView();
                 SetActiveToc(toc.Anchor);
-
                 Dispatcher.BeginInvoke(new System.Action(() =>
-                {
-                    ContentScroll.ScrollToVerticalOffset(ContentScroll.VerticalOffset - 8);
-                    _navigating = false;
-                }), System.Windows.Threading.DispatcherPriority.Loaded);
+                { ContentScroll.ScrollToVerticalOffset(ContentScroll.VerticalOffset - 8); _navigating = false; }),
+                    System.Windows.Threading.DispatcherPriority.Loaded);
             }
         }
 
         private void ContentScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (_navigating || _anchors == null || DataContext is not PanelsDemoViewModel)
-                return;
+            if (_navigating || _anchors == null || DataContext is not ImageViewerDemoViewModel) return;
             UpdateActiveToc();
         }
 
         private void UpdateActiveToc()
         {
-            if (_anchors == null || DataContext is not PanelsDemoViewModel vm)
-                return;
-
+            if (_anchors == null || DataContext is not ImageViewerDemoViewModel) return;
             var scrollCenter = ContentScroll.VerticalOffset + ContentScroll.ViewportHeight * 0.3;
             string? bestAnchor = null;
-
             foreach (var kv in _anchors)
             {
-                var transform = kv.Value.TransformToVisual(ContentScroll.Content as UIElement);
-                var relY = transform.Transform(new Point(0, 0)).Y;
-                if (relY <= scrollCenter)
+                var t = kv.Value.TransformToVisual(ContentScroll.Content as UIElement);
+                if (t.Transform(new Point(0, 0)).Y <= scrollCenter)
                     bestAnchor = kv.Key;
             }
-
-            if (bestAnchor != null)
-                SetActiveToc(bestAnchor);
+            if (bestAnchor != null) SetActiveToc(bestAnchor);
         }
 
         private void SetActiveToc(string anchor)
@@ -97,8 +78,8 @@ namespace PF.UI.Views.Demos
             if (_tocMap == null) return;
             foreach (var kv in _tocMap)
                 kv.Value.IsActive = false;
-            if (_tocMap.TryGetValue(anchor, out var active))
-                active.IsActive = true;
+            if (_tocMap.TryGetValue(anchor, out var a))
+                a.IsActive = true;
         }
     }
 }

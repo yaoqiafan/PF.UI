@@ -72,9 +72,9 @@
                                     Padding="16,14" Margin="0,0,0,14"
                                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="静态方法 Growl.Success / Info / Warning / Danger / Ask"
-                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
-                                    <WrapPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="静态方法 Growl.Success / Info / Warning / Error / Ask，通过 Token 将通知路由到页面内指定 Panel（StackPanel 设置 pf:Growl.Token=&quot;demo-growl&quot;）。" />
+                                    <WrapPanel Margin="0,0,0,10">
                                         <Button Content="Success" Command="{Binding GrowlSuccessCommand}"
                                                 Style="{StaticResource ButtonSuccess}" Margin="0,0,10,8" />
                                         <Button Content="Info" Command="{Binding GrowlInfoCommand}"
@@ -86,7 +86,16 @@
                                         <Button Content="Ask 确认" Command="{Binding GrowlAskCommand}"
                                                 Style="{StaticResource ButtonDefault}" Margin="0,0,0,8" />
                                     </WrapPanel>
-                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,8,0,0"
+
+                                    <!-- 本地 Growl 面板，通知在此区域内显示 -->
+                                    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                            CornerRadius="6" Background="{DynamicResource SecondaryRegionBrush}"
+                                            MinHeight="60" Padding="4" Margin="0,0,0,10">
+                                        <StackPanel pf:Growl.Token="demo-growl"
+                                                    pf:Growl.ShowMode="Prepend" />
+                                    </Border>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,0"
                                         Code="{x:Static vm:GrowlNotificationViewModel.XamlGrowl}" />
                                 </StackPanel>
                             </Border>
@@ -122,23 +131,91 @@
                                     Padding="16,14" Margin="0,0,0,14"
                                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="附加属性方式：pf:Poptip.HitMode=Hover 鼠标悬停显示气泡"
-                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
+
+                                    <!-- HitMode 演示 -->
+                                    <TextBlock Text="HitMode — 触发方式" FontSize="13" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                    <WrapPanel Margin="0,0,0,12">
+                                        <Button Content="Hover 悬停" pf:Poptip.HitMode="Hover"
+                                                pf:Poptip.Content="HitMode=Hover" Margin="0,0,8,8" />
+                                        <Button Content="Click 点击" pf:Poptip.HitMode="Click"
+                                                pf:Poptip.Content="HitMode=Click（再次点击关闭）" Margin="0,0,8,8" />
+                                        <Button Content="Focus 聚焦" pf:Poptip.HitMode="Focus"
+                                                pf:Poptip.Content="HitMode=Focus（失焦关闭）" Margin="0,0,8,8" />
+                                        <ToggleButton x:Name="PoptipToggle" Content="None 手动控制" Margin="0,0,0,8"
+                                                      pf:Poptip.HitMode="None"
+                                                      pf:Poptip.IsOpen="{Binding IsChecked, ElementName=PoptipToggle}"
+                                                      pf:Poptip.Content="IsOpen 绑定 ToggleButton.IsChecked" />
+                                    </WrapPanel>
+
+                                    <!-- 12 方向展示 -->
+                                    <TextBlock Text="PlacementType — 12 方向定位" FontSize="13" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+                                    <Grid Width="360" HorizontalAlignment="Left" Margin="0,0,0,8">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <!-- 顶行 -->
+                                        <UniformGrid Grid.Row="0" Grid.Column="1" Columns="3" Margin="0,0,0,4">
+                                            <Button Content="TopLeft" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="TopLeft" pf:Poptip.Content="TopLeft" Margin="2" FontSize="10" />
+                                            <Button Content="Top" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="Top" pf:Poptip.Content="Top" Margin="2" FontSize="10" />
+                                            <Button Content="TopRight" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="TopRight" pf:Poptip.Content="TopRight" Margin="2" FontSize="10" />
+                                        </UniformGrid>
+                                        <!-- 左列 -->
+                                        <UniformGrid Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Rows="3" Margin="0,0,4,0">
+                                            <Button Content="LeftTop" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="LeftTop" pf:Poptip.Content="LeftTop" Margin="2" FontSize="10" />
+                                            <Button Content="Left" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="Left" pf:Poptip.Content="Left" Margin="2" FontSize="10" />
+                                            <Button Content="LeftBottom" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="LeftBottom" pf:Poptip.Content="LeftBottom" Margin="2" FontSize="10" />
+                                        </UniformGrid>
+                                        <!-- 中央 -->
+                                        <Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="1"
+                                                Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Margin="4">
+                                            <TextBlock Text="悬停周围按钮&#x0a;查看气泡方向" HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center" TextAlignment="Center" FontSize="11"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                        </Border>
+                                        <!-- 右列 -->
+                                        <UniformGrid Grid.Row="1" Grid.RowSpan="3" Grid.Column="2" Rows="3" Margin="4,0,0,0">
+                                            <Button Content="RightTop" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="RightTop" pf:Poptip.Content="RightTop" Margin="2" FontSize="10" />
+                                            <Button Content="Right" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="Right" pf:Poptip.Content="Right" Margin="2" FontSize="10" />
+                                            <Button Content="RightBottom" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="RightBottom" pf:Poptip.Content="RightBottom" Margin="2" FontSize="10" />
+                                        </UniformGrid>
+                                        <!-- 底行 -->
+                                        <UniformGrid Grid.Row="4" Grid.Column="1" Columns="3" Margin="0,4,0,0">
+                                            <Button Content="BottomLeft" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="BottomLeft" pf:Poptip.Content="BottomLeft" Margin="2" FontSize="10" />
+                                            <Button Content="Bottom" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="Bottom" pf:Poptip.Content="Bottom" Margin="2" FontSize="10" />
+                                            <Button Content="BottomRight" pf:Poptip.HitMode="Hover" pf:Poptip.Placement="BottomRight" pf:Poptip.Content="BottomRight" Margin="2" FontSize="10" />
+                                        </UniformGrid>
+                                    </Grid>
+
+                                    <!-- UIElement 内容 + Offset -->
+                                    <TextBlock Text="Content 为 UIElement · VerticalOffset / HorizontalOffset" FontSize="13" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,8,0,8" />
                                     <WrapPanel Margin="0,0,0,4">
-                                        <Button Content="悬停查看提示"
-                                                pf:Poptip.HitMode="Hover"
-                                                pf:Poptip.Content="这是气泡提示内容"
-                                                Margin="0,0,12,8" />
-                                        <Button Content="通过上方提示"
-                                                pf:Poptip.HitMode="Hover"
-                                                pf:Poptip.VerticalOffset="-60"
-                                                pf:Poptip.Content="这是上方的气泡"
-                                                Margin="0,0,12,8" />
-                                        <Button Content="较长提示内容"
-                                                pf:Poptip.HitMode="Hover"
-                                                pf:Poptip.Content="这是一段较长的气泡提示文字，用于演示多行内容显示效果。"
+                                        <Button Content="图标气泡" pf:Poptip.HitMode="Hover" Margin="0,0,8,8"
+                                                pf:Poptip.Placement="Top">
+                                            <pf:Poptip.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <pf:PackIcon Kind="CheckCircle" Width="16" Height="16"
+                                                                 Foreground="{DynamicResource SuccessBrush}" Margin="0,0,6,0" />
+                                                    <TextBlock Text="Content 可以是任意 UIElement" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </pf:Poptip.Content>
+                                        </Button>
+                                        <Button Content="偏移 +40px" pf:Poptip.HitMode="Hover"
+                                                pf:Poptip.Content="HorizontalOffset=40" pf:Poptip.HorizontalOffset="40"
                                                 Margin="0,0,0,8" />
                                     </WrapPanel>
+
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,8,0,0"
                                         Code="{x:Static vm:GrowlNotificationViewModel.XamlPoptip}" />
                                 </StackPanel>

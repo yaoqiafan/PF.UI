@@ -1,14 +1,38 @@
+using System;
 using System.Windows;
 using PF.UI.Views;
 using PF.UI.Views.Demos;
 using PF.UI.Views.Dialogs;
 using PF.UI.ViewModels.Dialogs;
+using PF.UI.Shared.Data;
+using PF.UI.Shared.Tools;
 using Prism.Ioc;
 
 namespace PF.UI
 {
     public partial class App
     {
+        /// <summary>
+        /// 动态切换皮肤资源字典。
+        /// </summary>
+        internal void UpdateSkin(string str = "Default")
+        {
+            if (Enum.TryParse<SkinType>(str, out SkinType skin))
+            {
+                var skins0 = Resources.MergedDictionaries[0];
+                skins0.MergedDictionaries.Clear();
+                skins0.MergedDictionaries.Add(ResourceHelper.GetSkin(skin));
+
+                var skins1 = Resources.MergedDictionaries[1];
+                skins1.MergedDictionaries.Clear();
+                skins1.MergedDictionaries.Add(new ResourceDictionary
+                {
+                    Source = new Uri("pack://application:,,,/PF.UI.Resources;component/Themes/Default.xaml")
+                });
+
+                Current.MainWindow?.OnApplyTemplate();
+            }
+        }
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
@@ -41,6 +65,7 @@ namespace PF.UI
 
             // 数据
             containerRegistry.RegisterForNavigation<DataDemoView>();
+            containerRegistry.RegisterForNavigation<MediaDemoView>();
 
             // 布局
             containerRegistry.RegisterForNavigation<PanelsDemoView>();
@@ -52,6 +77,9 @@ namespace PF.UI
             containerRegistry.RegisterForNavigation<GrowlNotificationView>();
             containerRegistry.RegisterForNavigation<StatusIndicatorView>();
             containerRegistry.RegisterForNavigation<ProgressLoadingView>();
+
+            // 文字效果
+            containerRegistry.RegisterForNavigation<TextEffectsDemoView>();
 
             // 动画
             containerRegistry.RegisterForNavigation<AnimationDemoView>();
@@ -76,6 +104,13 @@ namespace PF.UI
 
             // 窗口
             containerRegistry.RegisterForNavigation<WindowsDemoView>();
+            containerRegistry.RegisterForNavigation<SplashDemoView>();
+
+            // 图像
+            containerRegistry.RegisterForNavigation<ImageViewerDemoView>();
+
+            // 杂项控件
+            containerRegistry.RegisterForNavigation<MiscDemoView>();
         }
     }
 }

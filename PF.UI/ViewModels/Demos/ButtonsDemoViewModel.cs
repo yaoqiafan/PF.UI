@@ -354,6 +354,19 @@ namespace PF.UI.ViewModels.Demos
     </pf:ContextMenuButton.Menu>
 </pf:ContextMenuButton>";
 
+        public const string XamlContextMenuToggle = @"<!-- ContextMenuToggleButton — ToggleButton + 右键菜单 -->
+<!-- IsChecked=True 时展开菜单，False 时关闭菜单 -->
+<pf:ContextMenuToggleButton Content=""切换菜单 ▼"">
+    <pf:ContextMenuToggleButton.Menu>
+        <ContextMenu>
+            <MenuItem Header=""操作 A"" />
+            <MenuItem Header=""操作 B"" />
+            <Separator />
+            <MenuItem Header=""取消"" />
+        </ContextMenu>
+    </pf:ContextMenuToggleButton.Menu>
+</pf:ContextMenuToggleButton>";
+
         public const string XamlRepeatIcon = @"<!-- RepeatButtonIcon — 图标长按（支持 Content 或 IconElement.Geometry）-->
 <RepeatButton Style=""{StaticResource RepeatButtonIcon}""
               Delay=""500"" Interval=""100""

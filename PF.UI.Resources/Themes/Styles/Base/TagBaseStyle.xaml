@@ -14,7 +14,7 @@ xmlns:pfcontrol="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Height" Value="{StaticResource DefaultControlHeight}"/>
         <Setter Property="pfcontrol:TitleElement.Foreground" Value="{DynamicResource TextIconBrush}"/>
-        <Setter Property="ShowCloseButton" Value="{Binding Path=(pfcontrol:TagContainer.ShowCloseButton), RelativeSource={RelativeSource AncestorType=pfcontrol:TagContainer}}" />
+        <Setter Property="ShowCloseButton" Value="{Binding Path=(pfcontrol:TagContainer.ShowCloseButton), RelativeSource={RelativeSource Self}}" />
         <Setter Property="FocusVisualStyle">
             <Setter.Value>
                 <Style>

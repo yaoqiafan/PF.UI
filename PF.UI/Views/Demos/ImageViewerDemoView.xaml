@@ -1,0 +1,256 @@
+<UserControl x:Class="PF.UI.Views.Demos.ImageViewerDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="1400" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:ImageViewerDemoViewModel, IsDesignTimeCreatable=False}"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Padding="24,20,24,16"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{DynamicResource RegionBrush}">
+            <StackPanel>
+                <TextBlock Text="图片浏览器" FontSize="20" FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="ImageViewer · 缩放 · 旋转 · 拖拽 · 缩略图导航"
+                           FontSize="12" Margin="0,4,0,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
+
+                    <!-- 文件选择 -->
+                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8"
+                            Padding="14,10" Margin="0,0,0,20"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="选择图片..."
+                                    Command="{Binding BrowseCommand}"
+                                    Style="{StaticResource ButtonPrimary}"
+                                    Padding="14,6" />
+                            <TextBlock VerticalAlignment="Center" FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Text="{Binding ImageUri, TargetNullValue='未选择图片 — 点击右侧按钮加载本地图片文件'}" />
+                        </DockPanel>
+                    </Border>
+
+                    <!-- ═══════════ 1. 基础用法 ═══════════ -->
+                    <Border x:Name="Section_Basic" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. 基础用法 — Uri 绑定 + 工具栏" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="鼠标悬停底部显示工具栏：缩小 / 比例 / 放大 / 1:1 / 左转 / 右转 / 保存 / 用系统程序打开。滚轮缩放，左键拖拽平移（图片大于容器时）。" />
+
+                                    <pf:ImageViewer Uri="{Binding ImageUri}"
+                                                    Height="380"
+                                                    ShowToolBar="True"
+                                                    Margin="0,0,0,14" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,4,0,0"
+                                        Code="{x:Static vm:ImageViewerDemoViewModel.XamlBasic}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. 隐藏工具栏 ═══════════ -->
+                    <Border x:Name="Section_NoToolBar" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. 隐藏工具栏 — ShowToolBar=False" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="设置 ShowToolBar=False 隐藏底部操作栏，仅保留滚轮缩放与拖拽交互。适合嵌入到面板中作纯查看区域。" />
+
+                                    <pf:ImageViewer Uri="{Binding ImageUri}"
+                                                    Height="280"
+                                                    ShowToolBar="False"
+                                                    Margin="0,0,0,14" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,4,0,0"
+                                        Code="{x:Static vm:ImageViewerDemoViewModel.XamlNoToolBar}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. 缩略图导航 ═══════════ -->
+                    <Border x:Name="Section_MiniMap" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. 缩略图导航 — ShowImgMap=True" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="ShowImgMap=True 且图片放大超出容器后，右下角出现缩略图面板，白框表示当前可视区域。可在缩略图上拖动白框来平移主图。" />
+
+                                    <pf:ImageViewer Uri="{Binding ImageUri}"
+                                                    Height="380"
+                                                    ShowImgMap="True"
+                                                    ShowToolBar="True"
+                                                    Margin="0,0,0,14" />
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,4,0,0"
+                                        Code="{x:Static vm:ImageViewerDemoViewModel.XamlMiniMap}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 4. 自定义叠层内容 ═══════════ -->
+                    <Border x:Name="Section_Tip" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="4. 叠层内容 — TipElement 附加属性" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="通过 pf:TipElement.Content 设置叠层内容，pf:TipElement.Placement 控制位置（12个方向），pf:TipElement.Visibility 控制显隐。纯文本内容自动使用半透明背景 + 主题文字颜色；也可传入任意 UIElement 自定义样式。" />
+
+                                    <!-- 纯文本叠层示例 -->
+                                    <TextBlock Text="纯文本叠层（各位置）" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <WrapPanel Margin="0,0,0,14">
+                                        <pf:ImageViewer Uri="{Binding ImageUri}" Height="180" Width="240"
+                                                        Margin="0,0,12,8"
+                                                        pf:TipElement.Content="左上角标题"
+                                                        pf:TipElement.Placement="LeftTop"
+                                                        pf:TipElement.Visibility="Visible" />
+                                        <pf:ImageViewer Uri="{Binding ImageUri}" Height="180" Width="240"
+                                                        Margin="0,0,12,8"
+                                                        pf:TipElement.Content="底部居中说明文字"
+                                                        pf:TipElement.Placement="Bottom"
+                                                        pf:TipElement.Visibility="Visible" />
+                                        <pf:ImageViewer Uri="{Binding ImageUri}" Height="180" Width="240"
+                                                        Margin="0,0,0,8"
+                                                        pf:TipElement.Content="右下角水印"
+                                                        pf:TipElement.Placement="BottomRight"
+                                                        pf:TipElement.Visibility="Visible" />
+                                    </WrapPanel>
+
+                                    <!-- 自定义 UIElement 叠层示例 -->
+                                    <TextBlock Text="自定义 UIElement 叠层" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <pf:ImageViewer Uri="{Binding ImageUri}" Height="260"
+                                                    Margin="0,0,0,14"
+                                                    pf:TipElement.Placement="TopRight"
+                                                    pf:TipElement.Visibility="Visible">
+                                        <pf:TipElement.Content>
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <pf:PackIcon Kind="ImageOutline" Width="14" Height="14"
+                                                                 Foreground="{DynamicResource TextIconBrush}"
+                                                                 VerticalAlignment="Center" Margin="0,0,4,0" />
+                                                    <TextBlock Text="PF.UI 图片查看器" FontSize="12" FontWeight="Bold"
+                                                               Foreground="{DynamicResource TextIconBrush}" />
+                                                </StackPanel>
+                                                <TextBlock Text="支持缩放 · 旋转 · 拖拽" FontSize="10"
+                                                           Foreground="{DynamicResource TextIconBrush}" Opacity="0.75" />
+                                            </StackPanel>
+                                        </pf:TipElement.Content>
+                                    </pf:ImageViewer>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,4,0,0"
+                                        Code="{x:Static vm:ImageViewerDemoViewModel.XamlTip}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent" MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

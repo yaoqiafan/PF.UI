@@ -15,6 +15,7 @@ namespace PF.UI.ViewModels.Demos
             new DemoTocItem { Anchor = "SearchComboBox", Title = "SearchComboBox",     Sub = "实时过滤下拉" },
             new DemoTocItem { Anchor = "AutoComplete",   Title = "AutoCompleteTextBox", Sub = "输入建议列表" },
             new DemoTocItem { Anchor = "NumericUpDown",  Title = "NumericUpDown",      Sub = "步长 / 最值 / 格式字符串" },
+            new DemoTocItem { Anchor = "ImageSelector", Title = "ImageSelector",      Sub = "图片选择 / 圆形 / 虚线框" },
         };
 
         private string _lastInputResult = "在下方控件中操作，这里将显示交互结果...";
@@ -154,5 +155,23 @@ namespace PF.UI.ViewModels.Demos
 <!-- 隐藏上下按钮 -->
 <pf:NumericUpDown ShowUpDownButton=""False""
                   Value=""0"" Minimum=""-100"" Maximum=""100"" />";
+
+        public const string XamlImageSelector = @"<!-- ImageSelector — 点击选择图片 -->
+<pf:ImageSelector Width=""100"" Height=""100"" />
+
+<!-- 圆形头像（CornerRadius=50）-->
+<pf:ImageSelector Width=""100"" Height=""100""
+                  pf:BorderElement.CornerRadius=""50"" />
+
+<!-- 虚线框（StrokeDashArray + BorderBrush + StrokeThickness）-->
+<pf:ImageSelector Width=""100"" Height=""100""
+                  pf:BorderElement.CornerRadius=""50""
+                  StrokeDashArray=""10,5""
+                  BorderBrush=""{DynamicResource PrimaryBrush}""
+                  StrokeThickness=""2"" />
+
+<!-- 限制文件类型 -->
+<pf:ImageSelector DefaultExt="".png""
+                  Filter=""图片文件|*.png;*.jpg;*.bmp|所有文件|*.*"" />";
     }
 }

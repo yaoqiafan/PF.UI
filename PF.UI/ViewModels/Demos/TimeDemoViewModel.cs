@@ -12,6 +12,7 @@ namespace PF.UI.ViewModels.Demos
             new DemoTocItem { Anchor = "Clock",         Title = "Clock",         Sub = "圆形 / 列表时钟" },
             new DemoTocItem { Anchor = "Pickers",       Title = "Pickers",       Sub = "TimePicker · DateTimePicker" },
             new DemoTocItem { Anchor = "DateTimeRange", Title = "范围选择",      Sub = "DateTimeSelector · CalendarWithClock" },
+            new DemoTocItem { Anchor = "ListClock",     Title = "ListClock 对比", Sub = "CalendarWithListClock" },
         };
 
         private string _lastResult = "与下方控件交互查看效果...";
@@ -103,8 +104,17 @@ namespace PF.UI.ViewModels.Demos
     StartTime=""{Binding StartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}""
     EndTime=""{Binding EndTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"" />
 
-<!-- CalendarWithClock — 日历 + 时钟组合面板 -->
+<!-- CalendarWithClock — 日历 + 圆形时钟组合面板 -->
 <pf:CalendarWithClock ShowConfirmButton=""True""
                       SelectedDateTime=""{Binding PickerDateTime, Mode=TwoWay}"" />";
+
+        public const string XamlListClock = @"<!-- CalendarWithListClock — 日历 + 列表式时钟（更紧凑，适合小屏）-->
+<pf:CalendarWithListClock ShowConfirmButton=""True""
+                          SelectedDateTime=""{Binding PickerDateTime, Mode=TwoWay}"" />
+
+<!-- 与 CalendarWithClock 的区别：
+     CalendarWithClock    → 圆形表盘（Clock），视觉直观但占用空间较大
+     CalendarWithListClock → 列表滚动（ListClock），紧凑，适合窄面板
+     两者均支持 ShowConfirmButton、SelectedDateTime、DateTimeFormat 属性 -->";
     }
 }

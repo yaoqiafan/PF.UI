@@ -27,6 +27,7 @@ namespace PF.UI.Views.Demos
                 ["Clock"]         = Section_Clock,
                 ["Pickers"]       = Section_Pickers,
                 ["DateTimeRange"] = Section_DateTimeRange,
+                ["ListClock"]     = Section_ListClock,
             };
             _tocMap = new Dictionary<string, DemoTocItem>();
             if (DataContext is TimeDemoViewModel vm)

@@ -15,6 +15,8 @@ namespace PF.UI.ViewModels.Demos
             new DemoTocItem { Anchor = "SimpleStackPanel",    Title = "SimpleStackPanel",    Sub = "轻量 StackPanel" },
             new DemoTocItem { Anchor = "ElementGroup",        Title = "ElementGroup",        Sub = "Stack / Uniform 分组" },
             new DemoTocItem { Anchor = "RowCol",              Title = "Row / Col",           Sub = "24 列网格 / ClipGrid" },
+            new DemoTocItem { Anchor = "RelativePanel",       Title = "RelativePanel",       Sub = "相对定位面板" },
+            new DemoTocItem { Anchor = "AxleCanvas",          Title = "AxleCanvas",          Sub = "轴向自动居中画布" },
         };
 
         // ===== 代码示例 =====
@@ -158,5 +160,50 @@ namespace PF.UI.ViewModels.Demos
 <pf:ClipGrid IsClipEnabled=""True"">
     <Image Source=""..."" />
 </pf:ClipGrid>";
+
+        public const string XamlRelativePanel = @"<!-- RelativePanel — 以相对其他元素或面板边缘定位子元素 -->
+<pf:RelativePanel>
+    <!-- A: 与面板左上角对齐 -->
+    <Border x:Name=""A""
+            pf:RelativePanel.AlignLeftWithPanel=""True""
+            pf:RelativePanel.AlignTopWithPanel=""True"" />
+
+    <!-- B: 在 A 的右侧，与 A 顶部对齐 -->
+    <Border x:Name=""B""
+            pf:RelativePanel.RightOf=""A""
+            pf:RelativePanel.AlignTopWith=""A"" />
+
+    <!-- C: 在 A 的下方，与 A 左侧对齐 -->
+    <Border x:Name=""C""
+            pf:RelativePanel.AlignLeftWith=""A""
+            pf:RelativePanel.Below=""A"" />
+
+    <!-- D: 与面板右下角对齐 -->
+    <Border pf:RelativePanel.AlignRightWithPanel=""True""
+            pf:RelativePanel.AlignBottomWithPanel=""True"" />
+
+    <!-- E: 面板水平+垂直居中 -->
+    <Border pf:RelativePanel.AlignHorizontalCenterWithPanel=""True""
+            pf:RelativePanel.AlignVerticalCenterWithPanel=""True"" />
+</pf:RelativePanel>
+
+<!-- 全部附加属性：
+     AlignLeftWithPanel / AlignRightWithPanel / AlignTopWithPanel / AlignBottomWithPanel
+     AlignHorizontalCenterWithPanel / AlignVerticalCenterWithPanel
+     AlignLeftWith={elem} / AlignRightWith={elem} / AlignTopWith={elem} / AlignBottomWith={elem}
+     LeftOf={elem} / RightOf={elem} / Above={elem} / Below={elem} -->";
+
+        public const string XamlAxleCanvas = @"<!-- AxleCanvas — 轴向自动居中画布（Canvas 子类）-->
+<!-- Orientation=Horizontal：子元素在 X 轴方向自动居中，Top/Bottom 控制 Y 偏移 -->
+<pf:AxleCanvas Orientation=""Horizontal"" Height=""120"">
+    <Border Width=""80"" Height=""80"" Canvas.Top=""0"" />    <!-- 贴顶 -->
+    <Border Width=""80"" Height=""80"" Canvas.Bottom=""0"" /> <!-- 贴底 -->
+</pf:AxleCanvas>
+
+<!-- Orientation=Vertical：子元素在 Y 轴方向自动居中，Left/Right 控制 X 偏移 -->
+<pf:AxleCanvas Orientation=""Vertical"" Width=""120"">
+    <Border Width=""80"" Height=""60"" Canvas.Left=""0"" />   <!-- 贴左 -->
+    <Border Width=""80"" Height=""60"" Canvas.Right=""0"" />  <!-- 贴右 -->
+</pf:AxleCanvas>";
     }
 }

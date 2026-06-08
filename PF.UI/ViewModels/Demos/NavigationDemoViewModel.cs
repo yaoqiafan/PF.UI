@@ -65,6 +65,20 @@ namespace PF.UI.ViewModels.Demos
             set => SetProperty(ref _drawerPushOpen, value);
         }
 
+        private bool _drawerBottomOpen;
+        public bool DrawerBottomOpen
+        {
+            get => _drawerBottomOpen;
+            set => SetProperty(ref _drawerBottomOpen, value);
+        }
+
+        private bool _drawerPressOpen;
+        public bool DrawerPressOpen
+        {
+            get => _drawerPressOpen;
+            set => SetProperty(ref _drawerPressOpen, value);
+        }
+
         public NavigationDemoViewModel()
         {
             NextStepCommand  = new DelegateCommand(() => { if (StepIndex  < 3) StepIndex++;  });

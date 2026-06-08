@@ -30,6 +30,7 @@ namespace PF.UI.Views.Demos
                 ["SearchComboBox"] = Section_SearchComboBox,
                 ["AutoComplete"]   = Section_AutoComplete,
                 ["NumericUpDown"]  = Section_NumericUpDown,
+                ["ImageSelector"]  = Section_ImageSelector,
             };
 
             _tocMap = new Dictionary<string, DemoTocItem>();

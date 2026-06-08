@@ -172,12 +172,31 @@
                                                   CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
                                                   Margin="0,0,0,12" />
 
-                                    <TextBlock Text="扩展样式（带标题）" FontSize="11" FontWeight="SemiBold"
+                                    <TextBlock Text="扩展样式 · TitlePlacement=Top（上方标题）" FontSize="11" FontWeight="SemiBold"
                                                Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
                                     <pf:SearchBar Style="{StaticResource SearchBarExtend}"
                                                   pf:TitleElement.Title="搜索"
                                                   pf:TitleElement.TitlePlacement="Top"
                                                   pf:InfoElement.Placeholder="关键字..."
+                                                  Command="{Binding SearchCommand}"
+                                                  CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
+                                                  Margin="0,0,0,12" />
+
+                                    <TextBlock Text="扩展样式 · TitlePlacement=Left（左侧标题）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:SearchBar Style="{StaticResource SearchBarExtend}"
+                                                  pf:TitleElement.Title="搜索"
+                                                  pf:TitleElement.TitlePlacement="Left"
+                                                  pf:TitleElement.TitleWidth="56"
+                                                  pf:InfoElement.Placeholder="横向标题布局..."
+                                                  Command="{Binding SearchCommand}"
+                                                  CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
+                                                  Margin="0,0,0,12" />
+
+                                    <TextBlock Text="小号变体（SearchBar.Small）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:SearchBar Style="{StaticResource SearchBar.Small}"
+                                                  pf:InfoElement.Placeholder="小号搜索框..."
                                                   Command="{Binding SearchCommand}"
                                                   CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
                                                   Margin="0,0,0,4" />

@@ -301,6 +301,58 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- ═══════════ 6. PropertyGrid ═══════════ -->
+                    <Border x:Name="Section_PropertyGrid" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="6. PropertyGrid" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="PropertyGrid 通过反射读取 SelectedObject 的所有可浏览属性，自动匹配 Editor。可用 [Category] / [DisplayName] / [ReadOnly] / [Browsable] 标注控制显示。" />
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="24" />
+                                            <ColumnDefinition Width="240" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- PropertyGrid 主体 -->
+                                        <pf:PropertyGrid Grid.Column="0"
+                                                         SelectedObject="{Binding DemoObject}"
+                                                         ShowSortButton="True"
+                                                         Height="340"
+                                                         BorderBrush="{DynamicResource BorderBrush}"
+                                                         BorderThickness="1" />
+
+                                        <!-- 右侧说明 -->
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                                            <TextBlock Text="已演示属性类型" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,10" />
+                                            <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="10,8">
+                                                <StackPanel>
+                                                    <TextBlock FontFamily="Consolas" FontSize="11" LineHeight="22"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Text="string  → TextBox&#x0a;bool    → CheckBox&#x0a;int     → NumericUpDown&#x0a;double  → NumericUpDown&#x0a;Enum    → ComboBox&#x0a;&#x0a;[ReadOnly(true)] → 只读&#x0a;[Browsable(false)] → 隐藏&#x0a;[Category(&quot;...&quot;)] → 分组&#x0a;[DisplayName] → 显示名" />
+                                                </StackPanel>
+                                            </Border>
+                                            <TextBlock Text="ShowSortButton=True" FontSize="11" FontFamily="Consolas"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,10,0,4" />
+                                            <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" TextWrapping="Wrap"
+                                                       Text="点击表头排序图标可在&quot;按分类&quot;和&quot;按字母&quot;两种视图间切换" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <controls:DemoCodeBlock CodeLanguage="C#" Margin="0,14,0,0"
+                                        Code="{x:Static vm:DataDemoViewModel.XamlPropertyGrid}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
                 </StackPanel>
             </ScrollViewer>
 

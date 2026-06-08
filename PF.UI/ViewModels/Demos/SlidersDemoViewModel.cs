@@ -89,10 +89,20 @@ namespace PF.UI.ViewModels.Demos
                 TickFrequency=""10"" TickPlacement=""BottomRight""
                 IsSnapToTickEnabled=""True"" />
 
-<!-- 垂直方向 -->
+<!-- TipElement 附加属性 — 拖动时显示浮动数值气泡 -->
+<pf:RangeSlider Minimum=""0"" Maximum=""100""
+                ValueStart=""20"" ValueEnd=""60""
+                pf:TipElement.Visibility=""Visible""
+                pf:TipElement.Placement=""Top""
+                pf:TipElement.StringFormat=""#0"" />
+
+<!-- 垂直方向 + TipElement -->
 <pf:RangeSlider Orientation=""Vertical"" Height=""120""
                 Minimum=""0"" Maximum=""100""
-                ValueStart=""25"" ValueEnd=""75"" />";
+                ValueStart=""25"" ValueEnd=""75""
+                pf:TipElement.Visibility=""Visible""
+                pf:TipElement.Placement=""Right""
+                pf:TipElement.StringFormat=""#0.0"" />";
 
         public const string XamlPreviewSlider = @"<!-- PreviewSlider — 鼠标悬停时在 Thumb 上方显示浮动气泡 -->
 <pf:PreviewSlider Minimum=""0"" Maximum=""100"" Value=""50"">

@@ -27,4 +27,10 @@ public class TipElement
 
     public static string GetStringFormat(DependencyObject element)
         => (string) element.GetValue(StringFormatProperty);
+
+    public static readonly DependencyProperty ContentProperty = DependencyProperty.RegisterAttached(
+        "Content", typeof(object), typeof(TipElement), new PropertyMetadata(default(object)));
+
+    public static void SetContent(DependencyObject element, object value) => element.SetValue(ContentProperty, value);
+    public static object GetContent(DependencyObject element) => element.GetValue(ContentProperty);
 }

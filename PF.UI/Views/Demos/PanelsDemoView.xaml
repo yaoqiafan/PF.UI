@@ -35,7 +35,7 @@
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="布局面板 Panels" FontSize="20" FontWeight="Bold"
                            Foreground="{DynamicResource PrimaryTextBrush}" />
-                <TextBlock Text="FlexPanel · UniformSpacingPanel · WaterfallPanel · CirclePanel · HoneycombPanel · SimpleStackPanel · ElementGroup · Row/Col"
+                <TextBlock Text="FlexPanel · UniformSpacingPanel · WaterfallPanel · CirclePanel · HoneycombPanel · SimpleStackPanel · ElementGroup · Row/Col · RelativePanel · AxleCanvas"
                            FontSize="12" Margin="0,4,0,0"
                            Foreground="{DynamicResource SecondaryTextBrush}" />
             </StackPanel>
@@ -389,6 +389,160 @@
 
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
                                         Code="{x:Static vm:PanelsDemoViewModel.XamlRowCol}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ RelativePanel ═══════════ -->
+                    <Border x:Name="Section_RelativePanel" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="9. RelativePanel" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="RelativePanel — 以相对其他元素或面板边缘定位子元素。附加属性前缀 pf:RelativePanel.*" />
+
+                                    <pf:RelativePanel Height="200" Background="{DynamicResource SecondaryRegionBrush}"
+                                                      Margin="0,0,0,14">
+                                        <!-- 左上角对齐面板 -->
+                                        <Border x:Name="RP_A" Width="80" Height="40" CornerRadius="6"
+                                                Background="{DynamicResource PrimaryBrush}"
+                                                pf:RelativePanel.AlignLeftWithPanel="True"
+                                                pf:RelativePanel.AlignTopWithPanel="True"
+                                                Margin="8">
+                                            <TextBlock Text="A (左上)" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="11" />
+                                        </Border>
+
+                                        <!-- 在 A 的右侧 -->
+                                        <Border x:Name="RP_B" Width="80" Height="40" CornerRadius="6"
+                                                Background="{DynamicResource SuccessBrush}"
+                                                pf:RelativePanel.RightOf="RP_A"
+                                                pf:RelativePanel.AlignTopWith="RP_A"
+                                                Margin="8,8,0,0">
+                                            <TextBlock Text="B (A右)" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="11" />
+                                        </Border>
+
+                                        <!-- 在 A 的下方 -->
+                                        <Border x:Name="RP_C" Width="80" Height="40" CornerRadius="6"
+                                                Background="{DynamicResource WarningBrush}"
+                                                pf:RelativePanel.AlignLeftWith="RP_A"
+                                                pf:RelativePanel.Below="RP_A"
+                                                Margin="8,8,0,0">
+                                            <TextBlock Text="C (A下)" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="11" />
+                                        </Border>
+
+                                        <!-- 右下角对齐面板 -->
+                                        <Border Width="100" Height="40" CornerRadius="6"
+                                                Background="{DynamicResource DangerBrush}"
+                                                pf:RelativePanel.AlignRightWithPanel="True"
+                                                pf:RelativePanel.AlignBottomWithPanel="True"
+                                                Margin="8">
+                                            <TextBlock Text="D (右下)" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="11" />
+                                        </Border>
+
+                                        <!-- 面板中央 -->
+                                        <Border Width="80" Height="40" CornerRadius="6"
+                                                Background="{DynamicResource InfoBrush}"
+                                                pf:RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                                pf:RelativePanel.AlignVerticalCenterWithPanel="True">
+                                            <TextBlock Text="E (居中)" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="11" />
+                                        </Border>
+                                    </pf:RelativePanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,0"
+                                        Code="{x:Static vm:PanelsDemoViewModel.XamlRelativePanel}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 10. AxleCanvas ═══════════ -->
+                    <Border x:Name="Section_AxleCanvas" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="10. AxleCanvas — 轴向自动居中画布" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="Canvas 子类。Orientation=Horizontal：子元素在 Y 轴上自动居中，Canvas.Top/Bottom 控制偏移；Orientation=Vertical：子元素在 X 轴上自动居中，Canvas.Left/Right 控制偏移。" />
+
+                                    <!-- Horizontal 模式 -->
+                                    <TextBlock Text="Orientation=Horizontal（Y 轴自动居中，Top/Bottom 偏移）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6"
+                                            Padding="0" Margin="0,0,0,14" Height="130">
+                                        <pf:AxleCanvas Orientation="Horizontal">
+                                            <!-- 贴顶（Canvas.Top=8） -->
+                                            <Border Width="80" Height="50" CornerRadius="6" Margin="8,0,0,0"
+                                                    Background="{DynamicResource PrimaryBrush}"
+                                                    Canvas.Top="8">
+                                                <TextBlock Text="Top=8" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                                            </Border>
+                                            <!-- 自动居中（无偏移） -->
+                                            <Border Width="80" Height="50" CornerRadius="6" Margin="12,0,0,0"
+                                                    Background="{DynamicResource SuccessBrush}">
+                                                <TextBlock Text="居中" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                                            </Border>
+                                            <!-- 贴底（Canvas.Bottom=8） -->
+                                            <Border Width="80" Height="50" CornerRadius="6" Margin="12,0,0,0"
+                                                    Background="{DynamicResource WarningBrush}"
+                                                    Canvas.Bottom="8">
+                                                <TextBlock Text="Bottom=8" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                                            </Border>
+                                            <!-- 高度不同：自动居中 -->
+                                            <Border Width="80" Height="80" CornerRadius="6" Margin="12,0,0,0"
+                                                    Background="{DynamicResource InfoBrush}">
+                                                <TextBlock Text="H=80&#x0a;居中" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" TextAlignment="Center" />
+                                            </Border>
+                                        </pf:AxleCanvas>
+                                    </Border>
+
+                                    <!-- Vertical 模式 -->
+                                    <TextBlock Text="Orientation=Vertical（X 轴自动居中，Left/Right 偏移）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6"
+                                            Padding="0" Margin="0,0,0,4" Width="280" HorizontalAlignment="Left">
+                                        <pf:AxleCanvas Orientation="Vertical">
+                                            <!-- 贴左（Canvas.Left=8） -->
+                                            <Border Width="80" Height="46" CornerRadius="6" Margin="0,8,0,0"
+                                                    Background="{DynamicResource DangerBrush}"
+                                                    Canvas.Left="8">
+                                                <TextBlock Text="Left=8" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                                            </Border>
+                                            <!-- 自动居中 -->
+                                            <Border Width="80" Height="46" CornerRadius="6" Margin="0,10,0,0"
+                                                    Background="{DynamicResource PrimaryBrush}">
+                                                <TextBlock Text="居中" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                                            </Border>
+                                            <!-- 贴右（Canvas.Right=8） -->
+                                            <Border Width="80" Height="46" CornerRadius="6" Margin="0,10,0,0"
+                                                    Background="{DynamicResource SuccessBrush}"
+                                                    Canvas.Right="8">
+                                                <TextBlock Text="Right=8" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                                            </Border>
+                                        </pf:AxleCanvas>
+                                    </Border>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:PanelsDemoViewModel.XamlAxleCanvas}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

@@ -641,6 +641,33 @@
                                 </StackPanel>
                             </Border>
 
+                            <!-- ContextMenuToggleButton -->
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="ContextMenuToggleButton — 切换式菜单按钮"
+                                               FontSize="13" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="ToggleButton 子类，IsChecked=True 时弹出 Menu（ContextMenu），取消勾选时关闭菜单。适合工具栏下拉操作按钮。" />
+                                    <pf:ContextMenuToggleButton Content="切换菜单 ▼" Width="130"
+                                                                Margin="0,0,0,6">
+                                        <pf:ContextMenuToggleButton.Menu>
+                                            <ContextMenu>
+                                                <MenuItem Header="导出 Excel" />
+                                                <MenuItem Header="导出 CSV" />
+                                                <Separator />
+                                                <MenuItem Header="打印预览" />
+                                                <MenuItem Header="另存为..." />
+                                            </ContextMenu>
+                                        </pf:ContextMenuToggleButton.Menu>
+                                    </pf:ContextMenuToggleButton>
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,8,0,0"
+                                        Code="{x:Static vm:ButtonsDemoViewModel.XamlContextMenuToggle}" />
+                                </StackPanel>
+                            </Border>
+
                             <!-- Shield -->
                             <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
                                     Padding="16,14" Margin="0,0,0,14"
@@ -664,6 +691,12 @@
                                         <pf:Shield Subject="信息" Status="12" Color="{DynamicResource PrimaryBrush}"
                                                    Margin="0,0,10,6"
                                                    Command="{Binding ButtonClickCommand}" CommandParameter="Shield: 信息" />
+                                        <pf:Shield Subject="GitHub" Status="v1.0" Color="#1182C3"
+                                                   Margin="0,0,10,6"
+                                                   Command="{Binding ButtonClickCommand}" CommandParameter="Shield: GitHub" />
+                                        <pf:Shield Subject=".NET" Status="8.0" Color="#512BD4"
+                                                   Margin="0,0,0,6"
+                                                   Command="{Binding ButtonClickCommand}" CommandParameter="Shield: .NET" />
                                     </WrapPanel>
                                     <controls:DemoCodeBlock CodeLanguage="XAML"
                                         Code="{x:Static vm:ButtonsDemoViewModel.XamlShield}" />

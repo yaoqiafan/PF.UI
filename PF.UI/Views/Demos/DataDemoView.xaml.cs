@@ -28,7 +28,8 @@ namespace PF.UI.Views.Demos
                 ["ListBox"]    = Section_ListBox,
                 ["ListView"]   = Section_ListView,
                 ["TreeView"]   = Section_TreeView,
-                ["Pagination"] = Section_Pagination,
+                ["Pagination"]    = Section_Pagination,
+                ["PropertyGrid"]  = Section_PropertyGrid,
             };
 
             _tocMap = new Dictionary<string, DemoTocItem>();

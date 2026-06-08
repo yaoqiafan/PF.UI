@@ -74,13 +74,44 @@
                                 <StackPanel>
                                     <TextBlock Text="IsRunning 控制动画启停；Foreground 控制颜色"
                                                FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
-                                    <UniformGrid Columns="3" Margin="0,0,0,8">
-                                        <pf:LoadingCircle IsRunning="{Binding IsRunning}" HorizontalAlignment="Center" />
-                                        <pf:LoadingCircle IsRunning="{Binding IsRunning}" Foreground="{DynamicResource SuccessBrush}" HorizontalAlignment="Center" />
-                                        <pf:LoadingCircle IsRunning="{Binding IsRunning}" Foreground="{DynamicResource DangerBrush}" HorizontalAlignment="Center" />
+                                    <!-- 默认 / 颜色 / Large / Light / LargeLight -->
+                                    <UniformGrid Columns="5" Margin="0,0,0,4">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:LoadingCircle IsRunning="{Binding IsRunning}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="默认" FontSize="9" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:LoadingCircle IsRunning="{Binding IsRunning}"
+                                                              Foreground="{DynamicResource SuccessBrush}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="颜色" FontSize="9" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:LoadingCircle IsRunning="{Binding IsRunning}"
+                                                              Style="{StaticResource LoadingCircleLarge}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Large" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="6" Padding="8" HorizontalAlignment="Center">
+                                                <pf:LoadingCircle IsRunning="{Binding IsRunning}"
+                                                                  Style="{StaticResource LoadingCircleLight}" />
+                                            </Border>
+                                            <TextBlock Text="Light" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="6" Padding="8" HorizontalAlignment="Center">
+                                                <pf:LoadingCircle IsRunning="{Binding IsRunning}"
+                                                                  Style="{StaticResource LoadingCircleLargeLight}" />
+                                            </Border>
+                                            <TextBlock Text="LargeLight" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
                                     </UniformGrid>
                                     <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="4"
-                                            Padding="10,6" HorizontalAlignment="Left" Margin="0,0,0,4">
+                                            Padding="10,6" HorizontalAlignment="Left" Margin="0,8,0,4">
                                         <CheckBox IsChecked="{Binding IsRunning}" Content="运行中"
                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
                                     </Border>
@@ -102,7 +133,15 @@
                                 <StackPanel>
                                     <TextBlock Text="线性加载动画，常驻或 IsRunning 控制"
                                                FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
-                                    <pf:LoadingLine IsRunning="{Binding IsRunning}" Margin="0,0,0,4" />
+                                    <pf:LoadingLine IsRunning="{Binding IsRunning}" Margin="0,0,0,6" />
+                                    <TextBlock Text="Large" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,6" />
+                                    <pf:LoadingLine IsRunning="{Binding IsRunning}" Style="{StaticResource LoadingLineLarge}" Margin="0,0,0,6" />
+                                    <TextBlock Text="LargeLight（深色背景）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,6" />
+                                    <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="6" Padding="8,6" Margin="0,0,0,4">
+                                        <pf:LoadingLine IsRunning="{Binding IsRunning}" Style="{StaticResource LoadingLineLargeLight}" />
+                                    </Border>
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
                                         Code="{x:Static vm:ProgressLoadingViewModel.XamlLoadingLine}" />
                                 </StackPanel>
@@ -151,16 +190,74 @@
                                     Padding="16,14" Margin="0,0,0,14"
                                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="圆形百分比进度；调节上方滑块查看效果"
+                                    <TextBlock Text="圆形百分比进度；调节上方 ProgressBar 的滑块查看效果"
                                                FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
-                                    <WrapPanel Margin="0,0,0,4">
-                                        <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="80" Height="80" Margin="0,0,16,0" />
-                                        <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="80" Height="80"
-                                                              Margin="0,0,16,0"
-                                                              Foreground="{DynamicResource SuccessBrush}" />
-                                        <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="80" Height="80"
-                                                              Foreground="{DynamicResource DangerBrush}" />
-                                    </WrapPanel>
+
+                                    <!-- 4 种状态色 Style -->
+                                    <TextBlock Text="状态色 Style" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <UniformGrid Columns="5" Margin="0,0,0,14">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Default" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  Style="{StaticResource ProgressBarSuccessCircle}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Success" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  Style="{StaticResource ProgressBarInfoCircle}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Info" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  Style="{StaticResource ProgressBarWarningCircle}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Warning" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  Style="{StaticResource ProgressBarDangerCircle}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Danger" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                    </UniformGrid>
+
+                                    <!-- IsIndeterminate + ArcThickness + ShowText=False -->
+                                    <TextBlock Text="IsIndeterminate · ArcThickness · ShowText" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <UniformGrid Columns="4" Margin="0,0,0,4">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar IsIndeterminate="True" Width="72" Height="72" HorizontalAlignment="Center" />
+                                            <TextBlock Text="IsIndeterminate" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  ArcThickness="12" HorizontalAlignment="Center" />
+                                            <TextBlock Text="ArcThickness=12" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  ShowText="False" HorizontalAlignment="Center" />
+                                            <TextBlock Text="ShowText=False" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:CircleProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                  Style="{StaticResource ProgressBarSuccessCircle}"
+                                                                  ArcThickness="6" ShowText="True"
+                                                                  Text="{Binding ProgressValue, StringFormat={}{0:F0}%}"
+                                                                  HorizontalAlignment="Center" />
+                                            <TextBlock Text="自定义 Text" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                    </UniformGrid>
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
                                         Code="{x:Static vm:ProgressLoadingViewModel.XamlCircleProgress}" />
                                 </StackPanel>
@@ -177,17 +274,78 @@
                                     Padding="16,14" Margin="0,0,0,14"
                                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="波浪百分比进度动画"
+                                    <TextBlock Text="波浪百分比进度动画；调节上方 ProgressBar 的滑块查看效果"
                                                FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
-                                    <UniformGrid Columns="3" Margin="0,0,0,4">
-                                        <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="80" Height="80"
-                                                            HorizontalAlignment="Center" />
-                                        <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="80" Height="80"
-                                                            Foreground="{DynamicResource SuccessBrush}"
-                                                            HorizontalAlignment="Center" />
-                                        <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="80" Height="80"
-                                                            Foreground="{DynamicResource DangerBrush}"
-                                                            HorizontalAlignment="Center" />
+
+                                    <!-- 4 种状态色 Style -->
+                                    <TextBlock Text="状态色 Style" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <UniformGrid Columns="5" Margin="0,0,0,14">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Default" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                Style="{StaticResource ProgressBarSuccessWave}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Success" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                Style="{StaticResource ProgressBarInfoWave}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Info" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                Style="{StaticResource ProgressBarWarningWave}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Warning" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                Style="{StaticResource ProgressBarDangerWave}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Danger" FontSize="9" FontFamily="Consolas" HorizontalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                    </UniformGrid>
+
+                                    <!-- WaveThickness + WaveStroke + WaveFill + ShowText -->
+                                    <TextBlock Text="WaveThickness · WaveStroke · WaveFill · ShowText" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <UniformGrid Columns="4" Margin="0,0,0,4">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                WaveThickness="6" HorizontalAlignment="Center" />
+                                            <TextBlock Text="WaveThickness=6" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                WaveStroke="{DynamicResource DangerBrush}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="WaveStroke" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                HorizontalAlignment="Center">
+                                                <pf:WaveProgressBar.WaveFill>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <GradientStop Color="{DynamicResource PrimaryColor}" Offset="0" />
+                                                        <GradientStop Color="{DynamicResource InfoColor}" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </pf:WaveProgressBar.WaveFill>
+                                            </pf:WaveProgressBar>
+                                            <TextBlock Text="WaveFill渐变" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <pf:WaveProgressBar Value="{Binding ProgressValue}" Width="72" Height="72"
+                                                                ShowText="False" HorizontalAlignment="Center" />
+                                            <TextBlock Text="ShowText=False" FontSize="9" FontFamily="Consolas" TextWrapping="Wrap"
+                                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" />
+                                        </StackPanel>
                                     </UniformGrid>
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
                                         Code="{x:Static vm:ProgressLoadingViewModel.XamlWaveProgress}" />
@@ -205,18 +363,30 @@
                                     Padding="16,14" Margin="0,0,0,14"
                                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <TextBlock Text="彩纸抛洒动画，需要 ConfettiCannonContainer 包裹父容器"
-                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" />
-                                    <pf:ConfettiCannonContainer Height="160">
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,10" TextWrapping="Wrap"
+                                               Text="静态方法 ConfettiCannon.Fire(options) 在 AdornerLayer 播放彩纸动画。ConfettiCannonContainer（AdornerDecorator）提供本地 AdornerLayer。" />
+
+                                    <!-- 效果选择 + 触发按钮 -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="效果预设：" FontSize="12"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <ComboBox ItemsSource="{Binding ConfettiPresets}"
+                                                  DisplayMemberPath="Name"
+                                                  SelectedIndex="{Binding SelectedPresetIndex, Mode=TwoWay}"
+                                                  Width="140" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                        <Button Content="🎊 发射！" Command="{Binding FireCommand}"
+                                                Style="{StaticResource ButtonPrimary}"
+                                                Height="32" Padding="16,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <pf:ConfettiCannonContainer Height="180">
                                         <Border Background="{DynamicResource SecondaryRegionBrush}"
                                                 CornerRadius="6">
                                             <Grid>
-                                                <TextBlock Text="点击按钮发射彩纸" HorizontalAlignment="Center"
+                                                <TextBlock Text="彩纸将在此区域内的 AdornerLayer 中播放" HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource ThirdlyTextBrush}" />
-                                                <Button Content="🎊 发射彩纸" Command="{Binding FireCommand}"
-                                                        HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                                                        Margin="0,0,0,20" Style="{StaticResource ButtonPrimary}" />
+                                                           Foreground="{DynamicResource ThirdlyTextBrush}" FontSize="11" />
                                             </Grid>
                                         </Border>
                                     </pf:ConfettiCannonContainer>

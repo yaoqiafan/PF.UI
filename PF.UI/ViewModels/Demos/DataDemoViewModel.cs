@@ -14,7 +14,8 @@ namespace PF.UI.ViewModels.Demos
             new DemoTocItem { Anchor = "ListBox",    Title = "ListBox",    Sub = "单选/多选 / 自定义模板" },
             new DemoTocItem { Anchor = "ListView",   Title = "ListView",   Sub = "GridView 多列列表" },
             new DemoTocItem { Anchor = "TreeView",   Title = "TreeView",   Sub = "递归树形节点" },
-            new DemoTocItem { Anchor = "Pagination", Title = "Pagination", Sub = "分页 / 跳页" },
+            new DemoTocItem { Anchor = "Pagination",    Title = "Pagination",    Sub = "分页 / 跳页" },
+            new DemoTocItem { Anchor = "PropertyGrid",  Title = "PropertyGrid",  Sub = "属性网格 / 类型 / 搜索" },
         };
 
         // ===== 交互日志 =====
@@ -185,6 +186,33 @@ namespace PF.UI.ViewModels.Demos
                PageIndex=""{Binding PageIndex, Mode=TwoWay}""
                IsJumpEnabled=""True""
                Height=""30"" />";
+
+        public const string XamlPropertyGrid = @"<!-- PropertyGrid — 绑定任意 POCO 对象，自动反射所有可浏览属性 -->
+<pf:PropertyGrid SelectedObject=""{Binding DemoObject}""
+                 ShowSortButton=""True"" />
+
+<!-- 控制显示的属性：使用标准 .NET Attribute -->
+[Category(""基本信息"")]
+[DisplayName(""产品名称"")]
+[Description(""产品的显示名称"")]
+public string Name { get; set; }
+
+[Browsable(false)]   // 隐藏此属性
+public string InternalId { get; set; }
+
+[ReadOnly(true)]     // 只读显示
+public DateTime CreateTime { get; set; }
+
+<!-- PropertyGrid 内置 Editor 类型：
+     string       → TextBox
+     int/double   → NumericUpDown
+     bool         → CheckBox / ToggleButton
+     Enum         → ComboBox（自动枚举所有值）
+     Color        → ColorPicker
+     DateTime     → DateTimePicker -->";
+
+        // PropertyGrid 演示对象（公开属性供绑定）
+        public DemoPropertyObject DemoObject { get; } = new();
     }
 
     public class ProductItem
@@ -206,5 +234,63 @@ namespace PF.UI.ViewModels.Demos
         public string Name { get; }
         public ObservableCollection<TreeNodeItem> Children { get; } = new();
         public TreeNodeItem(string name) => Name = name;
+    }
+
+    public enum DemoStatus { Active, Paused, Stopped, Error }
+    public enum DemoAlignment { Left, Center, Right, Stretch }
+
+    [System.ComponentModel.DisplayName("设备配置演示对象")]
+    public class DemoPropertyObject
+    {
+        // ─── 基本信息 ───────────────────────────────────────────────
+        [System.ComponentModel.Category("基本信息")]
+        [System.ComponentModel.DisplayName("设备名称")]
+        [System.ComponentModel.Description("设备的显示名称")]
+        public string Name { get; set; } = "传感器 A1";
+
+        [System.ComponentModel.Category("基本信息")]
+        [System.ComponentModel.DisplayName("设备编号")]
+        [System.ComponentModel.Description("工厂内唯一编号")]
+        public string DeviceId { get; set; } = "SN-2024-001";
+
+        [System.ComponentModel.Category("基本信息")]
+        [System.ComponentModel.DisplayName("启用")]
+        public bool IsEnabled { get; set; } = true;
+
+        [System.ComponentModel.Category("基本信息")]
+        [System.ComponentModel.DisplayName("运行状态")]
+        public DemoStatus Status { get; set; } = DemoStatus.Active;
+
+        // ─── 数值参数 ───────────────────────────────────────────────
+        [System.ComponentModel.Category("数值参数")]
+        [System.ComponentModel.DisplayName("采样间隔 (ms)")]
+        [System.ComponentModel.Description("数据采集周期，单位毫秒")]
+        public int SampleInterval { get; set; } = 200;
+
+        [System.ComponentModel.Category("数值参数")]
+        [System.ComponentModel.DisplayName("报警阈值")]
+        public double AlarmThreshold { get; set; } = 85.5;
+
+        [System.ComponentModel.Category("数值参数")]
+        [System.ComponentModel.DisplayName("最大重试次数")]
+        public int MaxRetries { get; set; } = 3;
+
+        // ─── 显示设置 ───────────────────────────────────────────────
+        [System.ComponentModel.Category("显示设置")]
+        [System.ComponentModel.DisplayName("对齐方式")]
+        public DemoAlignment Alignment { get; set; } = DemoAlignment.Center;
+
+        [System.ComponentModel.Category("显示设置")]
+        [System.ComponentModel.DisplayName("描述文字")]
+        public string Description { get; set; } = "一楼生产线左侧温度传感器";
+
+        // ─── 只读/隐藏 ──────────────────────────────────────────────
+        [System.ComponentModel.Category("只读信息")]
+        [System.ComponentModel.DisplayName("创建时间")]
+        [System.ComponentModel.ReadOnly(true)]
+        public string CreateTime { get; set; } = "2024-01-15 09:30";
+
+        [System.ComponentModel.Browsable(false)]
+        public string InternalKey { get; set; } = "HIDDEN";
     }
 }

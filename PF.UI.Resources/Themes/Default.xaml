@@ -43,6 +43,7 @@ Themes\Styles\Base\FrameBaseStyle.xaml
 Themes\Styles\Base\GotoTopBaseStyle.xaml
 Themes\Styles\Base\GroupBoxBaseStyle.xaml
 Themes\Styles\Base\ImageSelectorBaseStyle.xaml
+Themes\Styles\Base\ImageViewerBaseStyle.xaml
 Themes\Styles\Base\ItemsPanelTemplate.xaml
 Themes\Styles\Base\LabelBaseStyle.xaml
 Themes\Styles\Base\ListBoxBaseStyle.xaml
@@ -128,6 +129,7 @@ Themes\Styles\Custom\GridSplitter.xaml
 Themes\Styles\Custom\GroupBox.xaml
 Themes\Styles\Custom\Growl.xaml
 Themes\Styles\Custom\ImageSelector.xaml
+Themes\Styles\Custom\ImageViewer.xaml
 Themes\Styles\Custom\Label.xaml
 Themes\Styles\Custom\ListBox.xaml
 Themes\Styles\Custom\ListView.xaml
@@ -6309,11 +6311,11 @@ Themes\Styles\Custom\Window.xaml
       <Setter.Value>
         <ControlTemplate TargetType="pfcontrol:AutoCompleteTextBox">
           <pf:SimplePanel>
-            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="true">
+            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="true">
               <TextBox x:Name="PART_SearchTextBox" Padding="{TemplateBinding Padding}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" CaretBrush="{TemplateBinding CaretBrush}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxEditableTextBox}" />
             </Border>
             <Popup x:Name="PART_Popup" Margin="1" AllowsTransparency="true" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{StaticResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-              <Border x:Name="dropDownBorder" MinWidth="{Binding ActualWidth, ElementName=toggleButton}" MaxHeight="{TemplateBinding MaxDropDownHeight}" Margin="8,0,8,8" Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" Effect="{StaticResource EffectShadow2}">
+              <Border x:Name="dropDownBorder" MinWidth="{Binding ActualWidth, ElementName=border}" MaxHeight="{TemplateBinding MaxDropDownHeight}" Margin="8,0,8,8" Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" Effect="{StaticResource EffectShadow2}">
                 <pf:ToggleBlock HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" IsChecked="{Binding HasItems, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}">
                   <pf:ToggleBlock.CheckedContent>
                     <ScrollViewer Margin="0,4">
@@ -13208,6 +13210,128 @@ Themes\Styles\Custom\Window.xaml
       </Trigger>
     </Style.Triggers>
   </Style>
+  <Style x:Key="ImageViewerBaseStyle" TargetType="pfcontrol:ImageViewer">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="pfcontrol:ImageViewer">
+          <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <!-- Main image canvas -->
+              <pf:SimplePanel x:Name="PART_PanelMain" ClipToBounds="True" Grid.RowSpan="2">
+                <Border HorizontalAlignment="Left" VerticalAlignment="Top" Height="{TemplateBinding ImageHeight}" Width="{TemplateBinding ImageWidth}" Margin="{TemplateBinding ImageMargin}">
+                  <Image Name="PART_ImageMain" RenderOptions.BitmapScalingMode="HighQuality" RenderTransformOrigin="0.5,0.5" Source="{TemplateBinding ImageSource}" />
+                </Border>
+                <!-- Tip content overlay -->
+                <Border x:Name="PART_TipOverlay" Visibility="{Binding Path=(pfcontrol:TipElement.Visibility), RelativeSource={RelativeSource TemplatedParent}}" Background="{DynamicResource DarkOpacityBrush}" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="4" Padding="8,5" Margin="8" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsHitTestVisible="False" MaxWidth="320">
+                  <ContentPresenter Content="{Binding Path=(pfcontrol:TipElement.Content), RelativeSource={RelativeSource TemplatedParent}}" TextElement.Foreground="{DynamicResource TextIconBrush}" TextElement.FontSize="12" />
+                </Border>
+              </pf:SimplePanel>
+              <!-- Mini-map (right-bottom overview) -->
+              <Border Grid.Row="0" Grid.RowSpan="2" Width="252" Height="162" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{DynamicResource DarkOpacityBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                <Border.Visibility>
+                  <MultiBinding Converter="{StaticResource BooleanArr2VisibilityConverter}">
+                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ShowSmallImgInternal" />
+                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ShowImgMap" />
+                  </MultiBinding>
+                </Border.Visibility>
+                <Canvas ClipToBounds="True" Name="PART_CanvasSmallImg" MaxWidth="250" MaxHeight="160">
+                  <Border UseLayoutRounding="True" Name="PART_BorderMove" Background="Transparent" Width="50" Height="70" BorderThickness="1" BorderBrush="Black">
+                    <Border BorderThickness="1" BorderBrush="White" />
+                  </Border>
+                </Canvas>
+              </Border>
+              <!-- Toolbar (bottom, hover-reveal) -->
+              <Border UseLayoutRounding="True" Name="PART_BorderBottom" Visibility="{TemplateBinding ShowToolBar, Converter={StaticResource Boolean2VisibilityConverter}}" Opacity="0" CornerRadius="4,4,0,0" Grid.Row="1" HorizontalAlignment="Center" Background="{DynamicResource DarkOpacityBrush}">
+                <StackPanel Margin="16,6" VerticalAlignment="Center" Orientation="Horizontal">
+                  <!-- Save -->
+                  <Button Command="pfcontrol:ControlCommands.Save" Width="28" Height="28" Margin="2,0" Foreground="{DynamicResource TextIconBrush}" Style="{StaticResource ButtonIcon}" pf:IconElement.Geometry="{StaticResource SaveGeometry}" pf:IconElement.Width="16" pf:IconElement.Height="16" Padding="4" />
+                  <!-- Open in OS -->
+                  <Button Command="pfcontrol:ControlCommands.Open" Width="28" Height="28" Margin="2,0" Foreground="{DynamicResource TextIconBrush}" Style="{StaticResource ButtonIcon}" pf:IconElement.Geometry="{StaticResource WindowsGeometry}" pf:IconElement.Width="16" pf:IconElement.Height="16" Padding="4" />
+                  <Border Margin="6,4" Background="{DynamicResource ThirdlyTextBrush}" Style="{StaticResource BorderVerticallySplitter}" />
+                  <!-- Reduce -->
+                  <Button Command="pfcontrol:ControlCommands.Reduce" Width="28" Height="28" Margin="2,0" Foreground="{DynamicResource TextIconBrush}" Style="{StaticResource ButtonIcon}" pf:IconElement.Geometry="{StaticResource ReduceGeometry}" pf:IconElement.Width="16" pf:IconElement.Height="16" Padding="4" />
+                  <!-- Scale label -->
+                  <TextBlock Margin="4,0" VerticalAlignment="Center" FontSize="11" Text="{TemplateBinding ScaleStr}" Foreground="{DynamicResource TextIconBrush}" />
+                  <!-- Enlarge -->
+                  <Button Command="pfcontrol:ControlCommands.Enlarge" Width="28" Height="28" Margin="2,0" Foreground="{DynamicResource TextIconBrush}" Style="{StaticResource ButtonIcon}" pf:IconElement.Geometry="{StaticResource EnlargeGeometry}" pf:IconElement.Width="16" pf:IconElement.Height="16" Padding="4" />
+                  <!-- 1:1 -->
+                  <Button Command="pfcontrol:ControlCommands.Restore" Height="28" Margin="2,0" Background="Transparent" Style="{StaticResource ButtonCustom}" Foreground="{DynamicResource TextIconBrush}">
+                    <Border BorderThickness="1" BorderBrush="White" Padding="3,1">
+                      <TextBlock Text="1:1" FontSize="11" Foreground="{DynamicResource TextIconBrush}" />
+                    </Border>
+                  </Button>
+                  <Border Margin="6,4" Background="{DynamicResource ThirdlyTextBrush}" Style="{StaticResource BorderVerticallySplitter}" />
+                  <!-- Rotate left -->
+                  <Button Command="pfcontrol:ControlCommands.RotateLeft" Width="28" Height="28" Margin="2,0" Foreground="{DynamicResource TextIconBrush}" Style="{StaticResource ButtonIcon}" pf:IconElement.Geometry="{StaticResource RotateLeftGeometry}" pf:IconElement.Width="16" pf:IconElement.Height="16" Padding="4" />
+                  <!-- Rotate right -->
+                  <Button Command="pfcontrol:ControlCommands.RotateRight" Width="28" Height="28" Margin="2,0" Foreground="{DynamicResource TextIconBrush}" Style="{StaticResource ButtonIcon}" pf:IconElement.Geometry="{StaticResource RotateRightGeometry}" pf:IconElement.Width="16" pf:IconElement.Height="16" Padding="4" />
+                </StackPanel>
+              </Border>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <!-- TipPlacement → alignment mapping for PART_TipOverlay -->
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="LeftTop">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Left" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Top" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="Left">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Left" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Center" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="LeftBottom">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Left" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Bottom" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="TopLeft">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Left" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Top" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="Top">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Center" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Top" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="TopRight">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Right" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Top" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="RightTop">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Right" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Top" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="Right">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Right" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Center" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="RightBottom">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Right" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Bottom" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="BottomLeft">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Left" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Bottom" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="Bottom">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Center" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Bottom" />
+            </Trigger>
+            <Trigger Property="pfcontrol:TipElement.Placement" Value="BottomRight">
+              <Setter TargetName="PART_TipOverlay" Property="HorizontalAlignment" Value="Right" />
+              <Setter TargetName="PART_TipOverlay" Property="VerticalAlignment" Value="Bottom" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
   <Style x:Key="MenuItemBaseStyle" TargetType="MenuItem">
     <Setter Property="Padding" Value="{Binding Path=(pfcontrol:MenuAttach.ItemPadding), RelativeSource={RelativeSource AncestorType=MenuBase}}" />
     <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -14357,7 +14481,7 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="Height" Value="{StaticResource DefaultControlHeight}" />
     <Setter Property="pfcontrol:TitleElement.Foreground" Value="{DynamicResource TextIconBrush}" />
-    <Setter Property="ShowCloseButton" Value="{Binding Path=(pfcontrol:TagContainer.ShowCloseButton), RelativeSource={RelativeSource AncestorType=pfcontrol:TagContainer}}" />
+    <Setter Property="ShowCloseButton" Value="{Binding Path=(pfcontrol:TagContainer.ShowCloseButton), RelativeSource={RelativeSource Self}}" />
     <Setter Property="FocusVisualStyle">
       <Setter.Value>
         <Style>
@@ -15117,6 +15241,7 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="MinWidth" Value="20" />
   </Style>
   <Style BasedOn="{StaticResource ImageSelectorBaseStyle}" TargetType="pfcontrol:ImageSelector" />
+  <Style BasedOn="{StaticResource ImageViewerBaseStyle}" TargetType="pfcontrol:ImageViewer" />
   <Style BasedOn="{StaticResource MenuItemBaseStyle}" TargetType="MenuItem" />
   <Style BasedOn="{StaticResource NavigationWindowBaseStyle}" TargetType="NavigationWindow" />
   <Style BasedOn="{StaticResource NumericUpDownBaseStyle}" TargetType="pfcontrol:NumericUpDown" />

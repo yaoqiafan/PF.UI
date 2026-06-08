@@ -119,6 +119,13 @@ namespace PF.UI.ViewModels
                         Description = "DataGrid / ListBox / ListView / TreeView / PropertyGrid",
                         ViewName = nameof(DataDemoView),
                         Icon = PackIconKind.GridLarge
+                    },
+                    new NavItem
+                    {
+                        Title = "封面展示",
+                        Description = "CoverView / CoverFlow",
+                        ViewName = nameof(MediaDemoView),
+                        Icon = PackIconKind.ImageAlbum
                     }
                 }
             });
@@ -232,6 +239,13 @@ namespace PF.UI.ViewModels
                         Description = "TransitioningContentControl / Sprite / RunningBlock ...",
                         ViewName = nameof(AnimationDemoView),
                         Icon = PackIconKind.Transition
+                    },
+                    new NavItem
+                    {
+                        Title = "文字效果",
+                        Description = "HighlightTextBlock / OutlineText / SimpleText",
+                        ViewName = nameof(TextEffectsDemoView),
+                        Icon = PackIconKind.FormatText
                     }
                 }
             });
@@ -375,6 +389,47 @@ namespace PF.UI.ViewModels
                         Description = "BlurWindow / GlowWindow / PopupWindow / NotifyIcon ...",
                         ViewName = nameof(WindowsDemoView),
                         Icon = PackIconKind.ApplicationOutline
+                    },
+                    new NavItem
+                    {
+                        Title = "启动屏",
+                        Description = "Splash — 分步初始化消息 / 失败处理 / App 集成",
+                        ViewName = nameof(SplashDemoView),
+                        Icon = PackIconKind.PlayCircleOutline
+                    }
+                }
+            });
+
+            // ===== 18. 图像 =====
+            NavGroups.Add(new NavGroup
+            {
+                Title = "图像",
+                Icon = PackIconKind.ImageOutline,
+                Children =
+                {
+                    new NavItem
+                    {
+                        Title = "图片浏览器",
+                        Description = "ImageViewer — 缩放 / 旋转 / 拖拽 / 缩略图导航",
+                        ViewName = nameof(ImageViewerDemoView),
+                        Icon = PackIconKind.Magnify
+                    }
+                }
+            });
+
+            // ===== 19. 杂项 =====
+            NavGroups.Add(new NavGroup
+            {
+                Title = "杂项",
+                Icon = PackIconKind.ViewGridOutline,
+                Children =
+                {
+                    new NavItem
+                    {
+                        Title = "杂项控件",
+                        Description = "Watermark / DashedBorder / BlendEffectBox / GotoTop / ChatBubble",
+                        ViewName = nameof(MiscDemoView),
+                        Icon = PackIconKind.ViewGridOutline
                     }
                 }
             });

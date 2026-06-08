@@ -346,6 +346,53 @@
                                         </Grid>
                                     </pf:DrawerContainer>
 
+                                    <!-- Bottom + Press mode -->
+                                    <TextBlock Text="Dock=Bottom, ShowMode=Press（内容收缩）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,6" />
+                                    <pf:DrawerContainer Height="160" Margin="0,0,0,14">
+                                        <Grid Background="{DynamicResource SecondaryRegionBrush}">
+                                            <pf:Drawer IsOpen="{Binding DrawerBottomOpen, Mode=TwoWay}"
+                                                       Dock="Bottom" ShowMode="Press"
+                                                       ShowMask="True" MaskCanClose="True">
+                                                <Border Height="72" Background="{DynamicResource RegionBrush}"
+                                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0"
+                                                        Padding="16,8">
+                                                    <TextBlock Text="Bottom Drawer · Press — 内容区向上收缩" FontWeight="Bold"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                                                </Border>
+                                            </pf:Drawer>
+                                            <TextBlock Text="内容区域（Press 模式：Drawer 出现时内容被挤压）"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" />
+                                            <ToggleButton Content="打开底部 Drawer"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                          IsChecked="{Binding DrawerBottomOpen, Mode=TwoWay}" />
+                                        </Grid>
+                                    </pf:DrawerContainer>
+
+                                    <!-- ShowMask=False -->
+                                    <TextBlock Text="ShowMask=False（无遮罩）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <pf:DrawerContainer Height="140" Margin="0,0,0,4">
+                                        <Grid Background="{DynamicResource SecondaryRegionBrush}">
+                                            <pf:Drawer IsOpen="{Binding DrawerPressOpen, Mode=TwoWay}"
+                                                       Dock="Left" ShowMode="Cover"
+                                                       ShowMask="False">
+                                                <Border Width="140" Background="{DynamicResource RegionBrush}"
+                                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0"
+                                                        Padding="12,8">
+                                                    <TextBlock Text="ShowMask=False&#x0a;点击内容区不自动关闭" FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                                                </Border>
+                                            </pf:Drawer>
+                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <ToggleButton Content="切换（无遮罩）"
+                                                              IsChecked="{Binding DrawerPressOpen, Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </pf:DrawerContainer>
+
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
                                         Code="{x:Static vm:NavigationDemoViewModel.XamlDrawer}" />
                                 </StackPanel>

@@ -205,7 +205,7 @@
                                         Margin="0,0,0,20" />
 
                                     <!-- CalendarWithClock -->
-                                    <TextBlock Text="CalendarWithClock（日历 + 时钟组合）" FontSize="12" FontWeight="SemiBold"
+                                    <TextBlock Text="CalendarWithClock（日历 + 圆形时钟）" FontSize="12" FontWeight="SemiBold"
                                                Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
                                     <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
                                             CornerRadius="8" Padding="4" HorizontalAlignment="Left"
@@ -216,6 +216,51 @@
 
                                     <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
                                         Code="{x:Static vm:TimeDemoViewModel.XamlDateTimeRange}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 5. CalendarWithListClock ═══════════ -->
+                    <Border x:Name="Section_ListClock" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="5. CalendarWithListClock" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="CalendarWithListClock — 日历 + 列表式时钟（无需表盘，更紧凑）；与 CalendarWithClock 共享 DisplayDateTime 接口"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,14" TextWrapping="Wrap" />
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="32" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="CalendarWithClock（圆形表盘）" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                    CornerRadius="8" Padding="4" HorizontalAlignment="Left">
+                                                <pf:CalendarWithClock ShowConfirmButton="True" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="CalendarWithListClock（列表滚动）" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                    CornerRadius="8" Padding="4" HorizontalAlignment="Left">
+                                                <pf:CalendarWithListClock />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,14,0,0"
+                                        Code="{x:Static vm:TimeDemoViewModel.XamlListClock}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

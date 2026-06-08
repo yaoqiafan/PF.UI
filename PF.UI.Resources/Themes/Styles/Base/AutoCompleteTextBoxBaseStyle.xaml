@@ -73,6 +73,7 @@
                 <ControlTemplate TargetType="pfcontrol:AutoCompleteTextBox">
                     <pfcontrol:SimplePanel>
                         <Border
+                            x:Name="border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -96,7 +97,7 @@
                             PopupAnimation="{StaticResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                             <Border
                                 x:Name="dropDownBorder"
-                                MinWidth="{Binding ActualWidth, ElementName=toggleButton}"
+                                MinWidth="{Binding ActualWidth, ElementName=border}"
                                 MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                 Margin="8,0,8,8"
                                 Background="{DynamicResource RegionBrush}"

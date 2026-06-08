@@ -84,14 +84,14 @@
                 </Grid>
             </pf:Drawer>
 
-            <!-- ===== 主内容区 ===== -->
-            <Grid>
+                <!-- ===== 主内容区 ===== -->
+            <Grid x:Name="RootGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!-- 顶栏：汉堡按钮 + 标题 -->
+                <!-- 顶栏：汉堡按钮 + 标题 + 主题切换 -->
                 <Border Grid.Row="0" Height="48"
                         Background="{DynamicResource RegionBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
@@ -120,12 +120,40 @@
                                    Foreground="{DynamicResource PrimaryTextBrush}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
+
+                        <!-- 主题切换按钮（涟漪按钮 + 扩散全屏）-->
+                        <Button x:Name="ThemeBtn"
+                                Width="36" Height="36"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,0,8,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="ToggleThemeBtn_Click"
+                                ToolTip="切换深色/浅色主题">
+                            <pf:Ripple pf:RippleAssist.IsCentered="True"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center">
+                                <pf:PackIcon x:Name="ThemeIcon"
+                                             Kind="WeatherNight"
+                                             Width="20" Height="20"
+                                             Foreground="{DynamicResource PrimaryTextBrush}" />
+                            </pf:Ripple>
+                        </Button>
                     </Grid>
                 </Border>
 
                 <!-- Prism Region -->
                 <ContentControl Grid.Row="1"
                                 prism:RegionManager.RegionName="DemoRegion" />
+
+                <!-- 主题切换全屏覆盖层（扩散涟漪揭示）-->
+                <Rectangle x:Name="ThemeOverlay"
+                           Grid.RowSpan="2"
+                           Visibility="Collapsed"
+                           IsHitTestVisible="False"
+                           Panel.ZIndex="100" />
             </Grid>
         </Grid>
     </pf:DrawerContainer>

@@ -1,0 +1,323 @@
+<UserControl x:Class="PF.UI.Views.Demos.TextEffectsDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
+             xmlns:controls="clr-namespace:PF.UI.Controls"
+             xmlns:vm="clr-namespace:PF.UI.ViewModels.Demos"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="820"
+             d:DataContext="{d:DesignInstance vm:TextEffectsDemoViewModel, IsDesignTimeCreatable=False}"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 页头 -->
+        <Border Grid.Row="0" Padding="24,20,24,16"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{DynamicResource RegionBrush}">
+            <StackPanel>
+                <TextBlock Text="文字效果" FontSize="20" FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="HighlightTextBlock · OutlineText · SimpleText"
+                           FontSize="12" Margin="0,4,0,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" x:Name="ContentScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollChanged="ContentScroll_ScrollChanged">
+                <StackPanel Margin="24,16,16,24" MaxWidth="820">
+
+                    <!-- ═══════════ 1. HighlightTextBlock ═══════════ -->
+                    <Border x:Name="Section_Highlight" Padding="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="1. HighlightTextBlock — 关键词高亮" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="TextBlock 子类。SourceText 为原始文本，QueriesText 为关键词（空格分隔多词），匹配部分自动高亮背景色和文字色。" />
+
+                                    <!-- 交互演示区 -->
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="原文" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
+                                        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,8"
+                                                 Text="{Binding SourceText, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" AcceptsReturn="True" MaxHeight="80"
+                                                 pf:InfoElement.Placeholder="输入原始文本..." />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="关键词" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
+                                        <TextBox Grid.Row="1" Grid.Column="1"
+                                                 Text="{Binding QueriesText, UpdateSourceTrigger=PropertyChanged}"
+                                                 pf:InfoElement.Placeholder="空格分隔多个关键词..." />
+                                    </Grid>
+
+                                    <!-- 高亮预览 -->
+                                    <TextBlock Text="默认高亮（主题色背景）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,10">
+                                        <pf:HighlightTextBlock
+                                            SourceText="{Binding SourceText}"
+                                            QueriesText="{Binding QueriesText}"
+                                            HighlightBrush="{DynamicResource LightPrimaryBrush}"
+                                            HighlightTextBrush="{DynamicResource AccentBrush}"
+                                            TextWrapping="Wrap" FontSize="14" />
+                                    </Border>
+
+                                    <TextBlock Text="危险色高亮（红色背景）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,10">
+                                        <pf:HighlightTextBlock
+                                            SourceText="{Binding SourceText}"
+                                            QueriesText="{Binding QueriesText}"
+                                            HighlightBrush="{DynamicResource LightDangerBrush}"
+                                            HighlightTextBrush="{DynamicResource DangerBrush}"
+                                            TextWrapping="Wrap" FontSize="14" />
+                                    </Border>
+
+                                    <TextBlock Text="多关键词演示（空格分隔）" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                                    <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,10">
+                                        <pf:HighlightTextBlock
+                                            SourceText="HighlightTextBlock supports multiple keywords search with space separator"
+                                            QueriesText="multiple keywords search"
+                                            HighlightBrush="{DynamicResource LightSuccessBrush}"
+                                            HighlightTextBrush="{DynamicResource DarkSuccessBrush}"
+                                            TextWrapping="Wrap" FontSize="13" />
+                                    </Border>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML"
+                                        Code="{x:Static vm:TextEffectsDemoViewModel.XamlHighlight}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 2. OutlineText ═══════════ -->
+                    <Border x:Name="Section_Outline" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="2. OutlineText — 描边/空心文字" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12"
+                                               Text="FrameworkElement 子类，基于 GlyphRun 渲染。Fill=填充色，Stroke=描边色，StrokePosition=Center|Outside|InSide。" />
+
+                                    <UniformGrid Columns="3" Margin="0,0,0,14">
+                                        <!-- 实心 + 描边 -->
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="12,8" HorizontalAlignment="Center">
+                                                <pf:OutlineText Text="SOLID"
+                                                                Fill="{DynamicResource PrimaryBrush}"
+                                                                Stroke="White"
+                                                                StrokeThickness="3"
+                                                                FontSize="32" FontWeight="Bold"
+                                                                StrokePosition="Center" />
+                                            </Border>
+                                            <TextBlock Text="实心 + 描边&#x0a;StrokePosition=Center" FontSize="10" TextAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <!-- 空心文字 -->
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="12,8" HorizontalAlignment="Center">
+                                                <pf:OutlineText Text="OUTLINE"
+                                                                Fill="Transparent"
+                                                                Stroke="{DynamicResource PrimaryBrush}"
+                                                                StrokeThickness="2"
+                                                                FontSize="32" FontWeight="Bold"
+                                                                StrokePosition="Outside" />
+                                            </Border>
+                                            <TextBlock Text="空心文字&#x0a;Fill=Transparent" FontSize="10" TextAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <!-- 渐变描边 -->
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="6" Padding="12,8" HorizontalAlignment="Center">
+                                                <pf:OutlineText Text="GRAD"
+                                                                Fill="{DynamicResource PrimaryTextBrush}"
+                                                                StrokeThickness="2"
+                                                                FontSize="32" FontWeight="Bold"
+                                                                StrokePosition="Outside">
+                                                    <pf:OutlineText.Stroke>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                            <GradientStop Color="{DynamicResource PrimaryColor}" Offset="0" />
+                                                            <GradientStop Color="{DynamicResource InfoColor}" Offset="1" />
+                                                        </LinearGradientBrush>
+                                                    </pf:OutlineText.Stroke>
+                                                </pf:OutlineText>
+                                            </Border>
+                                            <TextBlock Text="渐变描边&#x0a;LinearGradientBrush" FontSize="10" TextAlignment="Center"
+                                                       Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,6,0,0" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </UniformGrid>
+
+                                    <!-- 更多尺寸 -->
+                                    <TextBlock Text="不同尺寸 + InSide 描边" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <pf:OutlineText Text="Aa" Fill="{DynamicResource PrimaryBrush}"
+                                                        Stroke="{DynamicResource DarkPrimaryBrush}" StrokeThickness="1"
+                                                        FontSize="24" StrokePosition="InSide" Margin="0,0,16,0" />
+                                        <pf:OutlineText Text="Aa" Fill="{DynamicResource SuccessBrush}"
+                                                        Stroke="{DynamicResource DarkSuccessBrush}" StrokeThickness="1"
+                                                        FontSize="36" StrokePosition="InSide" Margin="0,0,16,0" />
+                                        <pf:OutlineText Text="Aa" Fill="{DynamicResource DangerBrush}"
+                                                        Stroke="{DynamicResource DarkDangerBrush}" StrokeThickness="2"
+                                                        FontSize="48" StrokePosition="InSide" Margin="0,0,16,0" />
+                                        <pf:OutlineText Text="Aa" Fill="{DynamicResource WarningBrush}"
+                                                        Stroke="{DynamicResource DarkWarningBrush}" StrokeThickness="3"
+                                                        FontSize="64" StrokePosition="InSide" />
+                                    </StackPanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,10,0,0"
+                                        Code="{x:Static vm:TextEffectsDemoViewModel.XamlOutline}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 3. SimpleText ═══════════ -->
+                    <Border x:Name="Section_Simple" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="3. SimpleText — 轻量格式文本" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}" Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="基于 GlyphRun/DrawingVisual 直接绘制，跳过 WPF FrameworkElement 布局树开销。支持基本字体属性和 TextWrapping/TextTrimming，不支持 Inlines。适合大量文本的高性能场景。" />
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="140" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="基础" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                        <pf:SimpleText Grid.Row="0" Grid.Column="1" Text="SimpleText 轻量格式文本块"
+                                                       FontSize="15" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="粗体" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                        <pf:SimpleText Grid.Row="1" Grid.Column="1" Text="FontWeight=Bold 粗体文本"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,8" />
+
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="主题色" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                        <pf:SimpleText Grid.Row="2" Grid.Column="1" Text="Foreground 绑定主题画刷"
+                                                       FontSize="15" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,8" />
+
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="截断" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                        <pf:SimpleText Grid.Row="3" Grid.Column="1"
+                                                       Text="TextTrimming=CharacterEllipsis — 超出宽度自动截断显示省略号"
+                                                       FontSize="14" TextTrimming="CharacterEllipsis"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8" />
+
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="斜体" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource ThirdlyTextBrush}" VerticalAlignment="Center" />
+                                        <pf:SimpleText Grid.Row="4" Grid.Column="1" Text="FontStyle=Italic 斜体"
+                                                       FontSize="15" FontStyle="Italic"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" />
+                                    </Grid>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,0"
+                                        Code="{x:Static vm:TextEffectsDemoViewModel.XamlSimple}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧目录 -->
+            <Border Grid.Column="1" Width="170"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0"
+                    Padding="0,12,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="12,6,12,10"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="📑 目录" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TocItems}" Margin="4,6,4,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DemoTocItem}">
+                                    <Border Padding="10,6" CornerRadius="5" Cursor="Hand"
+                                            Background="Transparent" MouseLeftButtonDown="TocItem_Click">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsActive}" Value="False" />
+                                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            <TextBlock Text="{Binding Sub}" FontSize="10" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
