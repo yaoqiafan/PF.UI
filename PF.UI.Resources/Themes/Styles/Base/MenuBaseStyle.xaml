@@ -14,6 +14,8 @@
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="Margin" Value="0,0,0,2" />
         <Setter Property="pfcontrol:BorderElement.CornerRadius" Value="{StaticResource DefaultCornerRadius}" />
+        <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuItem">
@@ -24,63 +26,67 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
-                        SnapsToDevicePixels="True">
-                        <Grid x:Name="Grid" Margin="{TemplateBinding Padding}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="26" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup" />
-                                <ColumnDefinition Width="20" />
-                            </Grid.ColumnDefinitions>
-                            <ContentPresenter
-                                x:Name="Icon"
-                                Width="16"
-                                Height="16"
-                                Margin="0,0,10,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                ContentSource="Icon"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            <Border
-                                x:Name="GlyphPanel"
-                                Grid.Column="0"
-                                Width="16"
-                                Height="16"
-                                Margin="0,0,10,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Background="{DynamicResource PrimaryBrush}"
-                                ClipToBounds="False"
-                                CornerRadius="2"
-                                IsHitTestVisible="False"
-                                Visibility="Hidden">
-                                <Path
-                                    Width="12"
-                                    Height="12"
-                                    Data="{StaticResource CheckedGeometry}"
-                                    Stretch="Uniform"
-                                    Stroke="{DynamicResource TextIconBrush}"
-                                    StrokeThickness="2"
-                                    UseLayoutRounding="True" />
-                            </Border>
-                            <ContentPresenter
-                                x:Name="ContentPresenter"
-                                Grid.Column="1"
-                                Margin="0,3"
-                                ContentSource="Header"
-                                ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            <TextBlock
-                                x:Name="InputGestureText"
-                                Grid.Column="3"
-                                Margin="0,0,10,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Text="{TemplateBinding InputGestureText}" />
-                        </Grid>
+                        SnapsToDevicePixels="True"
+                        ClipToBounds="True">
+                        <pfcontrol:Ripple
+                            CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid x:Name="Grid" Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="26" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup" />
+                                    <ColumnDefinition Width="20" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter
+                                    x:Name="Icon"
+                                    Width="16"
+                                    Height="16"
+                                    Margin="0,0,10,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    ContentSource="Icon"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <Border
+                                    x:Name="GlyphPanel"
+                                    Grid.Column="0"
+                                    Width="16"
+                                    Height="16"
+                                    Margin="0,0,10,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Background="{DynamicResource PrimaryBrush}"
+                                    ClipToBounds="False"
+                                    CornerRadius="2"
+                                    IsHitTestVisible="False"
+                                    Visibility="Hidden">
+                                    <Path
+                                        Width="12"
+                                        Height="12"
+                                        Data="{StaticResource CheckedGeometry}"
+                                        Stretch="Uniform"
+                                        Stroke="{DynamicResource TextIconBrush}"
+                                        StrokeThickness="2"
+                                        UseLayoutRounding="True" />
+                                </Border>
+                                <ContentPresenter
+                                    x:Name="ContentPresenter"
+                                    Grid.Column="1"
+                                    Margin="0,3"
+                                    ContentSource="Header"
+                                    ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <TextBlock
+                                    x:Name="InputGestureText"
+                                    Grid.Column="3"
+                                    Margin="0,0,10,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{TemplateBinding InputGestureText}" />
+                            </Grid>
+                        </pfcontrol:Ripple>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
