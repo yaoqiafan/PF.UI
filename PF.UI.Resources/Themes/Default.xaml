@@ -7957,21 +7957,28 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
     <Setter Property="MinHeight" Value="40" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="pfcontrol:SideMenuItem">
-          <Border Name="BorderRoot" Background="{TemplateBinding Background}">
-            <pf:SimplePanel>
-              <Rectangle Width="4" HorizontalAlignment="Left" Fill="{TemplateBinding BorderBrush}" />
-              <ContentControl Margin="4,0,0,0">
-                <DockPanel Margin="{TemplateBinding Padding}">
-                  <ContentControl Name="PresenterIcon" Width="40">
-                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
+          <Border Name="BorderRoot" Background="{TemplateBinding Background}" ClipToBounds="True">
+            <Grid>
+              <Border x:Name="DelayOverlay" Background="{DynamicResource RegionBrush}" IsHitTestVisible="False" Opacity="0" />
+              <pf:Ripple>
+                <pf:SimplePanel>
+                  <Rectangle Width="4" HorizontalAlignment="Left" Fill="{TemplateBinding BorderBrush}" />
+                  <ContentControl Margin="4,0,0,0">
+                    <DockPanel Margin="{TemplateBinding Padding}">
+                      <ContentControl Name="PresenterIcon" Width="40">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
+                      </ContentControl>
+                      <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
+                    </DockPanel>
                   </ContentControl>
-                  <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
-                </DockPanel>
-              </ContentControl>
-            </pf:SimplePanel>
+                </pf:SimplePanel>
+              </pf:Ripple>
+            </Grid>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="Icon" Value="{x:Null}">
@@ -7981,6 +7988,24 @@ Themes\Styles\Custom\Window.xaml
               <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
             </DataTrigger>
             <Trigger Property="IsSelected" Value="True">
+              <Trigger.EnterActions>
+                <BeginStoryboard x:Name="SelectionDelaySB">
+                  <Storyboard>
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DelayOverlay" Storyboard.TargetProperty="Opacity">
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1" />
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0.28" Value="1" />
+                      <EasingDoubleKeyFrame KeyTime="0:0:0.38" Value="0">
+                        <EasingDoubleKeyFrame.EasingFunction>
+                          <SineEase EasingMode="EaseOut" />
+                        </EasingDoubleKeyFrame.EasingFunction>
+                      </EasingDoubleKeyFrame>
+                    </DoubleAnimationUsingKeyFrames>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <RemoveStoryboard BeginStoryboardName="SelectionDelaySB" />
+              </Trigger.ExitActions>
               <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
               <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
               <Setter TargetName="PresenterHeader" Property="TextElement.FontWeight" Value="Bold" />
@@ -7997,18 +8022,23 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="pfcontrol:SideMenuItem">
-          <Border Name="BorderRoot" Background="{TemplateBinding Background}">
-            <pf:SimplePanel>
-              <Rectangle Width="4" HorizontalAlignment="Left" Fill="{TemplateBinding BorderBrush}" />
-              <ContentControl Margin="4,0,0,0">
-                <DockPanel Margin="{TemplateBinding Padding}">
-                  <ContentControl Name="PresenterIcon" Width="40">
-                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
+          <Border Name="BorderRoot" Background="{TemplateBinding Background}" ClipToBounds="True">
+            <Grid>
+              <Border x:Name="DelayOverlay" Background="{DynamicResource RegionBrush}" IsHitTestVisible="False" Opacity="0" />
+              <pf:Ripple>
+                <pf:SimplePanel>
+                  <Rectangle Width="4" HorizontalAlignment="Left" Fill="{TemplateBinding BorderBrush}" />
+                  <ContentControl Margin="4,0,0,0">
+                    <DockPanel Margin="{TemplateBinding Padding}">
+                      <ContentControl Name="PresenterIcon" Width="40">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
+                      </ContentControl>
+                      <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
+                    </DockPanel>
                   </ContentControl>
-                  <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
-                </DockPanel>
-              </ContentControl>
-            </pf:SimplePanel>
+                </pf:SimplePanel>
+              </pf:Ripple>
+            </Grid>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="Icon" Value="{x:Null}">
@@ -8018,6 +8048,24 @@ Themes\Styles\Custom\Window.xaml
               <Setter Property="BorderBrush" Value="Transparent" />
             </DataTrigger>
             <Trigger Property="IsSelected" Value="True">
+              <Trigger.EnterActions>
+                <BeginStoryboard x:Name="SelectionDelaySB">
+                  <Storyboard>
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DelayOverlay" Storyboard.TargetProperty="Opacity">
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1" />
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0.28" Value="1" />
+                      <EasingDoubleKeyFrame KeyTime="0:0:0.38" Value="0">
+                        <EasingDoubleKeyFrame.EasingFunction>
+                          <SineEase EasingMode="EaseOut" />
+                        </EasingDoubleKeyFrame.EasingFunction>
+                      </EasingDoubleKeyFrame>
+                    </DoubleAnimationUsingKeyFrames>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <RemoveStoryboard BeginStoryboardName="SelectionDelaySB" />
+              </Trigger.ExitActions>
               <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
               <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
               <Setter TargetName="PresenterHeader" Property="TextElement.FontWeight" Value="Bold" />
@@ -8035,6 +8083,8 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
     <Setter Property="ItemContainerStyle" Value="{StaticResource SideMenuItemBaseStyle}" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="pfcontrol:SideMenuItem">
@@ -8045,14 +8095,16 @@ Themes\Styles\Custom\Window.xaml
                 <RowDefinition />
               </Grid.RowDefinitions>
               <Border Name="BorderBack" Background="{TemplateBinding Background}" />
-              <ContentControl Grid.Row="0" Margin="4,0,0,0">
-                <DockPanel Name="PanelHeader" Margin="{TemplateBinding Padding}" Background="Transparent">
-                  <ContentControl Name="PresenterIcon" Width="40">
-                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
-                  </ContentControl>
-                  <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
-                </DockPanel>
-              </ContentControl>
+              <Border Grid.Row="0" ClipToBounds="True">
+                <pf:Ripple Margin="4,0,0,0">
+                  <DockPanel Name="PanelHeader" Margin="{TemplateBinding Padding}" Background="Transparent">
+                    <ContentControl Name="PresenterIcon" Width="40">
+                      <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
+                    </ContentControl>
+                    <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
+                  </DockPanel>
+                </pf:Ripple>
+              </Border>
               <StackPanel x:Name="PART_Panel" Grid.Row="1" Height="{Binding PanelAreaLength, RelativeSource={RelativeSource AncestorType=pfcontrol:SideMenu}}" Visibility="Collapsed" />
             </Grid>
           </Border>
@@ -8085,14 +8137,16 @@ Themes\Styles\Custom\Window.xaml
                 <RowDefinition />
               </Grid.RowDefinitions>
               <Border Name="BorderBack" Background="{TemplateBinding Background}" />
-              <ContentControl Grid.Row="0" Margin="4,0,0,0">
-                <DockPanel Name="PanelHeader" Margin="{TemplateBinding Padding}" Background="Transparent">
-                  <ContentControl Name="PresenterIcon" Width="40">
-                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
-                  </ContentControl>
-                  <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
-                </DockPanel>
-              </ContentControl>
+              <Border Grid.Row="0" ClipToBounds="True">
+                <pf:Ripple Margin="4,0,0,0">
+                  <DockPanel Name="PanelHeader" Margin="{TemplateBinding Padding}" Background="Transparent">
+                    <ContentControl Name="PresenterIcon" Width="40">
+                      <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Icon" />
+                    </ContentControl>
+                    <ContentPresenter Name="PresenterHeader" Margin="6,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Header" />
+                  </DockPanel>
+                </pf:Ripple>
+              </Border>
               <ScrollViewer Grid.Row="1" Height="{Binding PanelAreaLength, RelativeSource={RelativeSource AncestorType=pfcontrol:SideMenu}}" Visibility="{Binding Visibility, ElementName=PART_Panel}">
                 <StackPanel x:Name="PART_Panel" Visibility="Collapsed" />
               </ScrollViewer>
