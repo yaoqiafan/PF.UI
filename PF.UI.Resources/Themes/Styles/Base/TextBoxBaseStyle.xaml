@@ -88,13 +88,11 @@
                         <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
                             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
                         </Trigger>
-                        <!--  焦点动画模式（默认）：FocusBorder 从中心扩散  -->
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.EnterActions>
+                        <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Trigger.EnterActions>
                                 <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                                     <Storyboard>
                                         <DoubleAnimation
@@ -117,8 +115,8 @@
                                         </DoubleAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </MultiDataTrigger.EnterActions>
-                            <MultiDataTrigger.ExitActions>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
                                 <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                                     <Storyboard>
                                         <DoubleAnimation
@@ -141,9 +139,8 @@
                                         </DoubleAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </MultiDataTrigger.ExitActions>
-                        </MultiDataTrigger>
-                        <!--  非动画模式（IsFocusAnimationEnabled=False）：直接高亮  -->
+                            </Trigger.ExitActions>
+                        </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
@@ -230,12 +227,11 @@
             <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
                 <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
             </Trigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.EnterActions>
+            <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.EnterActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
@@ -246,8 +242,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.EnterActions>
-                <MultiDataTrigger.ExitActions>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
@@ -258,8 +254,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.ExitActions>
-            </MultiDataTrigger>
+                </Trigger.ExitActions>
+            </Trigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
@@ -343,12 +339,11 @@
             <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
                 <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
             </Trigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.EnterActions>
+            <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.EnterActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
@@ -359,8 +354,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.EnterActions>
-                <MultiDataTrigger.ExitActions>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
@@ -371,8 +366,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.ExitActions>
-            </MultiDataTrigger>
+                </Trigger.ExitActions>
+            </Trigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
@@ -500,12 +495,11 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
             </MultiTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.EnterActions>
+            <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.EnterActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
@@ -516,8 +510,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.EnterActions>
-                <MultiDataTrigger.ExitActions>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
@@ -528,8 +522,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.ExitActions>
-            </MultiDataTrigger>
+                </Trigger.ExitActions>
+            </Trigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
@@ -641,12 +635,11 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
             </MultiTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.EnterActions>
+            <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.EnterActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
@@ -657,8 +650,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.EnterActions>
-                <MultiDataTrigger.ExitActions>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
                     <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
@@ -669,8 +662,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </MultiDataTrigger.ExitActions>
-            </MultiDataTrigger>
+                </Trigger.ExitActions>
+            </Trigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
