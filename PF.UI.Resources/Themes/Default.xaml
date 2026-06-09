@@ -3386,12 +3386,41 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="Margin" Value="0,0,0,4" />
     <Setter Property="Padding" Value="{StaticResource DefaultControlPadding}" />
     <Setter Property="MinHeight" Value="44" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="ListViewItem">
-          <Border x:Name="Bd" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" SnapsToDevicePixels="true">
-            <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" Content="{TemplateBinding Content}" />
+          <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" SnapsToDevicePixels="true" ClipToBounds="True">
+            <Grid>
+              <Border x:Name="DelayOverlay" Background="{DynamicResource RegionBrush}" IsHitTestVisible="False" Opacity="0" />
+              <pf:Ripple CornerRadius="4">
+                <GridViewRowPresenter Margin="{TemplateBinding Padding}" Columns="{TemplateBinding GridView.ColumnCollection}" Content="{TemplateBinding Content}" />
+              </pf:Ripple>
+            </Grid>
           </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="true">
+              <Trigger.EnterActions>
+                <BeginStoryboard x:Name="SelectionDelaySB">
+                  <Storyboard>
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DelayOverlay" Storyboard.TargetProperty="Opacity">
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1" />
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0.28" Value="1" />
+                      <EasingDoubleKeyFrame KeyTime="0:0:0.38" Value="0">
+                        <EasingDoubleKeyFrame.EasingFunction>
+                          <SineEase EasingMode="EaseOut" />
+                        </EasingDoubleKeyFrame.EasingFunction>
+                      </EasingDoubleKeyFrame>
+                    </DoubleAnimationUsingKeyFrames>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <RemoveStoryboard BeginStoryboardName="SelectionDelaySB" />
+              </Trigger.ExitActions>
+            </Trigger>
+          </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
@@ -3415,9 +3444,36 @@ Themes\Styles\Custom\Window.xaml
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ListViewItem">
-              <Border x:Name="Bd" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" SnapsToDevicePixels="true">
-                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+              <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" SnapsToDevicePixels="true" ClipToBounds="True">
+                <Grid>
+                  <Border x:Name="DelayOverlay" Background="{DynamicResource RegionBrush}" IsHitTestVisible="False" Opacity="0" />
+                  <pf:Ripple CornerRadius="4">
+                    <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                  </pf:Ripple>
+                </Grid>
               </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected" Value="true">
+                  <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="SelectionDelaySB">
+                      <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DelayOverlay" Storyboard.TargetProperty="Opacity">
+                          <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1" />
+                          <DiscreteDoubleKeyFrame KeyTime="0:0:0.28" Value="1" />
+                          <EasingDoubleKeyFrame KeyTime="0:0:0.38" Value="0">
+                            <EasingDoubleKeyFrame.EasingFunction>
+                              <SineEase EasingMode="EaseOut" />
+                            </EasingDoubleKeyFrame.EasingFunction>
+                          </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                      </Storyboard>
+                    </BeginStoryboard>
+                  </Trigger.EnterActions>
+                  <Trigger.ExitActions>
+                    <RemoveStoryboard BeginStoryboardName="SelectionDelaySB" />
+                  </Trigger.ExitActions>
+                </Trigger>
+              </ControlTemplate.Triggers>
             </ControlTemplate>
           </Setter.Value>
         </Setter>
