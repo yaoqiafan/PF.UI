@@ -9,6 +9,8 @@
         <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource Self}, Path=(pf:RippleAssist.CornerRadius)}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="RecognizesAccessKey" Value="True" />
         <Setter Property="Template">

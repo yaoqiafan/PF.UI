@@ -169,7 +169,13 @@ public class Ripple : ContentControl
         VisualStateManager.GoToState(this, TemplateStateNormal, false);
         if (TemplatedParent is FrameworkElement parent)
         {
-            SetCurrentValue(RippleAssist.IsDisabledProperty, !RippleAssist.GetIsRippleEnabled(parent));
+            // Only propagate IsRippleEnabled → IsDisabled when the parent has explicitly set the
+            // property. If it's still at the metadata default (false), leave IsDisabled alone so
+            // that ItemsControl containers (e.g. ListBoxItem) aren't permanently disabled due to
+            // the timing gap between PrepareContainerForItemOverride and template application.
+            var src = DependencyPropertyHelper.GetValueSource(parent, RippleAssist.IsRippleEnabledProperty);
+            if (src.BaseValueSource > BaseValueSource.Default)
+                SetCurrentValue(RippleAssist.IsDisabledProperty, !RippleAssist.GetIsRippleEnabled(parent));
             SetCurrentValue(FeedbackProperty, RippleAssist.GetFeedback(parent));
         }
     }
