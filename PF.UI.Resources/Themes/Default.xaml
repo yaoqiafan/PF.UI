@@ -2503,11 +2503,15 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="MinHeight" Value="{StaticResource DefaultControlHeight}" />
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="ComboBoxItem">
-          <Border x:Name="Bd" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+          <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ClipToBounds="True" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+            <pf:Ripple>
+              <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </pf:Ripple>
           </Border>
           <ControlTemplate.Triggers>
             <MultiTrigger>
@@ -4648,12 +4652,16 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="MinHeight" Value="{StaticResource DefaultControlHeight}" />
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TabItem">
-          <pf:SimplePanel x:Name="templateRoot" SnapsToDevicePixels="true">
+          <pf:SimplePanel x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="true">
             <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" Margin="0" />
-            <ContentPresenter x:Name="contentPresenter" TextElement.Foreground="{DynamicResource PrimaryTextBrush}" ContentSource="Header" Focusable="False" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
+            <pf:Ripple>
+              <ContentPresenter x:Name="contentPresenter" TextElement.Foreground="{DynamicResource PrimaryTextBrush}" ContentSource="Header" Focusable="False" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
+            </pf:Ripple>
           </pf:SimplePanel>
           <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="False">
@@ -4769,11 +4777,15 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="MinHeight" Value="{StaticResource DefaultControlHeight}" />
     <Setter Property="Padding" Value="10,0" />
     <Setter Property="Margin" Value="-1,0,0,0" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TabItem">
-          <Border x:Name="BorderRoot" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-            <ContentPresenter x:Name="contentPresenter" ContentSource="Header" TextElement.Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
+          <Border x:Name="BorderRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ClipToBounds="True" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+            <pf:Ripple CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+              <ContentPresenter x:Name="contentPresenter" ContentSource="Header" TextElement.Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
+            </pf:Ripple>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -4869,6 +4881,11 @@ Themes\Styles\Custom\Window.xaml
         <ControlTemplate TargetType="TextBox">
           <pf:SimplePanel x:Name="root">
             <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="True" />
+            <Border x:Name="FocusBorder" BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True">
+              <Border.RenderTransform>
+                <ScaleTransform ScaleX="0" ScaleY="0" />
+              </Border.RenderTransform>
+            </Border>
             <ScrollViewer x:Name="PART_ContentHost" Margin="-2,0" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
           </pf:SimplePanel>
           <ControlTemplate.Triggers>
@@ -4879,9 +4896,50 @@ Themes\Styles\Custom\Window.xaml
             <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
               <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
             </Trigger>
+            <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+              <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
             <Trigger Property="IsFocused" Value="True">
-              <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+              <Trigger.EnterActions>
+                <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                      <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseOut" />
+                      </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                      <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseOut" />
+                      </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                      <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseIn" />
+                      </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                      <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseIn" />
+                      </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.ExitActions>
             </Trigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+              </MultiDataTrigger.Conditions>
+              <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+            </MultiDataTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
@@ -8789,6 +8847,11 @@ Themes\Styles\Custom\Window.xaml
         <TextBlock pf:TextBlockAttach.AutoTooltip="True" Text="{Binding Path=(pfcontrol:InfoElement.Title), RelativeSource={RelativeSource TemplatedParent}}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
       </DockPanel>
       <Border x:Name="border" Grid.Row="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="True" />
+      <Border x:Name="FocusBorder" Grid.Row="1" BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True">
+        <Border.RenderTransform>
+          <ScaleTransform ScaleX="0" ScaleY="0" />
+        </Border.RenderTransform>
+      </Border>
       <TextBlock x:Name="Placeholder" Grid.Row="1" Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource TextBlockDefaultThiLight}" Text="{Binding Path=(pfcontrol:InfoElement.Placeholder), RelativeSource={RelativeSource TemplatedParent}}" Visibility="{TemplateBinding Text,                                              Converter={StaticResource String2VisibilityReConverter}}" />
       <ScrollViewer x:Name="PART_ContentHost" Grid.Row="1" Margin="-2,0" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
     </Grid>
@@ -8801,9 +8864,50 @@ Themes\Styles\Custom\Window.xaml
       <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
       </Trigger>
+      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+        <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+      </DataTrigger>
       <Trigger Property="IsFocused" Value="True">
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Trigger.EnterActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.EnterActions>
+        <Trigger.ExitActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.ExitActions>
       </Trigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+        </MultiDataTrigger.Conditions>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+      </MultiDataTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <ControlTemplate x:Key="TextBoxExtendLeftTemplate" TargetType="TextBox">
@@ -8817,6 +8921,11 @@ Themes\Styles\Custom\Window.xaml
         <TextBlock pf:TextBlockAttach.AutoTooltip="True" Text="{Binding Path=(pfcontrol:InfoElement.Title), RelativeSource={RelativeSource TemplatedParent}}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
       </DockPanel>
       <Border x:Name="border" Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="True" />
+      <Border x:Name="FocusBorder" Grid.Column="1" BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True">
+        <Border.RenderTransform>
+          <ScaleTransform ScaleX="0" ScaleY="0" />
+        </Border.RenderTransform>
+      </Border>
       <TextBlock x:Name="Placeholder" Grid.Column="1" Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource TextBlockDefaultThiLight}" Text="{Binding Path=(pfcontrol:InfoElement.Placeholder), RelativeSource={RelativeSource TemplatedParent}}" Visibility="{TemplateBinding Text,                                              Converter={StaticResource String2VisibilityReConverter}}" />
       <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" Margin="-2,0" Padding="{TemplateBinding Padding}" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
     </Grid>
@@ -8829,9 +8938,50 @@ Themes\Styles\Custom\Window.xaml
       <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
       </Trigger>
+      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+        <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+      </DataTrigger>
       <Trigger Property="IsFocused" Value="True">
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Trigger.EnterActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.EnterActions>
+        <Trigger.ExitActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.ExitActions>
       </Trigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+        </MultiDataTrigger.Conditions>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+      </MultiDataTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <Style x:Key="TextBoxExtendBaseStyle" BasedOn="{StaticResource TextBoxBaseStyle}" TargetType="TextBox">
@@ -9172,6 +9322,8 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="MinHeight" Value="{StaticResource DefaultControlHeight}" />
     <Setter Property="Margin" Value="0,0,0,2" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TreeViewItem">
@@ -9180,11 +9332,16 @@ Themes\Styles\Custom\Window.xaml
               <RowDefinition MinHeight="{TemplateBinding MinHeight}" />
               <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Border x:Name="Bd" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="true">
-              <DockPanel Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}" LastChildFill="True">
-                <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ExpandCollapseToggleStyle}" />
-                <ContentPresenter x:Name="PART_Header" VerticalAlignment="Center" ContentSource="Header" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-              </DockPanel>
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ClipToBounds="True" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="true">
+              <Grid>
+                <Border x:Name="DelayOverlay" Background="{DynamicResource SecondaryRegionBrush}" IsHitTestVisible="False" Opacity="0" />
+                <pf:Ripple>
+                  <DockPanel Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}" LastChildFill="True">
+                    <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ExpandCollapseToggleStyle}" />
+                    <ContentPresenter x:Name="PART_Header" VerticalAlignment="Center" ContentSource="Header" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                  </DockPanel>
+                </pf:Ripple>
+              </Grid>
             </Border>
             <ItemsPresenter x:Name="ItemsHost" Grid.Row="1" />
           </Grid>
@@ -9199,6 +9356,24 @@ Themes\Styles\Custom\Window.xaml
               <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
             </Trigger>
             <Trigger Property="IsSelected" Value="true">
+              <Trigger.EnterActions>
+                <BeginStoryboard x:Name="SelectionDelaySB">
+                  <Storyboard>
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DelayOverlay" Storyboard.TargetProperty="Opacity">
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1" />
+                      <DiscreteDoubleKeyFrame KeyTime="0:0:0.28" Value="1" />
+                      <EasingDoubleKeyFrame KeyTime="0:0:0.38" Value="0">
+                        <EasingDoubleKeyFrame.EasingFunction>
+                          <SineEase EasingMode="EaseOut" />
+                        </EasingDoubleKeyFrame.EasingFunction>
+                      </EasingDoubleKeyFrame>
+                    </DoubleAnimationUsingKeyFrames>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <RemoveStoryboard BeginStoryboardName="SelectionDelaySB" />
+              </Trigger.ExitActions>
               <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimaryBrush}" />
               <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
             </Trigger>
@@ -14951,6 +15126,11 @@ Themes\Styles\Custom\Window.xaml
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Border x:Name="border" Grid.ColumnSpan="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
+        <Border x:Name="FocusBorder" Grid.ColumnSpan="2" BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True">
+          <Border.RenderTransform>
+            <ScaleTransform ScaleX="0" ScaleY="0" />
+          </Border.RenderTransform>
+        </Border>
         <TextBlock Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource TextBlockDefaultThiLight}" Text="{Binding Path=(pfcontrol:InfoElement.Placeholder), RelativeSource={RelativeSource TemplatedParent}}" Visibility="{TemplateBinding Text,                                                  Converter={StaticResource String2VisibilityReConverter}}" />
         <ScrollViewer x:Name="PART_ContentHost" Grid.Column="0" Margin="-2,0,0,0" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
         <Button Name="ButtonClear" Grid.Column="1" Width="Auto" Height="Auto" Padding="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ThicknessSplitConverter}, ConverterParameter='0,0,1,0'}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" pf:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" pf:IconElement.Width="14" Command="pfcontrol:ControlCommands.Clear" Focusable="False" Foreground="{Binding BorderBrush, ElementName=border}" Style="{StaticResource ButtonIcon}" Visibility="Collapsed" />
@@ -14972,9 +15152,50 @@ Themes\Styles\Custom\Window.xaml
         </MultiTrigger.Conditions>
         <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
       </MultiTrigger>
-      <Trigger Property="IsFocused" Value="true">
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+        <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+      </DataTrigger>
+      <Trigger Property="IsFocused" Value="True">
+        <Trigger.EnterActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.EnterActions>
+        <Trigger.ExitActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.ExitActions>
       </Trigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+        </MultiDataTrigger.Conditions>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+      </MultiDataTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <ControlTemplate x:Key="TextBoxPlusLeftTemplate" TargetType="pfcontrol:TextBox">
@@ -14993,6 +15214,11 @@ Themes\Styles\Custom\Window.xaml
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Border x:Name="border" Grid.ColumnSpan="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
+        <Border x:Name="FocusBorder" Grid.ColumnSpan="2" BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True">
+          <Border.RenderTransform>
+            <ScaleTransform ScaleX="0" ScaleY="0" />
+          </Border.RenderTransform>
+        </Border>
         <TextBlock Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource TextBlockDefaultThiLight}" Text="{Binding Path=(pfcontrol:InfoElement.Placeholder), RelativeSource={RelativeSource TemplatedParent}}" Visibility="{TemplateBinding Text,                                                  Converter={StaticResource String2VisibilityReConverter}}" />
         <ScrollViewer x:Name="PART_ContentHost" Grid.Column="0" Margin="-2,0,0,0" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
         <Button Name="ButtonClear" Grid.Column="1" Width="Auto" Height="Auto" Padding="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ThicknessSplitConverter}, ConverterParameter='0,0,1,0'}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" pf:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}" pf:IconElement.Width="14" Command="pfcontrol:ControlCommands.Clear" Focusable="False" Foreground="{Binding BorderBrush, ElementName=border}" Style="{StaticResource ButtonIcon}" Visibility="Collapsed" />
@@ -15014,9 +15240,50 @@ Themes\Styles\Custom\Window.xaml
         </MultiTrigger.Conditions>
         <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
       </MultiTrigger>
+      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+        <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
+      </DataTrigger>
       <Trigger Property="IsFocused" Value="True">
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Trigger.EnterActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.EnterActions>
+        <Trigger.ExitActions>
+          <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+              <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                  <CubicEase EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+              </DoubleAnimation>
+            </Storyboard>
+          </BeginStoryboard>
+        </Trigger.ExitActions>
       </Trigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+        </MultiDataTrigger.Conditions>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+      </MultiDataTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <Style x:Key="TextBoxPlusBaseStyle" BasedOn="{StaticResource TextBoxExtendBaseStyle}" TargetType="pfcontrol:TextBox">
