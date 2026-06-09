@@ -1,13 +1,14 @@
+using PF.UI.Controls;
+using PF.UI.Shared.Data;
+using PF.UI.Shared.Tools;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using PF.UI.Controls;
-using PF.UI.Shared.Data;
-using PF.UI.Shared.Tools;
 using SwWindow = System.Windows.Window;
 
 namespace PF.UI.Views
@@ -88,28 +89,28 @@ namespace PF.UI.Views
             SaveTheme(name);
             ThemeIcon.Kind = _isDarkTheme ? PackIconKind.WeatherSunny : PackIconKind.WeatherNight;
 
-            // 5. Timer：每帧仅更新椭圆半径（避免每帧重建 Geometry）
-            var maxR = Math.Sqrt(w * w + h * h) + 20;
-            var startMs = Environment.TickCount;
-            const int durationMs = 600;
-            var timer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(10) };
 
-            timer.Tick += (_, _) =>
+            // 5. 与渲染管线同步，每帧更新椭圆半径
+            var maxR = Math.Sqrt(w * w + h * h) + 20;
+            var sw = Stopwatch.StartNew();
+            const int durationMs = 600;
+
+            EventHandler renderHandler = null!;
+            renderHandler = (_, _) =>
             {
-                var elapsed = Environment.TickCount - startMs;
-                var t = Math.Min((double)elapsed / durationMs, 1);
+                var t = Math.Min(sw.ElapsedMilliseconds / (double)durationMs, 1.0);
                 double eased = t < 0.5 ? 4 * t * t * t : 1 - Math.Pow(-2 * t + 2, 3) / 2;
                 hole.RadiusX = maxR * eased;
                 hole.RadiusY = maxR * eased;
 
-                if (t >= 1)
+                if (t >= 1.0)
                 {
-                    timer.Stop();
+                    CompositionTarget.Rendering -= renderHandler;
                     overlayWin.Close();
                     _isAnimating = false;
                 }
             };
-            timer.Start();
+            CompositionTarget.Rendering += renderHandler;
         }
 
         // ─── 主题持久化 ──────────────────────────────────────────────────
