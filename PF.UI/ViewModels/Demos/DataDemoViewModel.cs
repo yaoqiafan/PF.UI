@@ -12,7 +12,7 @@ namespace PF.UI.ViewModels.Demos
         {
             new DemoTocItem { Anchor = "DataGrid",   Title = "DataGrid",   Sub = "多列表格 / 排序 / 选中" },
             new DemoTocItem { Anchor = "ListBox",    Title = "ListBox",    Sub = "单选/多选 / 自定义模板" },
-            new DemoTocItem { Anchor = "ListView",   Title = "ListView",   Sub = "GridView 多列列表" },
+            new DemoTocItem { Anchor = "ListView",   Title = "ListView",   Sub = "GridView 多列 / 纯列表" },
             new DemoTocItem { Anchor = "TreeView",   Title = "TreeView",   Sub = "递归树形节点" },
             new DemoTocItem { Anchor = "Pagination",    Title = "Pagination",    Sub = "分页 / 跳页" },
             new DemoTocItem { Anchor = "PropertyGrid",  Title = "PropertyGrid",  Sub = "属性网格 / 类型 / 搜索" },
@@ -168,6 +168,23 @@ namespace PF.UI.ViewModels.Demos
             <GridViewColumn Header=""单价""   DisplayMemberBinding=""{Binding Price, StringFormat=¥\{0:N0\}}"" Width=""100"" />
         </GridView>
     </ListView.View>
+</ListView>";
+
+        public const string XamlListViewSimple = @"<!-- ListView 不设置 View 时退化为纯列表，使用 ListViewItem 容器 -->
+<ListView ItemsSource=""{Binding Stations}"" />
+
+<!-- 自定义 ItemTemplate -->
+<ListView ItemsSource=""{Binding Stations}"">
+    <ListView.ItemTemplate>
+        <DataTemplate>
+            <StackPanel Orientation=""Horizontal"" Margin=""4,2"">
+                <pf:PackIcon Kind=""Factory"" Width=""14"" Height=""14""
+                             Foreground=""{DynamicResource PrimaryBrush}""
+                             VerticalAlignment=""Center"" Margin=""0,0,8,0"" />
+                <TextBlock Text=""{Binding}"" VerticalAlignment=""Center"" />
+            </StackPanel>
+        </DataTemplate>
+    </ListView.ItemTemplate>
 </ListView>";
 
         public const string XamlTreeView = @"<!-- HierarchicalDataTemplate 递归绑定树形数据 -->

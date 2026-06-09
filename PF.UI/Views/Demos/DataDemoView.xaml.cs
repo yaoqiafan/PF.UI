@@ -89,6 +89,13 @@ namespace PF.UI.Views.Demos
                 vm.LogCommand.Execute($"ListView 选中: {p.Name}");
         }
 
+        private void ListView_Plain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is not DataDemoViewModel vm) return;
+            if (sender is ListView lv && lv.SelectedItem is string s)
+                vm.LogCommand.Execute($"ListView (纯列表) 选中: {s}");
+        }
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (DataContext is not DataDemoViewModel vm) return;
