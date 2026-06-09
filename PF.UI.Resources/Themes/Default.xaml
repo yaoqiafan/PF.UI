@@ -7491,16 +7491,27 @@ Themes\Styles\Custom\Window.xaml
   <Style x:Key="RadioButtonSameAsButtonBaseStyle" BasedOn="{StaticResource ButtonBaseBaseStyle}" TargetType="RadioButton">
     <Setter Property="pfcontrol:BorderElement.CornerRadius" Value="{StaticResource DefaultCornerRadius}" />
     <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="RadioButton">
           <pf:SimplePanel>
+            <pf:SimplePanel.Clip>
+              <MultiBinding Converter="{StaticResource BorderClipConverter}">
+                <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth" />
+                <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight" />
+                <Binding Path="(pfcontrol:BorderElement.CornerRadius)" RelativeSource="{RelativeSource TemplatedParent}" />
+              </MultiBinding>
+            </pf:SimplePanel.Clip>
             <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
-            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-              <StackPanel Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Orientation="Horizontal">
-                <Path x:Name="PathMain" Width="{TemplateBinding pfcontrol:IconElement.Width}" Height="{TemplateBinding pfcontrol:IconElement.Height}" Data="{TemplateBinding pfcontrol:IconElement.Geometry}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" />
-                <ContentPresenter x:Name="ContentPresenterMain" Margin="6,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-              </StackPanel>
+            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" ClipToBounds="True">
+              <pf:Ripple CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+                <StackPanel Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Orientation="Horizontal">
+                  <Path x:Name="PathMain" Width="{TemplateBinding pfcontrol:IconElement.Width}" Height="{TemplateBinding pfcontrol:IconElement.Height}" Data="{TemplateBinding pfcontrol:IconElement.Geometry}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" />
+                  <ContentPresenter x:Name="ContentPresenterMain" Margin="6,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </StackPanel>
+              </pf:Ripple>
             </Border>
             <Border x:Name="BorderChecked" Margin="-1" BorderBrush="{DynamicResource DarkMaskBrush}" BorderThickness="4" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" Visibility="Collapsed" />
           </pf:SimplePanel>
@@ -7523,9 +7534,13 @@ Themes\Styles\Custom\Window.xaml
       <Trigger Property="IsMouseOver" Value="True">
         <Setter Property="Opacity" Value=".9" />
       </Trigger>
-      <Trigger Property="IsPressed" Value="True">
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsPressed" Value="True" />
+          <Condition Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="Opacity" Value=".6" />
-      </Trigger>
+      </MultiTrigger>
       <Trigger Property="IsEnabled" Value="False">
         <Setter Property="Opacity" Value="0.4" />
       </Trigger>
@@ -7538,16 +7553,20 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
     <Setter Property="pfcontrol:BorderElement.CornerRadius" Value="0" />
     <Setter Property="pfcontrol:VisualElement.HighlightBrush" Value="{DynamicResource PrimaryBrush}" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="RadioButton">
-          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-            <Border Name="BorderHighlight" BorderBrush="Transparent" BorderThickness="3,0,0,0">
-              <StackPanel Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Orientation="Horizontal">
-                <Path x:Name="PathMain" Width="{Binding Path=(pfcontrol:IconElement.Width), RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Path=(pfcontrol:IconElement.Height), RelativeSource={RelativeSource TemplatedParent}}" Data="{TemplateBinding pfcontrol:IconElement.Geometry}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" />
-                <ContentPresenter x:Name="ContentPresenterMain" Margin="6,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-              </StackPanel>
-            </Border>
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" ClipToBounds="True">
+            <pf:Ripple CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+              <Border Name="BorderHighlight" BorderBrush="Transparent" BorderThickness="3,0,0,0">
+                <StackPanel Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Orientation="Horizontal">
+                  <Path x:Name="PathMain" Width="{Binding Path=(pfcontrol:IconElement.Width), RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Path=(pfcontrol:IconElement.Height), RelativeSource={RelativeSource TemplatedParent}}" Data="{TemplateBinding pfcontrol:IconElement.Geometry}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" />
+                  <ContentPresenter x:Name="ContentPresenterMain" Margin="6,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </StackPanel>
+              </Border>
+            </pf:Ripple>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="Content" Value="{x:Null}">
@@ -7568,9 +7587,13 @@ Themes\Styles\Custom\Window.xaml
       <Trigger Property="IsMouseOver" Value="True">
         <Setter Property="Opacity" Value=".9" />
       </Trigger>
-      <Trigger Property="IsPressed" Value="True">
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsPressed" Value="True" />
+          <Condition Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="Opacity" Value=".6" />
-      </Trigger>
+      </MultiTrigger>
       <Trigger Property="IsEnabled" Value="False">
         <Setter Property="Opacity" Value="0.4" />
       </Trigger>
@@ -7589,14 +7612,18 @@ Themes\Styles\Custom\Window.xaml
     <Setter Property="Margin" Value="-1,0,0,0" />
     <Setter Property="pfcontrol:IconElement.Width" Value="16" />
     <Setter Property="pfcontrol:IconElement.Height" Value="16" />
+    <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="RadioButton">
-          <Border x:Name="BorderRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-            <StackPanel Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Orientation="Horizontal">
-              <Path x:Name="PathMain" Width="{Binding Path=(pfcontrol:IconElement.Width), RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Path=(pfcontrol:IconElement.Height), RelativeSource={RelativeSource TemplatedParent}}" Data="{TemplateBinding pfcontrol:IconElement.Geometry}" Fill="{Binding Path=(TextElement.Foreground), ElementName=contentPresenter}" SnapsToDevicePixels="True" Stretch="Uniform" />
-              <ContentPresenter x:Name="contentPresenter" Margin="6,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </StackPanel>
+          <Border x:Name="BorderRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" ClipToBounds="True">
+            <pf:Ripple CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+              <StackPanel Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Orientation="Horizontal">
+                <Path x:Name="PathMain" Width="{Binding Path=(pfcontrol:IconElement.Width), RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Path=(pfcontrol:IconElement.Height), RelativeSource={RelativeSource TemplatedParent}}" Data="{TemplateBinding pfcontrol:IconElement.Geometry}" Fill="{Binding Path=(TextElement.Foreground), ElementName=contentPresenter}" SnapsToDevicePixels="True" Stretch="Uniform" />
+                <ContentPresenter x:Name="contentPresenter" Margin="6,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+              </StackPanel>
+            </pf:Ripple>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -7631,9 +7658,13 @@ Themes\Styles\Custom\Window.xaml
       <Trigger Property="IsMouseOver" Value="True">
         <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
       </Trigger>
-      <Trigger Property="IsPressed" Value="True">
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsPressed" Value="True" />
+          <Condition Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="Background" Value="{DynamicResource BorderBrush}" />
-      </Trigger>
+      </MultiTrigger>
     </Style.Triggers>
   </Style>
   <Style x:Key="RepeatButtonBaseStyle" BasedOn="{StaticResource ButtonBaseBaseStyle}" TargetType="RepeatButton">
@@ -10220,6 +10251,7 @@ Themes\Styles\Custom\Window.xaml
   <Style x:Key="RadioButtonSameAsButtonPrimary" BasedOn="{StaticResource RadioButtonSameAsButtonBaseStyle}" TargetType="RadioButton">
     <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
   </Style>
   <Style x:Key="RadioButtonSameAsButtonPrimary.Small" BasedOn="{StaticResource RadioButtonSameAsButtonPrimary}" TargetType="RadioButton">
     <Setter Property="Height" Value="20" />
@@ -10229,6 +10261,7 @@ Themes\Styles\Custom\Window.xaml
   <Style x:Key="RadioButtonSameAsButtonSuccess" BasedOn="{StaticResource RadioButtonSameAsButtonBaseStyle}" TargetType="RadioButton">
     <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
   </Style>
   <Style x:Key="RadioButtonSameAsButtonSuccess.Small" BasedOn="{StaticResource RadioButtonSameAsButtonSuccess}" TargetType="RadioButton">
     <Setter Property="Height" Value="20" />
@@ -10238,6 +10271,7 @@ Themes\Styles\Custom\Window.xaml
   <Style x:Key="RadioButtonSameAsButtonInfo" BasedOn="{StaticResource RadioButtonSameAsButtonBaseStyle}" TargetType="RadioButton">
     <Setter Property="Background" Value="{DynamicResource InfoBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
   </Style>
   <Style x:Key="RadioButtonSameAsButtonInfo.Small" BasedOn="{StaticResource RadioButtonSameAsButtonInfo}" TargetType="RadioButton">
     <Setter Property="Height" Value="20" />
@@ -10247,6 +10281,7 @@ Themes\Styles\Custom\Window.xaml
   <Style x:Key="RadioButtonSameAsButtonWarning" BasedOn="{StaticResource RadioButtonSameAsButtonBaseStyle}" TargetType="RadioButton">
     <Setter Property="Background" Value="{DynamicResource WarningBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
   </Style>
   <Style x:Key="RadioButtonSameAsButtonWarning.Small" BasedOn="{StaticResource RadioButtonSameAsButtonWarning}" TargetType="RadioButton">
     <Setter Property="Height" Value="20" />
@@ -10256,6 +10291,7 @@ Themes\Styles\Custom\Window.xaml
   <Style x:Key="RadioButtonSameAsButtonDanger" BasedOn="{StaticResource RadioButtonSameAsButtonBaseStyle}" TargetType="RadioButton">
     <Setter Property="Background" Value="{DynamicResource DangerBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+    <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
   </Style>
   <Style x:Key="RadioButtonSameAsButtonDanger.Small" BasedOn="{StaticResource RadioButtonSameAsButtonDanger}" TargetType="RadioButton">
     <Setter Property="Height" Value="20" />

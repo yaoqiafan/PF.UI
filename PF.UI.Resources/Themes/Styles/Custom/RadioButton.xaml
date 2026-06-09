@@ -185,6 +185,7 @@
         TargetType="RadioButton">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -202,6 +203,7 @@
         TargetType="RadioButton">
         <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -219,6 +221,7 @@
         TargetType="RadioButton">
         <Setter Property="Background" Value="{DynamicResource InfoBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -236,6 +239,7 @@
         TargetType="RadioButton">
         <Setter Property="Background" Value="{DynamicResource WarningBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -253,6 +257,7 @@
         TargetType="RadioButton">
         <Setter Property="Background" Value="{DynamicResource DangerBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
