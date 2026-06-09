@@ -961,20 +961,25 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="MinHeight" Value="{StaticResource DefaultControlHeight}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
                     <Border
                         x:Name="Bd"
-                        Padding="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
+                        ClipToBounds="True"
                         CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-                        <ContentPresenter
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <pfcontrol:Ripple>
+                            <ContentPresenter
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </pfcontrol:Ripple>
                     </Border>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
