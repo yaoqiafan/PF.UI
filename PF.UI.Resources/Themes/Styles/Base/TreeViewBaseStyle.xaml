@@ -52,6 +52,8 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="MinHeight" Value="{StaticResource DefaultControlHeight}" />
         <Setter Property="Margin" Value="0,0,0,2" />
+        <Setter Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="True" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TreeViewItem">
@@ -62,24 +64,35 @@
                         </Grid.RowDefinitions>
                         <Border
                             x:Name="Bd"
-                            Padding="{TemplateBinding Padding}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
+                            ClipToBounds="True"
                             CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
                             SnapsToDevicePixels="true">
-                            <DockPanel Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}" LastChildFill="True">
-                                <ToggleButton
-                                    x:Name="Expander"
-                                    ClickMode="Press"
-                                    IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Style="{StaticResource ExpandCollapseToggleStyle}" />
-                                <ContentPresenter
-                                    x:Name="PART_Header"
-                                    VerticalAlignment="Center"
-                                    ContentSource="Header"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </DockPanel>
+                            <Grid>
+                                <Border
+                                    x:Name="DelayOverlay"
+                                    Background="{DynamicResource SecondaryRegionBrush}"
+                                    IsHitTestVisible="False"
+                                    Opacity="0" />
+                                <pfcontrol:Ripple>
+                                    <DockPanel
+                                        Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                        LastChildFill="True">
+                                        <ToggleButton
+                                            x:Name="Expander"
+                                            ClickMode="Press"
+                                            IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource ExpandCollapseToggleStyle}" />
+                                        <ContentPresenter
+                                            x:Name="PART_Header"
+                                            VerticalAlignment="Center"
+                                            ContentSource="Header"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </DockPanel>
+                                </pfcontrol:Ripple>
+                            </Grid>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost" Grid.Row="1" />
                     </Grid>
@@ -94,6 +107,26 @@
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard x:Name="SelectionDelaySB">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames
+                                            Storyboard.TargetName="DelayOverlay"
+                                            Storyboard.TargetProperty="Opacity">
+                                            <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1" />
+                                            <DiscreteDoubleKeyFrame KeyTime="0:0:0.28" Value="1" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.38" Value="0">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <SineEase EasingMode="EaseOut" />
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="SelectionDelaySB" />
+                            </Trigger.ExitActions>
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource PrimaryBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource TextIconBrush}" />
                         </Trigger>
