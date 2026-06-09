@@ -59,6 +59,18 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
                             SnapsToDevicePixels="True" />
+                        <Border
+                            x:Name="FocusBorder"
+                            BorderBrush="{DynamicResource PrimaryBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                            IsHitTestVisible="False"
+                            RenderTransformOrigin="0.5,0.5"
+                            SnapsToDevicePixels="True">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="0" ScaleY="0" />
+                            </Border.RenderTransform>
+                        </Border>
                         <ScrollViewer
                             x:Name="PART_ContentHost"
                             Margin="-2,0"
@@ -76,9 +88,69 @@
                         <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
                             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
                         </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
+                        <!--  焦点动画模式（默认）：FocusBorder 从中心扩散  -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.EnterActions>
+                                <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="FocusBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1"
+                                            Duration="0:0:0.2">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="FocusBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1"
+                                            Duration="0:0:0.2">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiDataTrigger.EnterActions>
+                            <MultiDataTrigger.ExitActions>
+                                <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="FocusBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="0"
+                                            Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="FocusBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="0"
+                                            Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiDataTrigger.ExitActions>
+                        </MultiDataTrigger>
+                        <!--  非动画模式（IsFocusAnimationEnabled=False）：直接高亮  -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
                             <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-                        </Trigger>
+                        </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -116,6 +188,19 @@
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
                 SnapsToDevicePixels="True" />
+            <Border
+                x:Name="FocusBorder"
+                Grid.Row="1"
+                BorderBrush="{DynamicResource PrimaryBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5"
+                SnapsToDevicePixels="True">
+                <Border.RenderTransform>
+                    <ScaleTransform ScaleX="0" ScaleY="0" />
+                </Border.RenderTransform>
+            </Border>
             <TextBlock
                 x:Name="Placeholder"
                 Grid.Row="1"
@@ -145,9 +230,43 @@
             <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
                 <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
             </Trigger>
-            <Trigger Property="IsFocused" Value="True">
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+                </MultiDataTrigger.Conditions>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-            </Trigger>
+            </MultiDataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -183,6 +302,19 @@
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
                 SnapsToDevicePixels="True" />
+            <Border
+                x:Name="FocusBorder"
+                Grid.Column="1"
+                BorderBrush="{DynamicResource PrimaryBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5"
+                SnapsToDevicePixels="True">
+                <Border.RenderTransform>
+                    <ScaleTransform ScaleX="0" ScaleY="0" />
+                </Border.RenderTransform>
+            </Border>
             <TextBlock
                 x:Name="Placeholder"
                 Grid.Column="1"
@@ -211,9 +343,43 @@
             <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
                 <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
             </Trigger>
-            <Trigger Property="IsFocused" Value="True">
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+                </MultiDataTrigger.Conditions>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-            </Trigger>
+            </MultiDataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -270,6 +436,19 @@
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
+                <Border
+                    x:Name="FocusBorder"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="{DynamicResource PrimaryBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                    IsHitTestVisible="False"
+                    RenderTransformOrigin="0.5,0.5"
+                    SnapsToDevicePixels="True">
+                    <Border.RenderTransform>
+                        <ScaleTransform ScaleX="0" ScaleY="0" />
+                    </Border.RenderTransform>
+                </Border>
                 <TextBlock
                     Margin="{TemplateBinding Padding}"
                     HorizontalAlignment="Stretch"
@@ -321,9 +500,43 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
             </MultiTrigger>
-            <Trigger Property="IsFocused" Value="true">
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+                </MultiDataTrigger.Conditions>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-            </Trigger>
+            </MultiDataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -364,6 +577,19 @@
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
+                <Border
+                    x:Name="FocusBorder"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="{DynamicResource PrimaryBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                    IsHitTestVisible="False"
+                    RenderTransformOrigin="0.5,0.5"
+                    SnapsToDevicePixels="True">
+                    <Border.RenderTransform>
+                        <ScaleTransform ScaleX="0" ScaleY="0" />
+                    </Border.RenderTransform>
+                </Border>
                 <TextBlock
                     Margin="{TemplateBinding Padding}"
                     HorizontalAlignment="Stretch"
@@ -415,9 +641,43 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
             </MultiTrigger>
-            <Trigger Property="IsFocused" Value="True">
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
+                    <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetName="FocusBorder" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="0" Duration="0:0:0.15">
+                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseIn" /></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
+                    <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
+                </MultiDataTrigger.Conditions>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-            </Trigger>
+            </MultiDataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

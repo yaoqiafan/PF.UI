@@ -47,4 +47,17 @@ public class BorderElement
 
     public static bool GetCircular(DependencyObject element)
         => (bool) element.GetValue(CircularProperty);
+
+    public static readonly DependencyProperty IsFocusAnimationEnabledProperty =
+        DependencyProperty.RegisterAttached(
+            "IsFocusAnimationEnabled",
+            typeof(bool),
+            typeof(BorderElement),
+            new FrameworkPropertyMetadata(ValueBoxes.TrueBox, FrameworkPropertyMetadataOptions.Inherits));
+
+    public static bool GetIsFocusAnimationEnabled(DependencyObject element) =>
+        (bool)element.GetValue(IsFocusAnimationEnabledProperty);
+
+    public static void SetIsFocusAnimationEnabled(DependencyObject element, bool value) =>
+        element.SetValue(IsFocusAnimationEnabledProperty, ValueBoxes.BooleanBox(value));
 }
