@@ -85,6 +85,7 @@
                                     <DataGrid ItemsSource="{Binding Products}"
                                               AutoGenerateColumns="False"
                                               CanUserSortColumns="True"
+                                              IsReadOnly="True"
                                               GridLinesVisibility="Horizontal"
                                               SelectionMode="Single"
                                               MaxHeight="260"
