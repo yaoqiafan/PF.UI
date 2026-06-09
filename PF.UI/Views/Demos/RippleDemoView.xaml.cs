@@ -23,10 +23,12 @@ namespace PF.UI.Views.Demos
             Loaded -= OnLoaded;
             _anchors = new Dictionary<string, FrameworkElement>
             {
-                ["Basic"]    = Section_Basic,
-                ["Centered"] = Section_Centered,
-                ["ListItem"] = Section_ListItem,
-                ["Options"]  = Section_Options,
+                ["Basic"]             = Section_Basic,
+                ["Centered"]          = Section_Centered,
+                ["ListItem"]          = Section_ListItem,
+                ["ButtonIntegration"] = Section_ButtonIntegration,
+                ["Inherit"]           = Section_Inherit,
+                ["Options"]           = Section_Options,
             };
             _tocMap = new Dictionary<string, DemoTocItem>();
             if (DataContext is RippleDemoViewModel vm)

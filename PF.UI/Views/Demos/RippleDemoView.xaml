@@ -265,6 +265,182 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- ═══════════ 5. Button 内层集成 ═══════════ -->
+                    <Border x:Name="Section_ButtonIntegration" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="5. Button 内层集成" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="在任意 Button 上设置 pf:RippleAssist.IsEnabled=&quot;True&quot; 即可激活内层涟漪，无需手动包裹 pf:Ripple。Feedback 颜色已按按钮类型预设：彩色背景 → White，默认 → PrimaryBrush。"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               TextWrapping="Wrap" Margin="0,0,0,16" />
+
+                                    <!-- 关闭对比行 -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="4" CornerRadius="2" Margin="0,2,8,2"
+                                                Background="{DynamicResource SecondaryTextBrush}" />
+                                        <TextBlock Text="IsEnabled=False（默认，仅 Opacity 反馈）"
+                                                   FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <WrapPanel Margin="0,0,0,16">
+                                        <Button Content="Default" Style="{StaticResource ButtonDefault}" Margin="0,0,8,6" />
+                                        <Button Content="Primary" Style="{StaticResource ButtonPrimary}" Margin="0,0,8,6" />
+                                        <Button Content="Success" Style="{StaticResource ButtonSuccess}" Margin="0,0,8,6" />
+                                        <Button Content="Info"    Style="{StaticResource ButtonInfo}"    Margin="0,0,8,6" />
+                                        <Button Content="Warning" Style="{StaticResource ButtonWarning}" Margin="0,0,8,6" />
+                                        <Button Content="Danger"  Style="{StaticResource ButtonDanger}"  Margin="0,0,0,6" />
+                                    </WrapPanel>
+
+                                    <!-- 开启对比行 -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="4" CornerRadius="2" Margin="0,2,8,2"
+                                                Background="{DynamicResource PrimaryBrush}" />
+                                        <TextBlock Text="IsEnabled=True（涟漪启用，点击体验）"
+                                                   FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryBrush}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <WrapPanel Margin="0,0,0,16">
+                                        <Button Content="Default" Style="{StaticResource ButtonDefault}"
+                                                pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,8,6" />
+                                        <Button Content="Primary" Style="{StaticResource ButtonPrimary}"
+                                                pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,8,6" />
+                                        <Button Content="Success" Style="{StaticResource ButtonSuccess}"
+                                                pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,8,6" />
+                                        <Button Content="Info"    Style="{StaticResource ButtonInfo}"
+                                                pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,8,6" />
+                                        <Button Content="Warning" Style="{StaticResource ButtonWarning}"
+                                                pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,8,6" />
+                                        <Button Content="Danger"  Style="{StaticResource ButtonDanger}"
+                                                pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,0,6" />
+                                    </WrapPanel>
+
+                                    <!-- 图标按钮行 -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="4" CornerRadius="2" Margin="0,2,8,2"
+                                                Background="{DynamicResource InfoBrush}" />
+                                        <TextBlock Text="图标按钮（IsCentered=True 已预设，涟漪从中心扩散）"
+                                                   FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource InfoBrush}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <WrapPanel Margin="0,0,0,14">
+                                        <Button Style="{StaticResource ButtonIcon}"
+                                                pf:RippleAssist.IsRippleEnabled="True"
+                                                pf:IconElement.Geometry="{StaticResource SearchGeometry}"
+                                                pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                Margin="0,0,8,6" />
+                                        <Button Style="{StaticResource ButtonIcon}"
+                                                pf:RippleAssist.IsRippleEnabled="True"
+                                                pf:IconElement.Geometry="{StaticResource SaveGeometry}"
+                                                pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                Margin="0,0,8,6" />
+                                        <Button Style="{StaticResource ButtonIcon}"
+                                                pf:RippleAssist.IsRippleEnabled="True"
+                                                pf:IconElement.Geometry="{StaticResource DeleteGeometry}"
+                                                pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                Foreground="{DynamicResource DangerBrush}"
+                                                pf:RippleAssist.Feedback="{DynamicResource DangerBrush}"
+                                                Margin="0,0,16,6" />
+                                        <Button Style="{StaticResource ButtonIconCircular}"
+                                                Background="{DynamicResource PrimaryBrush}"
+                                                pf:RippleAssist.IsRippleEnabled="True"
+                                                pf:RippleAssist.Feedback="White"
+                                                pf:IconElement.Geometry="{StaticResource SearchGeometry}"
+                                                pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                Margin="0,0,8,6" />
+                                        <Button Style="{StaticResource ButtonIconCircular}"
+                                                Background="{DynamicResource SuccessBrush}"
+                                                pf:RippleAssist.IsRippleEnabled="True"
+                                                pf:RippleAssist.Feedback="White"
+                                                pf:IconElement.Geometry="{StaticResource SaveGeometry}"
+                                                pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                Margin="0,0,8,6" />
+                                        <Button Style="{StaticResource ButtonIconCircular}"
+                                                Background="{DynamicResource DangerBrush}"
+                                                pf:RippleAssist.IsRippleEnabled="True"
+                                                pf:RippleAssist.Feedback="White"
+                                                pf:IconElement.Geometry="{StaticResource DeleteGeometry}"
+                                                pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                Margin="0,0,0,6" />
+                                    </WrapPanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,0"
+                                        Code="{x:Static vm:RippleDemoViewModel.XamlButtonIntegration}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ═══════════ 6. 继承传递 ═══════════ -->
+                    <Border x:Name="Section_Inherit" Padding="0,4,0,4">
+                        <StackPanel>
+                            <TextBlock Text="6. 继承传递（容器开关）" FontSize="16" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,12" />
+                            <Border Background="{DynamicResource RegionBrush}" CornerRadius="10"
+                                    Padding="16,14" Margin="0,0,0,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="RippleAssist.IsEnabled 是可继承附加属性（FrameworkPropertyMetadataOptions.Inherits），在父级容器统一设置后，内部所有按钮自动生效，无需逐一设置。"
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               TextWrapping="Wrap" Margin="0,0,0,14" />
+
+                                    <!-- 容器整体开启涟漪 -->
+                                    <Border CornerRadius="8" Padding="14,12"
+                                            Background="{DynamicResource SecondaryRegionBrush}"
+                                            Margin="0,0,0,12">
+                                        <StackPanel pf:RippleAssist.IsRippleEnabled="True">
+                                            <TextBlock Text="↑ 父级 StackPanel 设置了 pf:RippleAssist.IsEnabled=&quot;True&quot;"
+                                                       FontSize="10" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                                       Margin="0,0,0,10" />
+                                            <WrapPanel Margin="0,0,0,10">
+                                                <Button Content="Default" Style="{StaticResource ButtonDefault}" Margin="0,0,8,6" />
+                                                <Button Content="Primary" Style="{StaticResource ButtonPrimary}" Margin="0,0,8,6" />
+                                                <Button Content="Success" Style="{StaticResource ButtonSuccess}" Margin="0,0,8,6" />
+                                                <Button Content="Warning" Style="{StaticResource ButtonWarning}" Margin="0,0,8,6" />
+                                                <Button Content="Danger"  Style="{StaticResource ButtonDanger}"  Margin="0,0,0,6" />
+                                            </WrapPanel>
+                                            <WrapPanel>
+                                                <Button Style="{StaticResource ButtonDashed}"
+                                                        Content="虚线默认" Margin="0,0,8,0" />
+                                                <Button Style="{StaticResource ButtonDashedPrimary}"
+                                                        Content="虚线主色" Margin="0,0,8,0" />
+                                                <Button Style="{StaticResource ButtonIcon}"
+                                                        pf:IconElement.Geometry="{StaticResource SearchGeometry}"
+                                                        pf:IconElement.Width="16" pf:IconElement.Height="16"
+                                                        Margin="0,0,8,0" />
+                                                <Button Style="{StaticResource ButtonIconCircular}"
+                                                        Background="{DynamicResource PrimaryBrush}"
+                                                        pf:RippleAssist.Feedback="White"
+                                                        pf:IconElement.Geometry="{StaticResource SaveGeometry}"
+                                                        pf:IconElement.Width="16" pf:IconElement.Height="16" />
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 单独覆盖：子级禁用 -->
+                                    <TextBlock Text="子级可通过 IsDisabled=True 单独关闭涟漪（优先级高于继承值）："
+                                               FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
+                                               Margin="0,0,0,8" />
+                                    <WrapPanel pf:RippleAssist.IsRippleEnabled="True" Margin="0,0,0,14">
+                                        <Button Content="有涟漪" Style="{StaticResource ButtonPrimary}" Margin="0,0,8,0" />
+                                        <Button Content="有涟漪" Style="{StaticResource ButtonSuccess}" Margin="0,0,8,0" />
+                                        <Button Content="无涟漪（IsDisabled）" Style="{StaticResource ButtonDefault}"
+                                                pf:RippleAssist.IsDisabled="True" Margin="0,0,0,0" />
+                                    </WrapPanel>
+
+                                    <controls:DemoCodeBlock CodeLanguage="XAML" Margin="0,0,0,0"
+                                        Code="{x:Static vm:RippleDemoViewModel.XamlInherit}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
                     <!-- ═══════════ 4. 附加属性 ═══════════ -->
                     <Border x:Name="Section_Options" Padding="0,4,0,4">
                         <StackPanel>

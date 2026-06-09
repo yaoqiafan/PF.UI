@@ -14,9 +14,13 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsPressed" Value="True" />
+                    <Condition Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="False" />
+                </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource BorderBrush}" />
-            </Trigger>
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 
@@ -37,6 +41,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -54,6 +59,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -71,6 +77,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource InfoBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -88,6 +95,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource WarningBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -105,6 +113,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource DangerBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -128,6 +137,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="pfcontrol:BorderElement.CornerRadius" Value="0" />
+        <Setter Property="pfcontrol:RippleAssist.IsCentered" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -135,21 +145,25 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
-                        <Grid Margin="{TemplateBinding Padding}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Path x:Name="PathIcon"
-                                  Width="{TemplateBinding pfcontrol:IconElement.Width}"
-                                  Height="{TemplateBinding pfcontrol:IconElement.Height}"
-                                  Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
-                                  Fill="{TemplateBinding Foreground}"
-                                  SnapsToDevicePixels="True"
-                                  Stretch="Uniform" />
-                            <ContentPresenter x:Name="ContentHost"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Grid>
+                        CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
+                        ClipToBounds="True">
+                        <pfcontrol:Ripple
+                            CornerRadius="{Binding (pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid Margin="{TemplateBinding Padding}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Path x:Name="PathIcon"
+                                      Width="{TemplateBinding pfcontrol:IconElement.Width}"
+                                      Height="{TemplateBinding pfcontrol:IconElement.Height}"
+                                      Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
+                                      Fill="{TemplateBinding Foreground}"
+                                      SnapsToDevicePixels="True"
+                                      Stretch="Uniform" />
+                                <ContentPresenter x:Name="ContentHost"
+                                                  RecognizesAccessKey="True"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </pfcontrol:Ripple>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="pfcontrol:IconElement.Geometry" Value="{x:Null}">
@@ -181,6 +195,7 @@
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         <Setter Property="pfcontrol:BorderElement.CornerRadius" Value="0" />
         <Setter Property="Padding" Value="6" />
+        <Setter Property="pfcontrol:RippleAssist.IsCentered" Value="True" />
         <Setter Property="FocusVisualStyle">
             <Setter.Value>
                 <Style>
@@ -201,21 +216,24 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        Style="{StaticResource BorderCircular}">
-                        <Grid Margin="{TemplateBinding Padding}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Path x:Name="PathIcon"
-                                  Width="{TemplateBinding pfcontrol:IconElement.Width}"
-                                  Height="{TemplateBinding pfcontrol:IconElement.Height}"
-                                  Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
-                                  Fill="{TemplateBinding Foreground}"
-                                  SnapsToDevicePixels="True"
-                                  Stretch="Uniform" />
-                            <ContentPresenter x:Name="ContentHost"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Grid>
+                        Style="{StaticResource BorderCircular}"
+                        ClipToBounds="True">
+                        <pfcontrol:Ripple>
+                            <Grid Margin="{TemplateBinding Padding}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Path x:Name="PathIcon"
+                                      Width="{TemplateBinding pfcontrol:IconElement.Width}"
+                                      Height="{TemplateBinding pfcontrol:IconElement.Height}"
+                                      Data="{TemplateBinding pfcontrol:IconElement.Geometry}"
+                                      Fill="{TemplateBinding Foreground}"
+                                      SnapsToDevicePixels="True"
+                                      Stretch="Uniform" />
+                                <ContentPresenter x:Name="ContentHost"
+                                                  RecognizesAccessKey="True"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </pfcontrol:Ripple>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="pfcontrol:IconElement.Geometry" Value="{x:Null}">
@@ -289,6 +307,7 @@
         TargetType="Button">
         <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource SuccessBrush}" />
     </Style>
 
     <Style
@@ -306,6 +325,7 @@
         TargetType="Button">
         <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource InfoBrush}" />
     </Style>
 
     <Style
@@ -323,6 +343,7 @@
         TargetType="Button">
         <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource WarningBrush}" />
     </Style>
 
     <Style
@@ -340,6 +361,7 @@
         TargetType="Button">
         <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="{DynamicResource DangerBrush}" />
     </Style>
 
     <Style

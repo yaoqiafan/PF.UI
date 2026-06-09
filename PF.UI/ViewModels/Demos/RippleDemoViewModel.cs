@@ -7,10 +7,12 @@ namespace PF.UI.ViewModels.Demos
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {
-            new DemoTocItem { Anchor = "Basic",    Title = "基本用法",  Sub = "点击处扩散涟漪" },
-            new DemoTocItem { Anchor = "Centered", Title = "居中涟漪",  Sub = "IsCentered=True" },
-            new DemoTocItem { Anchor = "ListItem", Title = "列表项",    Sub = "行级点击反馈" },
-            new DemoTocItem { Anchor = "Options",  Title = "附加属性",  Sub = "IsDisabled · SizeMultiplier" },
+            new DemoTocItem { Anchor = "Basic",             Title = "基本用法",       Sub = "点击处扩散涟漪" },
+            new DemoTocItem { Anchor = "Centered",          Title = "居中涟漪",       Sub = "IsCentered=True" },
+            new DemoTocItem { Anchor = "ListItem",          Title = "列表项",         Sub = "行级点击反馈" },
+            new DemoTocItem { Anchor = "ButtonIntegration", Title = "Button 内层集成", Sub = "IsEnabled 一键开启" },
+            new DemoTocItem { Anchor = "Inherit",           Title = "继承传递",       Sub = "容器统一开关" },
+            new DemoTocItem { Anchor = "Options",           Title = "附加属性",       Sub = "IsDisabled · SizeMultiplier" },
         };
 
         private string _lastResult = "点击下方控件查看涟漪动画效果...";
@@ -86,6 +88,43 @@ namespace PF.UI.ViewModels.Demos
         </Border>
     </StackPanel>
 </Border>";
+
+        public const string XamlButtonIntegration = @"<!-- 单个按钮开启内层涟漪：只需设置 IsRippleEnabled=""True"" -->
+<!-- Feedback 颜色已按按钮类型预设，无需手动指定 -->
+<Button Content=""Primary"" Style=""{StaticResource ButtonPrimary}""
+        pf:RippleAssist.IsRippleEnabled=""True"" />
+
+<Button Content=""Success"" Style=""{StaticResource ButtonSuccess}""
+        pf:RippleAssist.IsRippleEnabled=""True"" />
+
+<!-- 图标按钮：IsCentered=""True"" 已在样式中预设，涟漪从中心扩散 -->
+<Button Style=""{StaticResource ButtonIconCircular}""
+        Background=""{DynamicResource PrimaryBrush}""
+        pf:RippleAssist.IsRippleEnabled=""True""
+        pf:RippleAssist.Feedback=""White""
+        pf:IconElement.Geometry=""{StaticResource SearchGeometry}"" />
+
+<!-- 覆盖默认 Feedback 颜色 -->
+<Button Style=""{StaticResource ButtonIcon}""
+        pf:RippleAssist.IsRippleEnabled=""True""
+        pf:RippleAssist.Feedback=""{DynamicResource DangerBrush}""
+        pf:IconElement.Geometry=""{StaticResource DeleteGeometry}""
+        Foreground=""{DynamicResource DangerBrush}"" />";
+
+        public const string XamlInherit = @"<!-- IsEnabled 是可继承属性 — 在父级容器设置，内部所有子控件自动生效 -->
+<StackPanel pf:RippleAssist.IsRippleEnabled=""True"">
+    <Button Content=""Default"" Style=""{StaticResource ButtonDefault}"" />
+    <Button Content=""Primary"" Style=""{StaticResource ButtonPrimary}"" />
+    <Button Content=""Success"" Style=""{StaticResource ButtonSuccess}"" />
+    <!-- ButtonDashed 同样生效，无需额外设置 -->
+    <Button Style=""{StaticResource ButtonDashed}"" Content=""虚线按钮"" />
+    <!-- 子级可通过 IsDisabled=""True"" 单独关闭涟漪 -->
+    <Button Content=""此按钮无涟漪"" Style=""{StaticResource ButtonDefault}""
+            pf:RippleAssist.IsDisabled=""True"" />
+</StackPanel>
+
+<!-- DataGrid 整体开启行涟漪（Phase 3 实现后） -->
+<!-- <DataGrid pf:RippleAssist.IsRippleEnabled=""True"" /> -->";
 
         public const string XamlOptions = @"<!-- IsDisabled=""True"" — 禁用涟漪 -->
 <Border CornerRadius=""6"" Height=""40"" ClipToBounds=""True""

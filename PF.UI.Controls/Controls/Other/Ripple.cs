@@ -150,10 +150,28 @@ public class Ripple : ContentControl
         set => SetValue(RecognizesAccessKeyProperty, value);
     }
 
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        nameof(CornerRadius), typeof(CornerRadius), typeof(Ripple),
+        new PropertyMetadata(default(CornerRadius), OnCornerRadiusChanged));
+
+    public CornerRadius CornerRadius
+    {
+        get => (CornerRadius)GetValue(CornerRadiusProperty);
+        set => SetValue(CornerRadiusProperty, value);
+    }
+
+    private static void OnCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        => ((Ripple)d).UpdateClip();
+
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
         VisualStateManager.GoToState(this, TemplateStateNormal, false);
+        if (TemplatedParent is FrameworkElement parent)
+        {
+            SetCurrentValue(RippleAssist.IsDisabledProperty, !RippleAssist.GetIsRippleEnabled(parent));
+            SetCurrentValue(FeedbackProperty, RippleAssist.GetFeedback(parent));
+        }
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -172,5 +190,37 @@ public class Ripple : ContentControl
 
         var radius = Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
         RippleSize = 2 * radius * RippleAssist.GetRippleSizeMultiplier(this);
+        UpdateClip();
+    }
+
+    private void UpdateClip()
+    {
+        var cr = CornerRadius;
+        if (cr == default || ActualWidth < double.Epsilon || ActualHeight < double.Epsilon)
+        {
+            Clip = null;
+            return;
+        }
+
+        double w = ActualWidth, h = ActualHeight;
+        var clip = new PathGeometry
+        {
+            Figures = new PathFigureCollection
+            {
+                new PathFigure(new Point(cr.TopLeft, 0), new PathSegment[]
+                {
+                    new LineSegment(new Point(w - cr.TopRight, 0), false),
+                    new ArcSegment(new Point(w, cr.TopRight), new Size(cr.TopRight, cr.TopRight), 90, false, SweepDirection.Clockwise, false),
+                    new LineSegment(new Point(w, h - cr.BottomRight), false),
+                    new ArcSegment(new Point(w - cr.BottomRight, h), new Size(cr.BottomRight, cr.BottomRight), 90, false, SweepDirection.Clockwise, false),
+                    new LineSegment(new Point(cr.BottomLeft, h), false),
+                    new ArcSegment(new Point(0, h - cr.BottomLeft), new Size(cr.BottomLeft, cr.BottomLeft), 90, false, SweepDirection.Clockwise, false),
+                    new LineSegment(new Point(0, cr.TopLeft), false),
+                    new ArcSegment(new Point(cr.TopLeft, 0), new Size(cr.TopLeft, cr.TopLeft), 90, false, SweepDirection.Clockwise, false),
+                }, false)
+            }
+        };
+        clip.Freeze();
+        Clip = clip;
     }
 }
