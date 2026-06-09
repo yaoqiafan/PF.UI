@@ -15,9 +15,13 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsPressed" Value="True" />
+                    <Condition Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="False" />
+                </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource BorderBrush}" />
-            </Trigger>
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 
@@ -38,6 +42,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -55,6 +60,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -72,6 +78,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource InfoBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -89,6 +96,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource WarningBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -106,6 +114,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource DangerBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -128,9 +137,13 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsPressed" Value="True" />
+                    <Condition Property="pfcontrol:RippleAssist.IsRippleEnabled" Value="False" />
+                </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource BorderBrush}" />
-            </Trigger>
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 
@@ -149,6 +162,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -166,6 +180,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -183,6 +198,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource InfoBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -200,6 +216,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource WarningBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
@@ -217,6 +234,7 @@
         TargetType="ToggleButton">
         <Setter Property="Background" Value="{DynamicResource DangerBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+        <Setter Property="pfcontrol:RippleAssist.Feedback" Value="White" />
     </Style>
 
     <Style
