@@ -41,6 +41,18 @@ namespace PF.UI.ViewModels.Demos
             new ProductItem(8,  "导轨滑块",     "机械", 560m,   true),
         };
 
+        // ===== 可编辑 DataGrid 数据源 =====
+        public static Array DemoStatusValues { get; } = Enum.GetValues(typeof(DemoStatus));
+
+        public ObservableCollection<EditableDeviceItem> EditableDevices { get; } = new()
+        {
+            new EditableDeviceItem("温度传感器 T-01", 200,  true,  DemoStatus.Active),
+            new EditableDeviceItem("压力传感器 P-02", 500,  true,  DemoStatus.Active),
+            new EditableDeviceItem("流量计 F-03",    1000, false, DemoStatus.Paused),
+            new EditableDeviceItem("液位计 L-04",    2000, true,  DemoStatus.Active),
+            new EditableDeviceItem("振动传感器 V-05", 100,  true,  DemoStatus.Error),
+        };
+
         // ===== ListBox / ListView 数据源 =====
         public ObservableCollection<string> Stations { get; } = new()
         {
@@ -127,6 +139,7 @@ namespace PF.UI.ViewModels.Demos
 
         public const string XamlDataGrid = @"<DataGrid ItemsSource=""{Binding Products}""
           AutoGenerateColumns=""False""
+          IsReadOnly=""True""
           CanUserSortColumns=""True""
           GridLinesVisibility=""Horizontal""
           SelectionMode=""Single"">
@@ -138,6 +151,39 @@ namespace PF.UI.ViewModels.Demos
         <DataGridCheckBoxColumn Header=""库存"" Binding=""{Binding InStock}"" Width=""60"" />
     </DataGrid.Columns>
 </DataGrid>";
+
+        public const string XamlDataGridEditable = @"<!-- 数据模型需实现 INotifyPropertyChanged，并提供无参构造供新增行使用 -->
+<DataGrid ItemsSource=""{Binding EditableDevices}""
+          AutoGenerateColumns=""False""
+          CanUserAddRows=""True""
+          CanUserDeleteRows=""True"">
+    <DataGrid.Columns>
+        <DataGridTextColumn Header=""设备名称""  Binding=""{Binding Name}""     Width=""*"" />
+        <DataGridTextColumn Header=""采样(ms)"" Binding=""{Binding Interval}"" Width=""90"" />
+        <DataGridCheckBoxColumn Header=""启用""  Binding=""{Binding Active}""   Width=""56"" />
+        <!-- ItemsSource 绑定静态枚举数组 -->
+        <DataGridComboBoxColumn Header=""状态""
+            SelectedItemBinding=""{Binding Status}""
+            ItemsSource=""{Binding Source={x:Static vm:DataDemoViewModel.DemoStatusValues}}""
+            Width=""90"" />
+    </DataGrid.Columns>
+</DataGrid>
+
+// 模型：继承 BindableBase 或实现 INotifyPropertyChanged
+public class EditableDeviceItem : BindableBase
+{
+    private string _name = string.Empty;
+    private int _interval = 1000;
+    private bool _active = true;
+    private DemoStatus _status = DemoStatus.Active;
+
+    public string Name     { get => _name;     set => SetProperty(ref _name,     value); }
+    public int    Interval { get => _interval; set => SetProperty(ref _interval, value); }
+    public bool   Active   { get => _active;   set => SetProperty(ref _active,   value); }
+    public DemoStatus Status { get => _status; set => SetProperty(ref _status,   value); }
+
+    public EditableDeviceItem() { }  // 无参构造供 CanUserAddRows 使用
+}";
 
         public const string XamlListBox = @"<!-- 单选 ListBox（默认） -->
 <ListBox ItemsSource=""{Binding Stations}"" />
@@ -243,6 +289,25 @@ public DateTime CreateTime { get; set; }
         public ProductItem(int id, string name, string category, decimal price, bool inStock)
         {
             Id = id; Name = name; Category = category; Price = price; InStock = inStock;
+        }
+    }
+
+    public class EditableDeviceItem : BindableBase
+    {
+        private string _name = string.Empty;
+        private int _interval = 1000;
+        private bool _active = true;
+        private DemoStatus _status = DemoStatus.Active;
+
+        public string    Name     { get => _name;     set => SetProperty(ref _name,     value); }
+        public int       Interval { get => _interval; set => SetProperty(ref _interval, value); }
+        public bool      Active   { get => _active;   set => SetProperty(ref _active,   value); }
+        public DemoStatus Status  { get => _status;   set => SetProperty(ref _status,   value); }
+
+        public EditableDeviceItem() { }
+        public EditableDeviceItem(string name, int interval, bool active, DemoStatus status)
+        {
+            _name = name; _interval = interval; _active = active; _status = status;
         }
     }
 

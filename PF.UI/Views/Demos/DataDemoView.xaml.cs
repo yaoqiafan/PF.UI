@@ -75,6 +75,13 @@ namespace PF.UI.Views.Demos
                 vm.LogCommand.Execute($"DataGrid 选中: {p.Name} — ¥{p.Price:N0}");
         }
 
+        private void DataGrid_Editable_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (DataContext is not DataDemoViewModel vm) return;
+            if (e.EditAction == DataGridEditAction.Commit && e.Row.Item is EditableDeviceItem item)
+                vm.LogCommand.Execute($"编辑: {item.Name} [{e.Column.Header}]");
+        }
+
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DataContext is not DataDemoViewModel vm) return;
