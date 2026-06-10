@@ -3,7 +3,6 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:prism="http://prismlibrary.com/"
            xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
-           xmlns:controls="clr-namespace:PF.UI.Controls"
            prism:ViewModelLocator.AutoWireViewModel="True"
            Title="PF.UI 控件演示"
            Height="720" Width="1100"
@@ -67,11 +66,13 @@
                         </Grid>
                     </Border>
 
-                    <!-- 导航树 -->
-                    <controls:SidebarNavView Grid.Row="1"
-                                             x:Name="SidebarNav"
-                                             Groups="{Binding NavGroups}"
-                                             SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+                    <!-- 导航菜单（SideMenuItem 树由代码后台从 NavGroups 构建） -->
+                    <pf:SideMenu x:Name="NavMenu"
+                                 Grid.Row="1"
+                                 Width="240"
+                                 AutoSelect="False"
+                                 ExpandMode="Freedom"
+                                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
 
                     <!-- 底部版本 -->
                     <Border Grid.Row="2" Padding="14,8"

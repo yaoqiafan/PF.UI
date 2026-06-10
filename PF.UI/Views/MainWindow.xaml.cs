@@ -1,14 +1,19 @@
 using PF.UI.Controls;
+using PF.UI.Models;
 using PF.UI.Shared.Data;
 using PF.UI.Shared.Tools;
+using PF.UI.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using SwWindow = System.Windows.Window;
 
 namespace PF.UI.Views
@@ -31,6 +36,15 @@ namespace PF.UI.Views
 
             InitializeComponent();
             ThemeIcon.Kind = _isDarkTheme ? PackIconKind.WeatherSunny : PackIconKind.WeatherNight;
+
+            // Prism 自动装配的 DataContext 在 InitializeComponent 期间已设置
+            if (DataContext is MainWindowViewModel vm)
+                BuildNavMenu(vm);
+            DataContextChanged += (_, e) =>
+            {
+                if (e.NewValue is MainWindowViewModel newVm)
+                    BuildNavMenu(newVm);
+            };
         }
 
         // ─── 主题切换 ─────────────────────────────────────────────────────
@@ -155,9 +169,99 @@ namespace PF.UI.Views
             NavSearchBar.Text = string.Empty;
         }
 
-        private void NavSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        // ─── 导航菜单构建与搜索过滤 ──────────────────────────────────────
+
+        private sealed record NavMenuEntry(SideMenuItem Header, NavGroup Group,
+            List<(SideMenuItem Item, NavItem Nav)> Children);
+
+        private readonly List<NavMenuEntry> _navIndex = new();
+
+        private void BuildNavMenu(MainWindowViewModel vm)
         {
-            SidebarNav.FilterText = NavSearchBar.Text;
+            NavMenu.Items.Clear();
+            _navIndex.Clear();
+
+            foreach (var group in vm.NavGroups)
+            {
+                var header = new SideMenuItem
+                {
+                    Header = group.Title,
+                    DataContext = group,
+                    Icon = CreateIcon(group.Icon, 18)
+                };
+                // 组展开状态与模型双向同步（VM 导航时自动展开所在组）
+                BindingOperations.SetBinding(header, SideMenuItem.IsExpandedProperty,
+                    new Binding(nameof(NavGroup.IsExpanded)) { Source = group, Mode = BindingMode.TwoWay });
+
+                var children = new List<(SideMenuItem, NavItem)>();
+                foreach (var nav in group.Children)
+                {
+                    var item = new SideMenuItem
+                    {
+                        Header = nav.Title,
+                        DataContext = nav,
+                        Icon = CreateIcon(nav.Icon, 16),
+                        ToolTip = nav.Description
+                    };
+                    header.Items.Add(item);
+                    children.Add((item, nav));
+                }
+
+                NavMenu.Items.Add(header);
+                _navIndex.Add(new NavMenuEntry(header, group, children));
+            }
+
+            // 模板应用完成后按模型状态还原各组初始展开
+            Dispatcher.InvokeAsync(() =>
+            {
+                foreach (var entry in _navIndex)
+                    entry.Header.SwitchPanelArea(entry.Group.IsExpanded);
+            }, DispatcherPriority.Loaded);
         }
+
+        private static PackIcon CreateIcon(PackIconKind kind, double size) => new()
+        {
+            Kind = kind,
+            Width = size,
+            Height = size,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        private void NavSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+            => ApplyNavFilter(NavSearchBar.Text);
+
+        private void ApplyNavFilter(string? text)
+        {
+            var keyword = text?.Trim() ?? string.Empty;
+            var searching = keyword.Length > 0;
+
+            foreach (var (header, group, children) in _navIndex)
+            {
+                var headerMatch = searching && Match(group.Title, keyword);
+                var anyChildVisible = false;
+
+                foreach (var (item, nav) in children)
+                {
+                    // 组标题命中时显示组内全部子项，否则按子项标题/描述过滤
+                    var visible = !searching || headerMatch ||
+                                  Match(nav.Title, keyword) || Match(nav.Description, keyword);
+                    item.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+                    anyChildVisible |= visible;
+                }
+
+                var headerVisible = !searching || headerMatch || anyChildVisible;
+                header.Visibility = headerVisible ? Visibility.Visible : Visibility.Collapsed;
+
+                // 搜索时自动展开命中的组；清空时还原为仅展开选中项所在组
+                header.SwitchPanelArea(searching ? headerVisible : ContainsSelected(group));
+            }
+
+            static bool Match(string source, string keyword) =>
+                source.Contains(keyword, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool ContainsSelected(NavGroup group) =>
+            DataContext is MainWindowViewModel { SelectedItem: { } selected } &&
+            group.Children.Contains(selected);
     }
 }
