@@ -5,54 +5,6 @@
     xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
     x:Name="Root">
 
-    <UserControl.Resources>
-        <!--  代码区 DataTemplate：仅首次展开时实例化  -->
-        <DataTemplate x:Key="CodeAreaTemplate">
-            <ScrollViewer
-                MaxHeight="300"
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <!--  行号：TextBlock，无需交互  -->
-                    <TextBlock
-                        Grid.Column="0"
-                        Width="30"
-                        Margin="0,0,10,0"
-                        FontFamily="Consolas"
-                        FontSize="12.5"
-                        Foreground="#555555"
-                        Text="{Binding LineNumbersText}"
-                        TextAlignment="Right" />
-
-                    <!--  代码：只读 TextBox，保留鼠标拖选 / Ctrl+A / Ctrl+C  -->
-                    <TextBox
-                        Grid.Column="1"
-                        Style="{x:Null}"
-                        AcceptsReturn="True"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        CaretBrush="White"
-                        FontFamily="Consolas"
-                        FontSize="12.5"
-                        Foreground="#D4D4D4"
-                        IsReadOnly="True"
-                        Padding="0"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        SelectionBrush="#264F78"
-                        SelectionOpacity="0.6"
-                        Text="{Binding Code}"
-                        TextWrapping="NoWrap" />
-                </Grid>
-            </ScrollViewer>
-        </DataTemplate>
-    </UserControl.Resources>
-
     <Border
         Padding="0"
         Background="#1E1E1E"
@@ -147,12 +99,8 @@
                 </Grid>
             </Border>
 
-            <!--  代码区：Content 绑定到 Root，DataTemplate 通过 {Binding} 访问其属性  -->
-            <ContentControl
-                x:Name="CodeContent"
-                Grid.Row="1"
-                Content="{Binding ElementName=Root}"
-                Visibility="Collapsed" />
+            <!--  代码区：首次展开时由代码后台填充 Content  -->
+            <ContentControl x:Name="CodeContent" Grid.Row="1" Visibility="Collapsed" />
         </Grid>
     </Border>
 </UserControl>

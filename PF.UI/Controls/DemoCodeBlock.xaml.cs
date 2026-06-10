@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace PF.UI.Controls
@@ -46,6 +48,11 @@ namespace PF.UI.Controls
         }
         #endregion
 
+        private static readonly FontFamily _consolas = new FontFamily("Consolas");
+        private static readonly Brush _foregroundBrush = new SolidColorBrush(Color.FromRgb(0xD4, 0xD4, 0xD4));
+        private static readonly Brush _lineNumBrush = new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
+        private static readonly Brush _selectionBrush = new SolidColorBrush(Color.FromRgb(0x26, 0x4F, 0x78));
+
         private bool _contentCreated;
 
         public DemoCodeBlock()
@@ -58,9 +65,9 @@ namespace PF.UI.Controls
             var block = (DemoCodeBlock)d;
             var text = (e.NewValue as string) ?? string.Empty;
 
-            // 统一换行符，如有变化回写（第二次进入时 text 已经是 \n，不再触发）
+            // 统一换行符，若有变化回写（第二次进入时已是 \n，不再触发）
             var normalized = text.Replace("\r\n", "\n");
-            if (!ReferenceEquals(text, normalized) && text != normalized)
+            if (text != normalized)
             {
                 block.Code = normalized;
                 return;
@@ -82,7 +89,7 @@ namespace PF.UI.Controls
 
             if (expanding && !_contentCreated)
             {
-                CodeContent.ContentTemplate = (DataTemplate)Resources["CodeAreaTemplate"];
+                CodeContent.Content = BuildCodeArea();
                 _contentCreated = true;
             }
 
@@ -91,6 +98,60 @@ namespace PF.UI.Controls
             ToggleLabel.Text = expanding ? "折叠" : "展开";
             ToggleButton.ToolTip = expanding ? "折叠代码" : "展开代码";
             ToggleIcon.Kind = expanding ? PackIconKind.ChevronUp : PackIconKind.ChevronDown;
+        }
+
+        private UIElement BuildCodeArea()
+        {
+            // 行号：TextBlock，无需交互
+            var lineNumbers = new TextBlock
+            {
+                Width = 30,
+                Margin = new Thickness(0, 0, 10, 0),
+                FontFamily = _consolas,
+                FontSize = 12.5,
+                Foreground = _lineNumBrush,
+                TextAlignment = TextAlignment.Right
+            };
+            lineNumbers.SetBinding(TextBlock.TextProperty,
+                new Binding(nameof(LineNumbersText)) { Source = this });
+
+            // 代码：只读 TextBox，保留鼠标拖选 / Ctrl+A / Ctrl+C
+            var codeBox = new TextBox
+            {
+                AcceptsReturn = true,
+                Background = Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                CaretBrush = Brushes.White,
+                FontFamily = _consolas,
+                FontSize = 12.5,
+                Foreground = _foregroundBrush,
+                IsReadOnly = true,
+                Padding = new Thickness(0),
+                SelectionBrush = _selectionBrush,
+                SelectionOpacity = 0.6,
+                TextWrapping = TextWrapping.NoWrap,
+                Style = null
+            };
+            ScrollViewer.SetHorizontalScrollBarVisibility(codeBox, ScrollBarVisibility.Disabled);
+            ScrollViewer.SetVerticalScrollBarVisibility(codeBox, ScrollBarVisibility.Disabled);
+            codeBox.SetBinding(TextBox.TextProperty,
+                new Binding(nameof(Code)) { Source = this });
+
+            var grid = new Grid { Margin = new Thickness(8) };
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            Grid.SetColumn(lineNumbers, 0);
+            Grid.SetColumn(codeBox, 1);
+            grid.Children.Add(lineNumbers);
+            grid.Children.Add(codeBox);
+
+            return new ScrollViewer
+            {
+                MaxHeight = 300,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                Content = grid
+            };
         }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
