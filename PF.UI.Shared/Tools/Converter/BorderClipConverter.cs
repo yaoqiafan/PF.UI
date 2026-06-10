@@ -17,6 +17,15 @@ public class BorderClipConverter : IMultiValueConverter
                 return Geometry.Empty;
             }
 
+            // 等值圆角：用 RectangleGeometry，WPF 内置快速路径，比 PathGeometry 轻约 10 倍
+            if (radius.TopLeft == radius.TopRight && radius.TopLeft == radius.BottomRight && radius.TopLeft == radius.BottomLeft)
+            {
+                var rectClip = new RectangleGeometry(new Rect(0, 0, width, height), radius.TopLeft, radius.TopLeft);
+                rectClip.Freeze();
+                return rectClip;
+            }
+
+            // 非等值圆角：回退到 PathGeometry
             var clip = new PathGeometry
             {
                 Figures = new PathFigureCollection

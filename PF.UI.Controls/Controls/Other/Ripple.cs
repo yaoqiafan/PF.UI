@@ -209,6 +209,17 @@ public class Ripple : ContentControl
         }
 
         double w = ActualWidth, h = ActualHeight;
+
+        // 等值圆角：用 RectangleGeometry，WPF 内置快速路径，比 PathGeometry 轻约 10 倍
+        if (cr.TopLeft == cr.TopRight && cr.TopLeft == cr.BottomRight && cr.TopLeft == cr.BottomLeft)
+        {
+            var rectClip = new RectangleGeometry(new Rect(0, 0, w, h), cr.TopLeft, cr.TopLeft);
+            rectClip.Freeze();
+            Clip = rectClip;
+            return;
+        }
+
+        // 非等值圆角：回退到 PathGeometry
         var clip = new PathGeometry
         {
             Figures = new PathFigureCollection
