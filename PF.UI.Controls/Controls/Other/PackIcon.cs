@@ -69,6 +69,8 @@ public class PackIcon : Control
         }
     }
 
+    public static void Prewarm() => _ = _dataIndex.Value;
+
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using PF.UI.Views;
 using PF.UI.Views.Demos;
@@ -40,6 +41,7 @@ namespace PF.UI
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            Task.Run(PF.UI.Controls.PackIcon.Prewarm);
             // Prism 对话框：IDialogWindow 实现 + 具体对话框
             containerRegistry.RegisterDialogWindow<PFDialogWindow>();
             containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
