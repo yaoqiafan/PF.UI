@@ -5,70 +5,10 @@
     xmlns:pf="clr-namespace:PF.UI.Controls;assembly=PF.UI.Controls"
     x:Name="Root">
 
-    <Border
-        Padding="0"
-        Background="#1E1E1E"
-        BorderBrush="#333333"
-        BorderThickness="1"
-        CornerRadius="8">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <!--  标题栏  -->
-            <Border
-                Grid.Row="0"
-                Padding="12,8"
-                BorderBrush="#333333"
-                BorderThickness="0,0,0,1">
-                <Grid>
-                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                        <Border
-                            Padding="6,2"
-                            Background="#2D2D2D"
-                            CornerRadius="3">
-                            <TextBlock
-                                x:Name="LanguageLabel"
-                                FontFamily="Consolas"
-                                FontSize="11"
-                                Foreground="#808080"
-                                Text="XAML" />
-                        </Border>
-                    </StackPanel>
-
-                    <!--  复制全部按钮  -->
-                    <Button
-                        x:Name="CopyButton"
-                        HorizontalAlignment="Right"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Click="CopyButton_Click"
-                        Cursor="Hand"
-                        ToolTip="复制全部代码">
-                        <StackPanel Orientation="Horizontal">
-                            <pf:PackIcon
-                                Width="14"
-                                Height="14"
-                                VerticalAlignment="Center"
-                                Foreground="#808080"
-                                Kind="ContentCopy" />
-                            <TextBlock
-                                x:Name="CopyLabel"
-                                Margin="4,0,0,0"
-                                VerticalAlignment="Center"
-                                FontSize="11"
-                                Foreground="#808080"
-                                Text="复制" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </Border>
-
-            <!--  代码区域 — 支持多行选择、Ctrl+A/C、鼠标拖选  -->
+    <UserControl.Resources>
+        <!--  代码区 DataTemplate：仅首次展开时实例化  -->
+        <DataTemplate x:Key="CodeAreaTemplate">
             <ScrollViewer
-                Grid.Row="1"
                 MaxHeight="300"
                 HorizontalScrollBarVisibility="Auto"
                 VerticalScrollBarVisibility="Auto">
@@ -78,32 +18,19 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!--  行号（不可交互，与代码区等高字体保证行对齐）  -->
-                    <TextBox
-                        x:Name="LineNumbersBox"
+                    <!--  行号：TextBlock，无需交互  -->
+                    <TextBlock
                         Grid.Column="0"
                         Width="30"
                         Margin="0,0,10,0"
-                        Style="{x:Null}"
-                        AcceptsReturn="True"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Focusable="False"
                         FontFamily="Consolas"
                         FontSize="12.5"
                         Foreground="#555555"
-                        IsHitTestVisible="False"
-                        IsReadOnly="True"
-                        IsTabStop="False"
-                        Padding="0"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        TextAlignment="Right"
-                        TextWrapping="NoWrap" />
+                        Text="{Binding LineNumbersText}"
+                        TextAlignment="Right" />
 
-                    <!--  代码文本：只读多行 TextBox，支持鼠标拖选、Ctrl+A、Ctrl+C  -->
+                    <!--  代码：只读 TextBox，保留鼠标拖选 / Ctrl+A / Ctrl+C  -->
                     <TextBox
-                        x:Name="CodeTextBox"
                         Grid.Column="1"
                         Style="{x:Null}"
                         AcceptsReturn="True"
@@ -119,9 +46,113 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         SelectionBrush="#264F78"
                         SelectionOpacity="0.6"
+                        Text="{Binding Code}"
                         TextWrapping="NoWrap" />
                 </Grid>
             </ScrollViewer>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Border
+        Padding="0"
+        Background="#1E1E1E"
+        BorderBrush="#333333"
+        BorderThickness="1"
+        CornerRadius="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  头部（始终渲染）  -->
+            <Border
+                x:Name="HeaderBorder"
+                Grid.Row="0"
+                Padding="12,8"
+                BorderBrush="#333333"
+                BorderThickness="0">
+                <Grid>
+                    <!--  左：语言标签  -->
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <Border
+                            Padding="6,2"
+                            Background="#2D2D2D"
+                            CornerRadius="3">
+                            <TextBlock
+                                x:Name="LanguageLabel"
+                                FontFamily="Consolas"
+                                FontSize="11"
+                                Foreground="#808080"
+                                Text="XAML" />
+                        </Border>
+                    </StackPanel>
+
+                    <!--  右：复制 + 展开/折叠  -->
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="CopyButton"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="CopyButton_Click"
+                            Cursor="Hand"
+                            ToolTip="复制全部代码">
+                            <StackPanel Orientation="Horizontal">
+                                <pf:PackIcon
+                                    Width="14"
+                                    Height="14"
+                                    VerticalAlignment="Center"
+                                    Foreground="#808080"
+                                    Kind="ContentCopy" />
+                                <TextBlock
+                                    x:Name="CopyLabel"
+                                    Margin="4,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="11"
+                                    Foreground="#808080"
+                                    Text="复制" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button
+                            x:Name="ToggleButton"
+                            Margin="12,0,0,0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="ToggleButton_Click"
+                            Cursor="Hand"
+                            ToolTip="展开代码">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    x:Name="ToggleLabel"
+                                    VerticalAlignment="Center"
+                                    FontSize="11"
+                                    Foreground="#808080"
+                                    Text="展开" />
+                                <pf:PackIcon
+                                    x:Name="ToggleIcon"
+                                    Width="12"
+                                    Height="12"
+                                    Margin="4,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Foreground="#808080"
+                                    Kind="ChevronDown" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--  代码区：Content 绑定到 Root，DataTemplate 通过 {Binding} 访问其属性  -->
+            <ContentControl
+                x:Name="CodeContent"
+                Grid.Row="1"
+                Content="{Binding ElementName=Root}"
+                Visibility="Collapsed" />
         </Grid>
     </Border>
 </UserControl>
