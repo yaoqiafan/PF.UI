@@ -170,8 +170,8 @@
                                 <Binding Path="(pfcontrol:BorderElement.CornerRadius)" RelativeSource="{RelativeSource TemplatedParent}" />
                             </MultiBinding>
                         </pfcontrol:SimplePanel.Clip>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"

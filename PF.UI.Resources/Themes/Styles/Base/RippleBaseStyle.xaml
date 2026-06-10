@@ -127,20 +127,15 @@
                         <!-- 涟漪层 -->
                         <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="False">
                             <Ellipse x:Name="ClickEllipse"
-                                     Canvas.Left="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleX}"
-                                     Canvas.Top="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleY}"
-                                     Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleSize}"
-                                     Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RippleSize}"
+                                     Canvas.Left="{TemplateBinding RippleX}"
+                                     Canvas.Top="{TemplateBinding RippleY}"
+                                     Width="{TemplateBinding RippleSize}"
+                                     Height="{TemplateBinding RippleSize}"
                                      Fill="{TemplateBinding Feedback}"
                                      Opacity="0"
                                      RenderTransformOrigin=".5,.5">
                                 <Ellipse.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform x:Name="ScaleTransform" ScaleX="0" ScaleY="0" />
-                                        <SkewTransform />
-                                        <RotateTransform />
-                                        <TranslateTransform />
-                                    </TransformGroup>
+                                    <ScaleTransform x:Name="ScaleTransform" ScaleX="0" ScaleY="0" />
                                 </Ellipse.RenderTransform>
                             </Ellipse>
                             <Canvas.Style>

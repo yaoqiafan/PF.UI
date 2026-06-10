@@ -4,7 +4,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace PF.UI.Controls;
 
@@ -36,6 +35,9 @@ public class Ripple : ContentControl
 
     private static void MouseButtonEventHandler(object sender, MouseButtonEventArgs e)
     {
+        if (PressedInstances.Count == 0)
+            return;
+
         foreach (var ripple in PressedInstances)
         {
             var scaleTrans = ripple.Template.FindName("ScaleTransform", ripple) as ScaleTransform;
@@ -57,18 +59,28 @@ public class Ripple : ContentControl
 
     private static void MouseMoveEventHandler(object sender, MouseEventArgs e)
     {
-        Dispatcher.CurrentDispatcher.Invoke(() =>
+        // 该处理器注册在所有 ContentControl 上，应用内任何鼠标移动都会途经此处，
+        // 必须在无涟漪按压时零开销返回
+        if (PressedInstances.Count == 0)
+            return;
+
+        // 已在 UI 线程；移除项延后收集，常规路径（按住未移出）零分配
+        List<Ripple>? toRemove = null;
+        foreach (var ripple in PressedInstances)
         {
-            foreach (var ripple in PressedInstances.ToList())
+            var pos = Mouse.GetPosition(ripple);
+            if (pos.X < 0 || pos.Y < 0 || pos.X >= ripple.ActualWidth || pos.Y >= ripple.ActualHeight)
             {
-                var pos = Mouse.GetPosition(ripple);
-                if (pos.X < 0 || pos.Y < 0 || pos.X >= ripple.ActualWidth || pos.Y >= ripple.ActualHeight)
-                {
-                    VisualStateManager.GoToState(ripple, TemplateStateMouseOut, true);
-                    PressedInstances.Remove(ripple);
-                }
+                VisualStateManager.GoToState(ripple, TemplateStateMouseOut, true);
+                (toRemove ??= new List<Ripple>()).Add(ripple);
             }
-        });
+        }
+
+        if (toRemove != null)
+        {
+            foreach (var ripple in toRemove)
+                PressedInstances.Remove(ripple);
+        }
     }
 
     public static readonly DependencyProperty FeedbackProperty = DependencyProperty.Register(

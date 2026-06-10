@@ -24,8 +24,8 @@
                                 <Binding Path="(pfcontrol:BorderElement.CornerRadius)" RelativeSource="{RelativeSource TemplatedParent}" />
                             </MultiBinding>
                         </pfcontrol:SimplePanel.Clip>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
@@ -112,16 +112,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
+                    <!--  BorderChecked 覆盖层无外溢（Margin=0），不需要外层 Clip；圆角裁剪由 Ripple.Clip 完成  -->
                     <pfcontrol:SimplePanel>
-                        <pfcontrol:SimplePanel.Clip>
-                            <MultiBinding Converter="{StaticResource BorderClipConverter}">
-                                <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth" />
-                                <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight" />
-                                <Binding Path="(pfcontrol:BorderElement.CornerRadius)" RelativeSource="{RelativeSource TemplatedParent}" />
-                            </MultiBinding>
-                        </pfcontrol:SimplePanel.Clip>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{Binding Path=(pfcontrol:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
