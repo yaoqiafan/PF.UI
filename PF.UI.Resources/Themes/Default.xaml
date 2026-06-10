@@ -4896,9 +4896,9 @@ Themes\Styles\Custom\Window.xaml
             <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
               <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
             </Trigger>
-            <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+            <Trigger Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False">
               <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
+            </Trigger>
             <Trigger Property="IsFocused" Value="True">
               <Trigger.EnterActions>
                 <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
@@ -4933,13 +4933,13 @@ Themes\Styles\Custom\Window.xaml
                 </BeginStoryboard>
               </Trigger.ExitActions>
             </Trigger>
-            <MultiDataTrigger>
-              <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-                <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
-              </MultiDataTrigger.Conditions>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsFocused" Value="True" />
+                <Condition Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False" />
+              </MultiTrigger.Conditions>
               <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-            </MultiDataTrigger>
+            </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
@@ -8864,9 +8864,9 @@ Themes\Styles\Custom\Window.xaml
       <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
       </Trigger>
-      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+      <Trigger Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False">
         <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
-      </DataTrigger>
+      </Trigger>
       <Trigger Property="IsFocused" Value="True">
         <Trigger.EnterActions>
           <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
@@ -8901,13 +8901,13 @@ Themes\Styles\Custom\Window.xaml
           </BeginStoryboard>
         </Trigger.ExitActions>
       </Trigger>
-      <MultiDataTrigger>
-        <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
-        </MultiDataTrigger.Conditions>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsFocused" Value="True" />
+          <Condition Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-      </MultiDataTrigger>
+      </MultiTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <ControlTemplate x:Key="TextBoxExtendLeftTemplate" TargetType="TextBox">
@@ -8938,9 +8938,9 @@ Themes\Styles\Custom\Window.xaml
       <Trigger SourceName="PART_ContentHost" Property="IsMouseOver" Value="true">
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorderBrush}" />
       </Trigger>
-      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+      <Trigger Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False">
         <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
-      </DataTrigger>
+      </Trigger>
       <Trigger Property="IsFocused" Value="True">
         <Trigger.EnterActions>
           <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
@@ -8975,13 +8975,13 @@ Themes\Styles\Custom\Window.xaml
           </BeginStoryboard>
         </Trigger.ExitActions>
       </Trigger>
-      <MultiDataTrigger>
-        <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
-        </MultiDataTrigger.Conditions>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsFocused" Value="True" />
+          <Condition Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-      </MultiDataTrigger>
+      </MultiTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <Style x:Key="TextBoxExtendBaseStyle" BasedOn="{StaticResource TextBoxBaseStyle}" TargetType="TextBox">
@@ -15152,9 +15152,9 @@ Themes\Styles\Custom\Window.xaml
         </MultiTrigger.Conditions>
         <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
       </MultiTrigger>
-      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+      <Trigger Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False">
         <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
-      </DataTrigger>
+      </Trigger>
       <Trigger Property="IsFocused" Value="True">
         <Trigger.EnterActions>
           <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
@@ -15189,13 +15189,13 @@ Themes\Styles\Custom\Window.xaml
           </BeginStoryboard>
         </Trigger.ExitActions>
       </Trigger>
-      <MultiDataTrigger>
-        <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
-        </MultiDataTrigger.Conditions>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsFocused" Value="True" />
+          <Condition Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-      </MultiDataTrigger>
+      </MultiTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <ControlTemplate x:Key="TextBoxPlusLeftTemplate" TargetType="pfcontrol:TextBox">
@@ -15240,9 +15240,9 @@ Themes\Styles\Custom\Window.xaml
         </MultiTrigger.Conditions>
         <Setter TargetName="ButtonClear" Property="Visibility" Value="Visible" />
       </MultiTrigger>
-      <DataTrigger Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False">
+      <Trigger Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False">
         <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed" />
-      </DataTrigger>
+      </Trigger>
       <Trigger Property="IsFocused" Value="True">
         <Trigger.EnterActions>
           <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
@@ -15277,13 +15277,13 @@ Themes\Styles\Custom\Window.xaml
           </BeginStoryboard>
         </Trigger.ExitActions>
       </Trigger>
-      <MultiDataTrigger>
-        <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True" />
-          <Condition Binding="{Binding (pfcontrol:BorderElement.IsFocusAnimationEnabled), RelativeSource={RelativeSource Self}}" Value="False" />
-        </MultiDataTrigger.Conditions>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsFocused" Value="True" />
+          <Condition Property="pfcontrol:BorderElement.IsFocusAnimationEnabled" Value="False" />
+        </MultiTrigger.Conditions>
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-      </MultiDataTrigger>
+      </MultiTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <Style x:Key="TextBoxPlusBaseStyle" BasedOn="{StaticResource TextBoxExtendBaseStyle}" TargetType="pfcontrol:TextBox">
