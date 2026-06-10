@@ -1,4 +1,4 @@
-using PF.UI.Controls;
+﻿using PF.UI.Controls;
 using PF.UI.Shared.Data;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class WindowsDemoViewModel : BindableBase
+    public class WindowsDemoViewModel : DemoViewModelBase
     {
         private readonly Screenshot _screenshot = new();
 

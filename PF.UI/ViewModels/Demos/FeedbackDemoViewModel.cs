@@ -1,8 +1,8 @@
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class FeedbackDemoViewModel : BindableBase
+    public class FeedbackDemoViewModel : DemoViewModelBase
     {
     }
 }

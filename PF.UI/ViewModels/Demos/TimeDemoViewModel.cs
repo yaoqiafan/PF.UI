@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using Prism.Mvvm;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class TimeDemoViewModel : BindableBase
+    public class TimeDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

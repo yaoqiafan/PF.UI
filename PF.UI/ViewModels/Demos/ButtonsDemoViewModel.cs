@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class ButtonsDemoViewModel : BindableBase
+    public class ButtonsDemoViewModel : DemoViewModelBase
     {
         // ===== TOC 目录 =====
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
@@ -387,7 +387,7 @@ namespace PF.UI.ViewModels.Demos
               Command=""{Binding IncrementRepeatCommand}"" />";
     }
 
-    public class DemoTocItem : BindableBase
+    public class DemoTocItem : DemoViewModelBase
     {
         public string Anchor { get; init; } = "";
         public string Title { get; init; } = "";

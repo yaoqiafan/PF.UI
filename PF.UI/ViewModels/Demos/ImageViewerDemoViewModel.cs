@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Win32;
@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class ImageViewerDemoViewModel : BindableBase
+    public class ImageViewerDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

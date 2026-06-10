@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,7 +14,7 @@ namespace PF.UI.ViewModels.Demos
         public ConfettiCannon.Options Options { get; init; } = new();
     }
 
-    public class ProgressLoadingViewModel : BindableBase
+    public class ProgressLoadingViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

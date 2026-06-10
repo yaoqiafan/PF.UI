@@ -1,4 +1,4 @@
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class InteractivityDemoViewModel : BindableBase
+    public class InteractivityDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

@@ -1,11 +1,11 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class DataDemoViewModel : BindableBase
+    public class DataDemoViewModel : DemoViewModelBase
     {
         // ===== TOC =====
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
@@ -170,7 +170,7 @@ namespace PF.UI.ViewModels.Demos
 </DataGrid>
 
 // 模型：继承 BindableBase 或实现 INotifyPropertyChanged
-public class EditableDeviceItem : BindableBase
+public class EditableDeviceItem : DemoViewModelBase
 {
     private string _name = string.Empty;
     private int _interval = 1000;
@@ -292,7 +292,7 @@ public DateTime CreateTime { get; set; }
         }
     }
 
-    public class EditableDeviceItem : BindableBase
+    public class EditableDeviceItem : DemoViewModelBase
     {
         private string _name = string.Empty;
         private int _interval = 1000;

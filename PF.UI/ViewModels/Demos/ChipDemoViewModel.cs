@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Prism.Mvvm;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class ChipDemoViewModel : BindableBase
+    public class ChipDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

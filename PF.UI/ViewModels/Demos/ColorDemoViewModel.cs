@@ -1,4 +1,4 @@
-using PF.UI.Shared.Data.ColorManipulation;
+﻿using PF.UI.Shared.Data.ColorManipulation;
 using PF.UI.Shared.Data.MaterialColors;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
@@ -26,7 +26,7 @@ namespace PF.UI.ViewModels.Demos
         public bool IsDarkText { get; init; }
     }
 
-    public class ColorDemoViewModel : BindableBase
+    public class ColorDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

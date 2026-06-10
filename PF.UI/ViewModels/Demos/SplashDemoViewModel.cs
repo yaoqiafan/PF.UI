@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,7 +8,7 @@ using PF.UI.Shared.Data;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class SplashDemoViewModel : BindableBase
+    public class SplashDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

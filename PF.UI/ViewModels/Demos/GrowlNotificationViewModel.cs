@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Prism.Commands;
@@ -8,7 +8,7 @@ using PF.UI.Shared.Data;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class GrowlNotificationViewModel : BindableBase
+    public class GrowlNotificationViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

@@ -1,4 +1,4 @@
-using PF.UI.Controls;
+﻿using PF.UI.Controls;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Dialogs;
@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class DialogDemoViewModel : BindableBase
+    public class DialogDemoViewModel : DemoViewModelBase
     {
         private const string Token = "DemoDialog";
         private readonly IDialogService _dialogService;
@@ -286,7 +286,7 @@ public class MyViewModel
 }";
 
         public const string XamlPrismVm = @"// ConfirmDialogViewModel — 实现 Prism 9 IDialogAware
-public class ConfirmDialogViewModel : BindableBase, IDialogAware
+public class ConfirmDialogViewModel : DemoViewModelBase, IDialogAware
 {
     // Prism 9：RequestClose 是 DialogCloseListener 属性（非 event）
     public DialogCloseListener RequestClose { get; } = new();

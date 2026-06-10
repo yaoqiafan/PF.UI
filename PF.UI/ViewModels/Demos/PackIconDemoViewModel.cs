@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using PF.UI.Controls;
 using Prism.Mvvm;
 
@@ -10,7 +10,7 @@ namespace PF.UI.ViewModels.Demos
         public string Name { get; init; } = string.Empty;
     }
 
-    public class PackIconDemoViewModel : BindableBase
+    public class PackIconDemoViewModel : DemoViewModelBase
     {
         private const int PageSize = 120;
 

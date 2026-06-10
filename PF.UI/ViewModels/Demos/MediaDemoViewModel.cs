@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Prism.Mvvm;
 using PF.UI.Controls;
 
@@ -12,7 +12,7 @@ namespace PF.UI.ViewModels.Demos
         public PackIconKind Icon { get; init; }
     }
 
-    public class MediaDemoViewModel : BindableBase
+    public class MediaDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {

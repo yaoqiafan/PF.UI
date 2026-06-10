@@ -1,9 +1,9 @@
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using System.Collections.ObjectModel;
 
 namespace PF.UI.ViewModels.Demos
 {
-    public class TextEffectsDemoViewModel : BindableBase
+    public class TextEffectsDemoViewModel : DemoViewModelBase
     {
         public ObservableCollection<DemoTocItem> TocItems { get; } = new()
         {
