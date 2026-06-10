@@ -183,12 +183,15 @@ namespace PF.UI.Views
 
             foreach (var group in vm.NavGroups)
             {
+                // 组标题：标准字号 + 半粗体，与子项形成层级对比
                 var header = new SideMenuItem
                 {
                     Header = group.Title,
                     DataContext = group,
-                    Icon = CreateIcon(group.Icon, 18)
+                    Icon = CreateIcon(group.Icon, 18),
+                    FontWeight = FontWeights.SemiBold
                 };
+                header.SetResourceReference(FontSizeProperty, "FontSize.Body.Standard");
                 // 组展开状态与模型双向同步（VM 导航时自动展开所在组）
                 BindingOperations.SetBinding(header, SideMenuItem.IsExpandedProperty,
                     new Binding(nameof(NavGroup.IsExpanded)) { Source = group, Mode = BindingMode.TwoWay });
@@ -196,13 +199,17 @@ namespace PF.UI.Views
                 var children = new List<(SideMenuItem, NavItem)>();
                 foreach (var nav in group.Children)
                 {
+                    // 子项：小字号 + 左缩进，区别于组标题
                     var item = new SideMenuItem
                     {
                         Header = nav.Title,
                         DataContext = nav,
                         Icon = CreateIcon(nav.Icon, 16),
-                        ToolTip = nav.Description
+                        ToolTip = nav.Description,
+                        FontWeight = FontWeights.Normal,
+                        Padding = new Thickness(24, 0, 0, 0)
                     };
+                    item.SetResourceReference(FontSizeProperty, "FontSize.Body.Small");
                     header.Items.Add(item);
                     children.Add((item, nav));
                 }
