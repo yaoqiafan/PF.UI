@@ -74,7 +74,7 @@
                                 <StackPanel>
                                     <TextBlock FontSize="11" Foreground="{DynamicResource ThirdlyTextBrush}"
                                                TextWrapping="Wrap" Margin="0,0,0,14"
-                                               Text="Splash 是一个全屏模态启动窗口（900×500，无边框）。设置 WelcomeText / VersionNumber / WelcomeText_small 定制品牌文字，通过 LoadingAction（Func&lt;Task&lt;bool&gt;&gt;）执行异步初始化任务，完成后窗口自动关闭并将返回值作为 DialogResult。" />
+                                               Text="Splash 是一个圆角卡片式模态启动窗口（820×480，无边框）。设置 WelcomeText / VersionNumber / WelcomeText_small 定制品牌文字，LogoSource 定制品牌 LOGO（Stretch=Uniform，不会变形），通过 LoadingAction（Func&lt;Task&lt;bool&gt;&gt;）执行异步初始化任务，完成后窗口自动关闭并将返回值作为 DialogResult。" />
 
                                     <!-- 预览缩略图 -->
                                     <Border Background="#12202C" CornerRadius="8"

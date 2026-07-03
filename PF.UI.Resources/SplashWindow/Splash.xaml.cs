@@ -76,6 +76,45 @@ namespace PF.UI.Resources
             set => SetValue(WelcomeText_smallProperty, value);
         }
 
+        /// <summary>
+        /// LogoSourceProperty。默认沿用框架自带 LOGO，消费项目可在 CreateShell 中
+        /// 通过 splash.LogoSource = ... 覆盖为自己的品牌图标/LOGO（用法与 WelcomeText 一致）。
+        /// </summary>
+        public static readonly DependencyProperty LogoSourceProperty = DependencyProperty.Register(
+            nameof(LogoSource), typeof(ImageSource), typeof(Splash), new PropertyMetadata(CreateDefaultLogoSource()));
+
+        /// <summary>
+        /// LOGO/图标来源。展示时使用 Stretch="Uniform"，不会因为外部图片的长宽比例与默认图不同而变形。
+        /// </summary>
+        public ImageSource LogoSource
+        {
+            get => (ImageSource)GetValue(LogoSourceProperty);
+            set => SetValue(LogoSourceProperty, value);
+        }
+
+        private static ImageSource CreateDefaultLogoSource()
+        {//D:\VSprojects\Work\PF\PF.AutoFramework\Standard Library\PF.UI.Shell\PF.UI.Resources\Images\PNG\聚力LOGOico.png
+            var image = new BitmapImage(new Uri("pack://application:,,,/PF.UI.Resources;component/Images/PNG/聚力LOGOico.png"));
+            image.Freeze();
+            return image;
+        }
+
+
+        /// <summary>
+        /// ProgressProperty。对应 pf:WaveProgressBar 的 Value（0~100），
+        /// 消费项目可在 LoadingAction 执行过程中通过 splash.Progress = xx 驱动波浪进度显示。
+        /// </summary>
+        public static readonly DependencyProperty ProgressProperty = DependencyProperty.Register(
+            nameof(Progress), typeof(double), typeof(Splash), new PropertyMetadata(50d));
+
+        /// <summary>
+        /// 加载进度（0~100），绑定到 WaveProgressBar.Value。
+        /// </summary>
+        public double Progress
+        {
+            get => (double)GetValue(ProgressProperty);
+            set => SetValue(ProgressProperty, value);
+        }
 
         /// <summary>
         /// MessageinfoProperty

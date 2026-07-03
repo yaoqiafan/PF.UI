@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
@@ -45,43 +46,45 @@ public class LoadingLine : LoadingBase
         {
             var ellipse = CreateEllipse(i, dotInterval, dotDiameter);
 
-            var frames = new ThicknessAnimationUsingKeyFrames
+            // 位移动画作用于 RenderTransform，走渲染线程的独立动画，不占用 UI 线程做逐帧布局，
+            // 避免动画 Margin（依赖动画）导致的掉帧。起始位置（错位堆叠）仍由 Margin 静态设置一次。
+            var frames = new DoubleAnimationUsingKeyFrames
             {
                 BeginTime = TimeSpan.FromMilliseconds(dotDelayTime * i)
             };
             //开始位置
-            var frame0 = new LinearThicknessKeyFrame
+            var frame0 = new LinearDoubleKeyFrame
             {
-                Value = new Thickness(ellipse.Margin.Left, 0, 0, 0),
+                Value = 0,
                 KeyTime = KeyTime.FromTimeSpan(TimeSpan.Zero)
             };
 
             //开始位置到匀速开始
-            var frame1 = new EasingThicknessKeyFrame
+            var frame1 = new EasingDoubleKeyFrame
             {
                 EasingFunction = new PowerEase
                 {
                     EasingMode = EasingMode.EaseOut
                 },
-                Value = new Thickness(speedDownLength + ellipse.Margin.Left, 0, 0, 0),
+                Value = speedDownLength,
                 KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(dotSpeed * (1 - UniformScale) / 2))
             };
 
             //匀速开始到匀速结束
-            var frame2 = new LinearThicknessKeyFrame
+            var frame2 = new LinearDoubleKeyFrame
             {
-                Value = new Thickness(speedDownLength + speedUniformLength + ellipse.Margin.Left, 0, 0, 0),
+                Value = speedDownLength + speedUniformLength,
                 KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(dotSpeed * (1 + UniformScale) / 2))
             };
 
             //匀速结束到匀加速结束
-            var frame3 = new EasingThicknessKeyFrame
+            var frame3 = new EasingDoubleKeyFrame
             {
                 EasingFunction = new PowerEase
                 {
                     EasingMode = EasingMode.EaseIn
                 },
-                Value = new Thickness(ActualWidth + ellipse.Margin.Left + speedUniformLength, 0, 0, 0),
+                Value = ActualWidth + speedUniformLength,
                 KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(dotSpeed))
             };
 
@@ -91,7 +94,8 @@ public class LoadingLine : LoadingBase
             frames.KeyFrames.Add(frame3);
 
             Storyboard.SetTarget(frames, ellipse);
-            Storyboard.SetTargetProperty(frames, new PropertyPath(MarginProperty));
+            Storyboard.SetTargetProperty(frames,
+                new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.X)"));
             Storyboard.Children.Add(frames);
 
             PrivateCanvas.Children.Add(ellipse);
@@ -110,6 +114,7 @@ public class LoadingLine : LoadingBase
         ellipse.HorizontalAlignment = HorizontalAlignment.Left;
         ellipse.VerticalAlignment = VerticalAlignment.Top;
         ellipse.Margin = new Thickness(-(dotInterval + dotDiameter) * index, 0, 0, 0);
+        ellipse.RenderTransform = new TranslateTransform();
         return ellipse;
     }
 }
