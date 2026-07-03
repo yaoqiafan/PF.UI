@@ -6,6 +6,19 @@
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>true</IsPackable>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>
+v1.0.1 (2026-07-03) — LoadingLine 掉帧修复
+
+[性能修复]
+- LoadingLine 圆点位移动画由 Margin（依赖动画，每帧强制 UI 线程重新 Measure/Arrange）
+  改为 RenderTransform 上的 TranslateTransform.X（独立动画，走渲染线程），
+  消除 Splash 等宿主场景下动画掉帧、不跟手的问题；起始错位仍由 Margin 静态设置
+  一次，不再参与逐帧动画。写法对齐同目录 LoadingCircle（RotateTransform.Angle）
+  已验证可行的独立动画模式。
+
+v1.0.0 - 初始版本
+    </PackageReleaseNotes>
     <Description>WPF 自定义控件库：Growl、Drawer、Steps 等高颜值控件</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <NoWarn>$(NoWarn);CS1591</NoWarn>

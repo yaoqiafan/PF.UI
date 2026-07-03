@@ -4,6 +4,8 @@
 
 	<PropertyGroup>
 		<IsPackable>true</IsPackable>
+		<Version>1.0.0</Version>
+		<PackageReleaseNotes>v1.0.0 - 初始版本</PackageReleaseNotes>
 		<Description>WPF UI 共享工具：Drawing、Media、Shape 辅助类</Description>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<NoWarn>$(NoWarn);CS1591</NoWarn>

@@ -95,6 +95,29 @@
 
 	<PropertyGroup>
 		<IsPackable>true</IsPackable>
+		<Version>1.1.0</Version>
+		<PackageReleaseNotes>
+v1.1.0 (2026-07-03) — Splash 重设计 + LogoSource/Progress 依赖属性
+
+[新功能]
+- Splash 新增 LogoSource 依赖属性（ImageSource），用法与 WelcomeText 一致，
+  消费项目可在 CreateShell 中通过 splash.LogoSource = ... 覆盖为自己的品牌 LOGO；
+  展示时 Stretch=Uniform，不会因外部图片长宽比例与默认图不同而变形。
+- Splash 新增 Progress 依赖属性（double，0~100），绑定至新版状态栏的
+  WaveProgressBar.Value，消费项目可在 LoadingAction 执行过程中驱动真实加载进度。
+
+[界面改版]
+- Splash 由通栏大图旧版布局改为圆角卡片 + 投影 + 扫描进度条 + 状态栏的现代化设计
+  （820×480，AllowsTransparency，参照成熟范例重写）。
+- 状态栏加载指示由 LoadingLine 改为 WaveProgressBar；WaveFill 使用
+  PrimaryColor→InfoColor→PrimaryColor 纵向三色渐变（纵向而非对角线，避免随
+  PART_Wave 内建的横向循环滚动动画产生周期性跳色）。
+- 窗口显式清零 BorderBrush/BorderThickness，修复 AllowsTransparency 场景下
+  WindowWin10 样式默认窗体描边（PrimaryBrush 1px，按整窗尺寸绘制）与卡片自身
+  圆角描边不对齐、露出方形外框的问题。
+
+v1.0.0 - 初始版本
+		</PackageReleaseNotes>
 		<Description>WPF 主题资源：深色/浅色主题字典、思源黑体字体、图标资源</Description>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 	</PropertyGroup>
