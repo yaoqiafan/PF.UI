@@ -23,6 +23,11 @@
 
     <pf:Window.Resources>
         <local:MessageTypeToBrushConverter x:Key="MessageTypeToBrushConverter"></local:MessageTypeToBrushConverter>
+
+        <LinearGradientBrush x:Key="PrimaryTranspanBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="-1" Color="{DynamicResource DarkPrimaryColor}" />
+            <GradientStop Offset="1" Color="Transparent" />
+        </LinearGradientBrush>
     </pf:Window.Resources>
 
     <pf:Window.Triggers>
@@ -59,7 +64,7 @@
         <Border
             x:Name="Card"
             Background="{DynamicResource BackgroundBrush}"
-            BorderBrush="{DynamicResource PrimaryBrush}"
+            BorderBrush="{DynamicResource PrimaryTranspanBrush}"
             BorderThickness="1"
             ClipToBounds="True"
             CornerRadius="10">
